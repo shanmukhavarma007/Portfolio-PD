@@ -479,7 +479,7 @@ export function LearningJourney() {
                 gap: "12px",
                 padding: "14px 16px",
                 background: "var(--surface-3)",
-                border: "1px solid rgba(61, 139, 253, 0.3)",
+                border: "1px solid color-mix(in srgb, var(--accent) 30%, transparent)",
                 marginBottom: "0",
               }}
             >
@@ -490,7 +490,7 @@ export function LearningJourney() {
                   borderRadius: "50%",
                   background: "var(--accent)",
                   flexShrink: 0,
-                  boxShadow: "0 0 8px rgba(61, 139, 253, 0.4)",
+                  boxShadow: "0 0 8px color-mix(in srgb, var(--accent) 40%, transparent)",
                 }}
               />
               <div>
@@ -546,7 +546,7 @@ export function LearningJourney() {
                       width: "100%",
                       padding: "14px 16px",
                       background: active
-                        ? "rgba(61, 139, 253, 0.05)"
+                        ? "color-mix(in srgb, var(--accent) 5%, transparent)"
                         : "transparent",
                       border: "none",
                       borderLeft: active
@@ -574,7 +574,7 @@ export function LearningJourney() {
                         flexShrink: 0,
                         marginTop: "1px",
                         boxShadow: active
-                          ? "0 0 10px rgba(61, 139, 253, 0.3)"
+                          ? "0 0 10px color-mix(in srgb, var(--accent) 30%, transparent)"
                           : "none",
                         transition: "all 0.3s ease",
                       }}

@@ -169,7 +169,7 @@ export function PDFlow() {
                           : "1px solid var(--border)",
                         transition: "all 0.3s ease",
                         boxShadow: isActive
-                          ? "0 0 12px rgba(61, 139, 253, 0.3)"
+                          ? "0 0 12px color-mix(in srgb, var(--accent) 30%, transparent)"
                           : "none",
                         flexShrink: 0,
                       }}
@@ -296,9 +296,9 @@ export function PDFlow() {
                         fontSize: "9px",
                         letterSpacing: "0.08em",
                         color: "var(--accent-secondary)",
-                        background: "rgba(103, 208, 216, 0.08)",
+                        background: "color-mix(in srgb, var(--accent-secondary) 8%, transparent)",
                         padding: "4px 10px",
-                        border: "1px solid rgba(103, 208, 216, 0.15)",
+                        border: "1px solid color-mix(in srgb, var(--accent-secondary) 15%, transparent)",
                       }}
                     >
                       {c}

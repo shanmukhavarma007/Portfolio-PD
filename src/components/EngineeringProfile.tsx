@@ -145,6 +145,8 @@ export function EngineeringProfile() {
           <div style={{ display: "flex", flexDirection: "column", gap: "0" }}>
             {[
               { label: "LOCATION", value: "Hyderabad, India" },
+              { label: "EDUCATION", value: "B.Tech — ECE · 2026\nVignan\u2019s Institute of Information Technology" },
+              { label: "TRAINING", value: "Currently undergoing intensive VLSI Physical Design training at Sumedha IT" },
               { label: "CURRENT FOCUS", value: "Physical Design · STA · EDA" },
               { label: "AUTOMATION", value: "Tcl · Linux · AWK" },
               { label: "EDA", value: "Cadence Innovus · Tempus · Genus · OpenLane" },
@@ -176,6 +178,7 @@ export function EngineeringProfile() {
                     fontFamily: "var(--font-body)",
                     fontSize: "14px",
                     color: "var(--text)",
+                    whiteSpace: "pre-line",
                   }}
                 >
                   {item.value}

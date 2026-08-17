@@ -22,8 +22,8 @@ export function Hero() {
           position: "absolute",
           inset: 0,
           backgroundImage: `
-            linear-gradient(rgba(42, 48, 56, 0.15) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(42, 48, 56, 0.15) 1px, transparent 1px)
+            linear-gradient(color-mix(in srgb, var(--border) 15%, transparent) 1px, transparent 1px),
+            linear-gradient(90deg, color-mix(in srgb, var(--border) 15%, transparent) 1px, transparent 1px)
           `,
           backgroundSize: "60px 60px",
           opacity: 0.4,

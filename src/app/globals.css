@@ -20,6 +20,58 @@
   --font-display: "Space Grotesk", system-ui, sans-serif;
   --font-body: "Inter", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* Floorplan canvas colors — dark theme (visible hierarchy, dark aesthetic) */
+  --fp-die: #2A3038CC;
+  --fp-accent-dim: #3D8BFD28;
+  --fp-accent-border: #3D8BFD30;
+  --fp-cell-row: #3D8BFD22;
+  --fp-cell-line: #2A303866;
+  --fp-route-clock: #67D0D840;
+  --fp-route-line: #3D8BFD1A;
+  --fp-htree: #67D0D835;
+  --fp-timing: #3D8BFD40;
+  --fp-mesh: #2A303890;
+  --fp-pin: #9AA3AF50;
+  --fp-label: #5C6570B0;
+  --fp-macro-border: #67D0D855;
+  --fp-macro-fill: #67D0D814;
+  --fp-macro-label: #67D0D8B0;
+}
+
+[data-theme="light"] {
+  --bg: #F5F6F8;
+  --surface-1: #FFFFFF;
+  --surface-2: #F0F1F4;
+  --surface-3: #E8E9EC;
+  --surface-4: #DDDFE3;
+  --border: #D0D3D8;
+  --border-subtle: #E2E4E8;
+  --text: #1A1D23;
+  --text-secondary: #4A5060;
+  --text-muted: #8890A0;
+  --accent: #1A6AD4;
+  --accent-secondary: #247D85;
+  --success: #1E8F42;
+  --warning: #B58535;
+  --error: #E04540;
+
+  /* Floorplan canvas colors — light theme (clear contrast on light background) */
+  --fp-die: #2A3038E8;
+  --fp-accent-dim: #1A6AD420;
+  --fp-accent-border: #1A6AD445;
+  --fp-cell-row: #1A6AD430;
+  --fp-cell-line: #C0C5CCA0;
+  --fp-route-clock: #247D8560;
+  --fp-route-line: #1A6AD428;
+  --fp-htree: #247D8550;
+  --fp-timing: #1A6AD460;
+  --fp-mesh: #C8CCD4B0;
+  --fp-pin: #8890A065;
+  --fp-label: #5C6570E0;
+  --fp-macro-border: #247D8580;
+  --fp-macro-fill: #247D851A;
+  --fp-macro-label: #247D85E0;
 }
 
 html {
@@ -28,6 +80,13 @@ html {
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+html.theme-ready,
+html.theme-ready *,
+html.theme-ready *::before,
+html.theme-ready *::after {
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, outline-color 0.25s ease;
 }
 
 body {
@@ -158,4 +217,26 @@ body {
 
 .nav-link:hover::after {
   width: 100%;
+}
+
+/* Chip visualization — no global opacity; per-layer contrast via --fp-* tokens */
+
+/* Nav stacking context — ensures header is above all page content */
+.site-nav {
+  position: fixed;
+  z-index: 100;
+  isolation: isolate;
+}
+
+/* Mobile overlay — explicitly below nav */
+.site-nav-overlay {
+  position: fixed;
+  z-index: 99;
+}
+
+/* Hamburger / X button — above overlay within nav context */
+.site-nav-hamburger {
+  position: relative;
+  z-index: 10;
+  pointer-events: auto;
 }

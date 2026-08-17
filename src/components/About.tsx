@@ -1,7 +1,8 @@
 "use client";
 
 const METADATA = [
-  { label: "EDUCATION", value: "ECE" },
+  { label: "EDUCATION", value: "B.Tech — ECE · 2026\nVignan\u2019s Institute of Information Technology" },
+  { label: "TRAINING", value: "Currently undergoing intensive VLSI Physical Design training at Sumedha IT" },
   { label: "CURRENT FOCUS", value: "VLSI PHYSICAL DESIGN" },
   { label: "INTERESTS", value: "Physical Design · STA · Automation" },
   { label: "STATUS", value: "Intensive Training" },
@@ -97,6 +98,7 @@ export function About() {
                   fontFamily: "var(--font-body)",
                   fontSize: "14px",
                   color: "var(--text)",
+                  whiteSpace: "pre-line",
                 }}
               >
                 {item.value}

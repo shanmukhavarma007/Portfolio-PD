@@ -137,9 +137,9 @@ export function Projects() {
                       fontFamily: "var(--font-mono)",
                       fontSize: "11px",
                       color: "var(--accent)",
-                      background: "rgba(61, 139, 253, 0.08)",
+                      background: "color-mix(in srgb, var(--accent) 8%, transparent)",
                       padding: "4px 10px",
-                      border: "1px solid rgba(61, 139, 253, 0.15)",
+                      border: "1px solid color-mix(in srgb, var(--accent) 15%, transparent)",
                     }}
                   >
                     {project.technology}

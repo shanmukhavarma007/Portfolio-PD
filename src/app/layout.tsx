@@ -38,7 +38,15 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable}`}
+      suppressHydrationWarning
     >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}setTimeout(function(){document.documentElement.classList.add('theme-ready');},300);})()`,
+          }}
+        />
+      </head>
       <body>{children}</body>
     </html>
   );

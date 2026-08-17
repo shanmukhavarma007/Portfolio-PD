@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { ThemeToggle } from "./ThemeToggle";
 
 const NAV_ITEMS = [
   { num: "01", label: "WORK", href: "#work" },
@@ -32,20 +33,19 @@ export function Nav() {
   return (
     <>
       <nav
+        className="site-nav"
         style={{
-          position: "fixed",
           top: 0,
           left: 0,
           right: 0,
-          zIndex: 100,
           height: "48px",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
           padding: "0 clamp(16px, 4vw, 48px)",
           background: scrolled
-            ? "rgba(11, 13, 16, 0.92)"
-            : "rgba(11, 13, 16, 0.6)",
+            ? "color-mix(in srgb, var(--bg) 92%, transparent)"
+            : "color-mix(in srgb, var(--bg) 60%, transparent)",
           backdropFilter: "blur(8px)",
           borderBottom: "1px solid var(--border-subtle)",
           transition: "background 0.3s ease",
@@ -112,6 +112,7 @@ export function Nav() {
 
         {/* Right: resume CTA (desktop) */}
         <div className="hidden md:flex" style={{ alignItems: "center", gap: "16px" }}>
+          <ThemeToggle />
           <a
             href="https://github.com/shanmukhavarma007"
             target="_blank"
@@ -182,9 +183,10 @@ export function Nav() {
 
         {/* Mobile menu button */}
         <button
-          className="md:hidden"
+          type="button"
+          className="md:hidden site-nav-hamburger"
           onClick={() => setMobileOpen(!mobileOpen)}
-          aria-label="Toggle navigation"
+          aria-label={mobileOpen ? "Close navigation menu" : "Open navigation menu"}
           style={{
             background: "none",
             border: "none",
@@ -236,11 +238,10 @@ export function Nav() {
       {/* Mobile overlay */}
       {mobileOpen && (
         <div
+          className="site-nav-overlay"
           style={{
-            position: "fixed",
             inset: 0,
-            zIndex: 99,
-            background: "rgba(11, 13, 16, 0.97)",
+            background: "color-mix(in srgb, var(--bg) 97%, transparent)",
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
@@ -287,6 +288,7 @@ export function Nav() {
               gap: "16px",
             }}
           >
+            <ThemeToggle />
             <div style={{ display: "flex", gap: "24px" }}>
               <a
                 href="https://github.com/shanmukhavarma007"
