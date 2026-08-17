@@ -1,0 +1,345 @@
+"use client";
+
+import { useState, useEffect } from "react";
+
+const NAV_ITEMS = [
+  { num: "01", label: "WORK", href: "#work" },
+  { num: "02", label: "ENGINEERING", href: "#engineering" },
+  { num: "03", label: "JOURNEY", href: "#journey" },
+  { num: "04", label: "ACTIVITY", href: "#activity" },
+  { num: "05", label: "ABOUT", href: "#about" },
+];
+
+export function Nav() {
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => { document.body.style.overflow = ""; };
+  }, [mobileOpen]);
+
+  return (
+    <>
+      <nav
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 100,
+          height: "48px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          padding: "0 clamp(16px, 4vw, 48px)",
+          background: scrolled
+            ? "rgba(11, 13, 16, 0.92)"
+            : "rgba(11, 13, 16, 0.6)",
+          backdropFilter: "blur(8px)",
+          borderBottom: "1px solid var(--border-subtle)",
+          transition: "background 0.3s ease",
+        }}
+      >
+        {/* Left: brand */}
+        <div
+          style={{
+            fontFamily: "var(--font-display)",
+            fontSize: "12px",
+            letterSpacing: "0.14em",
+            textTransform: "uppercase",
+            color: "var(--text)",
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            flexShrink: 0,
+          }}
+        >
+          <span style={{ color: "var(--accent)", fontWeight: 600 }}>SHANMUKHA</span>
+          <span style={{ color: "var(--text-muted)" }}>/</span>
+          <span style={{ color: "var(--text-muted)" }}>PENMETSA</span>
+        </div>
+
+        {/* Center: numbered nav (desktop) */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "28px",
+          }}
+          className="hidden md:flex"
+        >
+          {NAV_ITEMS.map((item) => (
+            <a
+              key={item.num}
+              href={item.href}
+              className="nav-link"
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: "11px",
+                letterSpacing: "0.08em",
+                color: "var(--text-secondary)",
+                textDecoration: "none",
+                transition: "color 0.2s ease",
+                display: "flex",
+                alignItems: "baseline",
+                gap: "6px",
+              }}
+              onMouseEnter={(e) => {
+                (e.target as HTMLElement).style.color = "var(--text)";
+              }}
+              onMouseLeave={(e) => {
+                (e.target as HTMLElement).style.color = "var(--text-secondary)";
+              }}
+            >
+              <span style={{ color: "var(--text-muted)", fontSize: "9px" }}>
+                {item.num}
+              </span>
+              {item.label}
+            </a>
+          ))}
+        </div>
+
+        {/* Right: resume CTA (desktop) */}
+        <div className="hidden md:flex" style={{ alignItems: "center", gap: "16px" }}>
+          <a
+            href="https://github.com/shanmukhavarma007"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: "11px",
+              letterSpacing: "0.08em",
+              color: "var(--text-muted)",
+              textDecoration: "none",
+              transition: "color 0.2s ease",
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLElement).style.color = "var(--text)";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLElement).style.color = "var(--text-muted)";
+            }}
+          >
+            GH
+          </a>
+          <a
+            href="https://www.linkedin.com/in/shanmukhavarma-penmetsa/"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: "11px",
+              letterSpacing: "0.08em",
+              color: "var(--text-muted)",
+              textDecoration: "none",
+              transition: "color 0.2s ease",
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLElement).style.color = "var(--text)";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLElement).style.color = "var(--text-muted)";
+            }}
+          >
+            LI
+          </a>
+          <span style={{ width: "1px", height: "12px", background: "var(--border-subtle)" }} />
+          <a
+            href="/resume.pdf"
+            download="Shanmukha_Varma_Resume.pdf"
+            aria-label="Download Shanmukha Varma resume PDF"
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: "11px",
+              letterSpacing: "0.1em",
+              color: "var(--bg)",
+              background: "var(--accent)",
+              padding: "6px 16px",
+              textDecoration: "none",
+              transition: "all 0.2s ease",
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLElement).style.background = "var(--accent-secondary)";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLElement).style.background = "var(--accent)";
+            }}
+          >
+            RESUME
+          </a>
+        </div>
+
+        {/* Mobile menu button */}
+        <button
+          className="md:hidden"
+          onClick={() => setMobileOpen(!mobileOpen)}
+          aria-label="Toggle navigation"
+          style={{
+            background: "none",
+            border: "none",
+            padding: "8px",
+            cursor: "pointer",
+            display: "flex",
+            flexDirection: "column",
+            gap: "4px",
+            width: "28px",
+          }}
+        >
+          <span
+            style={{
+              display: "block",
+              width: "100%",
+              height: "1px",
+              background: "var(--text)",
+              transition: "all 0.3s ease",
+              transform: mobileOpen
+                ? "rotate(45deg) translateY(5px)"
+                : "none",
+            }}
+          />
+          <span
+            style={{
+              display: "block",
+              width: mobileOpen ? "0%" : "60%",
+              height: "1px",
+              background: "var(--text)",
+              transition: "all 0.3s ease",
+              marginLeft: "auto",
+            }}
+          />
+          <span
+            style={{
+              display: "block",
+              width: "100%",
+              height: "1px",
+              background: "var(--text)",
+              transition: "all 0.3s ease",
+              transform: mobileOpen
+                ? "rotate(-45deg) translateY(-5px)"
+                : "none",
+            }}
+          />
+        </button>
+      </nav>
+
+      {/* Mobile overlay */}
+      {mobileOpen && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 99,
+            background: "rgba(11, 13, 16, 0.97)",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            padding: "80px 32px",
+            gap: "32px",
+          }}
+        >
+          {NAV_ITEMS.map((item) => (
+            <a
+              key={item.num}
+              href={item.href}
+              onClick={() => setMobileOpen(false)}
+              style={{
+                fontFamily: "var(--font-display)",
+                fontSize: "28px",
+                fontWeight: 500,
+                color: "var(--text-secondary)",
+                textDecoration: "none",
+                display: "flex",
+                alignItems: "baseline",
+                gap: "16px",
+                transition: "color 0.2s ease",
+              }}
+            >
+              <span
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "12px",
+                  color: "var(--text-muted)",
+                }}
+              >
+                {item.num}
+              </span>
+              {item.label}
+            </a>
+          ))}
+          <div
+            style={{
+              borderTop: "1px solid var(--border-subtle)",
+              paddingTop: "24px",
+              marginTop: "16px",
+              display: "flex",
+              flexDirection: "column",
+              gap: "16px",
+            }}
+          >
+            <div style={{ display: "flex", gap: "24px" }}>
+              <a
+                href="https://github.com/shanmukhavarma007"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setMobileOpen(false)}
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "12px",
+                  letterSpacing: "0.08em",
+                  color: "var(--text-secondary)",
+                  textDecoration: "none",
+                }}
+              >
+                GitHub
+              </a>
+              <a
+                href="https://www.linkedin.com/in/shanmukhavarma-penmetsa/"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setMobileOpen(false)}
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "12px",
+                  letterSpacing: "0.08em",
+                  color: "var(--text-secondary)",
+                  textDecoration: "none",
+                }}
+              >
+                LinkedIn
+              </a>
+            </div>
+            <a
+              href="/resume.pdf"
+              download="Shanmukha_Varma_Resume.pdf"
+              aria-label="Download Shanmukha Varma resume PDF"
+              onClick={() => setMobileOpen(false)}
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: "13px",
+                letterSpacing: "0.1em",
+                color: "var(--bg)",
+                background: "var(--accent)",
+                padding: "12px 24px",
+                textDecoration: "none",
+                display: "inline-block",
+              }}
+            >
+              RESUME
+            </a>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
