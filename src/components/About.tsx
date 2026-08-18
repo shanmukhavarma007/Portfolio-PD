@@ -1,5 +1,8 @@
 "use client";
 
+import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { WaveformHr } from "./WaveformHr";
+
 const METADATA = [
   { label: "EDUCATION", value: "B.Tech — ECE · 2026\nVignan\u2019s Institute of Information Technology" },
   { label: "TRAINING", value: "Currently undergoing intensive VLSI Physical Design training at Sumedha IT" },
@@ -9,16 +12,24 @@ const METADATA = [
 ];
 
 export function About() {
+  const ref = useScrollReveal();
+
   return (
     <section
       id="about"
+      ref={ref}
+      className="scroll-reveal"
       style={{
         padding: "clamp(48px, 8vw, 96px) clamp(16px, 4vw, 48px)",
         background: "var(--surface-1)",
         borderTop: "1px solid var(--border-subtle)",
         borderBottom: "1px solid var(--border-subtle)",
+        position: "relative",
       }}
     >
+      {/* Decorative section number */}
+      <div className="section-deco-number" aria-hidden="true">08</div>
+
       <div
         style={{
           maxWidth: "1400px",
@@ -26,6 +37,7 @@ export function About() {
           display: "grid",
           gridTemplateColumns: "1fr",
           gap: "48px",
+          position: "relative",
         }}
         className="lg:!grid-cols-[7fr_5fr]"
       >
@@ -43,7 +55,7 @@ export function About() {
           >
             08 / ABOUT THE ENGINEER
           </div>
-          <hr className="editorial-hr" style={{ marginBottom: "32px" }} />
+          <WaveformHr style={{ marginBottom: "32px" }} />
           <p
             style={{
               fontFamily: "var(--font-body)",

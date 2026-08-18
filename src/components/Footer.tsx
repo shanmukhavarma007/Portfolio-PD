@@ -1,8 +1,14 @@
 "use client";
 
+import { useScrollReveal } from "@/hooks/useScrollReveal";
+
 export function Footer() {
+  const ref = useScrollReveal();
+
   return (
     <footer
+      ref={ref}
+      className="scroll-reveal"
       style={{
         borderTop: "1px solid var(--border-subtle)",
         padding: "32px clamp(16px, 4vw, 48px)",
@@ -66,13 +72,13 @@ export function Footer() {
             href="https://github.com/shanmukhavarma007"
             target="_blank"
             rel="noopener noreferrer"
+            className="animated-underline"
             style={{
               fontFamily: "var(--font-mono)",
               fontSize: "10px",
               letterSpacing: "0.08em",
               color: "var(--text-muted)",
               textDecoration: "none",
-              transition: "color 0.2s ease",
             }}
             onMouseEnter={(e) => {
               (e.target as HTMLElement).style.color = "var(--text)";
@@ -87,13 +93,13 @@ export function Footer() {
             href="https://www.linkedin.com/in/shanmukhavarma-penmetsa/"
             target="_blank"
             rel="noopener noreferrer"
+            className="animated-underline"
             style={{
               fontFamily: "var(--font-mono)",
               fontSize: "10px",
               letterSpacing: "0.08em",
               color: "var(--text-muted)",
               textDecoration: "none",
-              transition: "color 0.2s ease",
             }}
             onMouseEnter={(e) => {
               (e.target as HTMLElement).style.color = "var(--text)";
@@ -106,13 +112,13 @@ export function Footer() {
           </a>
           <a
             href="mailto:psvarma.e@gmail.com"
+            className="animated-underline"
             style={{
               fontFamily: "var(--font-mono)",
               fontSize: "10px",
               letterSpacing: "0.08em",
               color: "var(--text-muted)",
               textDecoration: "none",
-              transition: "color 0.2s ease",
             }}
             onMouseEnter={(e) => {
               (e.target as HTMLElement).style.color = "var(--text)";

@@ -1,5 +1,8 @@
 "use client";
 
+import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { WaveformHr } from "./WaveformHr";
+
 const PROJECTS = [
   {
     num: "01",
@@ -26,17 +29,25 @@ const PROJECTS = [
 ];
 
 export function Projects() {
+  const ref = useScrollReveal();
+
   return (
     <section
       id="work"
+      ref={ref}
+      className="scroll-reveal"
       style={{
         padding: "clamp(48px, 8vw, 96px) clamp(16px, 4vw, 48px)",
         background: "var(--surface-1)",
         borderTop: "1px solid var(--border-subtle)",
         borderBottom: "1px solid var(--border-subtle)",
+        position: "relative",
       }}
     >
-      <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
+      {/* Decorative section number */}
+      <div className="section-deco-number" aria-hidden="true">04</div>
+
+      <div style={{ maxWidth: "1400px", margin: "0 auto", position: "relative" }}>
         {/* Header */}
         <div
           style={{
@@ -50,7 +61,7 @@ export function Projects() {
         >
           04 / SELECTED WORK
         </div>
-        <hr className="editorial-hr" style={{ marginBottom: "48px" }} />
+        <WaveformHr style={{ marginBottom: "48px" }} />
 
         {/* Project blocks */}
         {PROJECTS.map((project, i) => (
@@ -183,13 +194,27 @@ export function Projects() {
 
               {/* Right: flow visualization */}
               <div
+                className="card-depth-border"
                 style={{
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "center",
                   padding: "24px",
                   background: "var(--surface-2)",
-                  border: "1px solid var(--border-subtle)",
+                  transition: "transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease",
+                  cursor: "default",
+                }}
+                onMouseEnter={(e) => {
+                  const el = e.currentTarget;
+                  el.style.transform = "translateY(-2px)";
+                  el.style.borderColor = "var(--accent)";
+                  el.style.boxShadow = "0 4px 16px rgba(0, 0, 0, 0.12)";
+                }}
+                onMouseLeave={(e) => {
+                  const el = e.currentTarget;
+                  el.style.transform = "translateY(0)";
+                  el.style.borderColor = "";
+                  el.style.boxShadow = "";
                 }}
               >
                 <div

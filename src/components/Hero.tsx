@@ -16,7 +16,7 @@ export function Hero() {
         overflow: "hidden",
       }}
     >
-      {/* Background grid */}
+      {/* Background grid — IC floorplan style */}
       <div
         style={{
           position: "absolute",
@@ -28,6 +28,20 @@ export function Hero() {
           backgroundSize: "60px 60px",
           opacity: 0.4,
           pointerEvents: "none",
+        }}
+      />
+
+      {/* Radial glow behind focal area */}
+      <div
+        style={{
+          position: "absolute",
+          top: "30%",
+          left: "10%",
+          width: "600px",
+          height: "600px",
+          background: "radial-gradient(circle, color-mix(in srgb, var(--accent) 8%, transparent) 0%, transparent 70%)",
+          pointerEvents: "none",
+          zIndex: 0,
         }}
       />
 
@@ -65,12 +79,12 @@ export function Hero() {
           <h1
             style={{
               fontFamily: "var(--font-display)",
-              fontSize: "clamp(36px, 6vw, 72px)",
-              fontWeight: 600,
-              lineHeight: 1.05,
-              letterSpacing: "-0.02em",
+              fontSize: "clamp(42px, 7.5vw, 96px)",
+              fontWeight: 700,
+              lineHeight: 1.02,
+              letterSpacing: "-0.03em",
               color: "var(--text)",
-              margin: "0 0 20px 0",
+              margin: "0 0 24px 0",
             }}
           >
             SHANMUKHA
@@ -79,19 +93,32 @@ export function Hero() {
           </h1>
 
           {/* Title */}
-          <div
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: "13px",
-              letterSpacing: "0.12em",
-              color: "var(--accent-secondary)",
-              textTransform: "uppercase",
-              marginBottom: "20px",
-              paddingBottom: "16px",
-              borderBottom: "1px solid var(--border-subtle)",
-            }}
-          >
-            VLSI PHYSICAL DESIGN ENGINEER
+          <div style={{ position: "relative", marginBottom: "20px", paddingBottom: "16px" }}>
+            <div
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: "13px",
+                letterSpacing: "0.12em",
+                color: "var(--accent-secondary)",
+                textTransform: "uppercase",
+              }}
+              className="boot-sequence"
+            >
+              VLSI PHYSICAL DESIGN ENGINEER
+            </div>
+            <div
+              style={{
+                position: "absolute",
+                bottom: 0,
+                left: 0,
+                right: 0,
+                height: "1px",
+                background: "var(--accent)",
+                opacity: 0.3,
+                transformOrigin: "left",
+              }}
+              className="accent-draw-in"
+            />
           </div>
 
           {/* Concise statement */}
@@ -120,6 +147,7 @@ export function Hero() {
           >
             <a
               href="#work"
+              className="btn-hover-lift"
               style={{
                 fontFamily: "var(--font-mono)",
                 fontSize: "11px",
@@ -128,7 +156,6 @@ export function Hero() {
                 background: "var(--accent)",
                 color: "var(--bg)",
                 textDecoration: "none",
-                transition: "all 0.2s ease",
                 display: "inline-block",
               }}
               onMouseEnter={(e) => {
@@ -144,6 +171,7 @@ export function Hero() {
               href="/resume.pdf"
               download="Shanmukha_Varma_Resume.pdf"
               aria-label="Download Shanmukha Varma resume PDF"
+              className="btn-hover-lift"
               style={{
                 fontFamily: "var(--font-mono)",
                 fontSize: "11px",
@@ -152,7 +180,6 @@ export function Hero() {
                 border: "1px solid var(--border)",
                 color: "var(--text-secondary)",
                 textDecoration: "none",
-                transition: "all 0.2s ease",
                 display: "inline-block",
               }}
               onMouseEnter={(e) => {
@@ -225,6 +252,77 @@ export function Hero() {
           className="max-lg:hidden"
         >
           <ChipVisualization />
+          {/* SVG trace draw-in overlay */}
+          <svg
+            viewBox="0 0 500 425"
+            style={{
+              position: "absolute",
+              inset: 0,
+              width: "100%",
+              height: "100%",
+              pointerEvents: "none",
+            }}
+            preserveAspectRatio="xMidYMid meet"
+          >
+            {/* Routing traces that animate in */}
+            <path
+              d="M120,180 L120,350"
+              stroke="var(--accent)"
+              strokeWidth="1"
+              opacity="0.25"
+              className="trace-draw"
+              style={{ "--trace-len": "170" } as React.CSSProperties}
+            />
+            <path
+              d="M200,180 L200,350"
+              stroke="var(--accent)"
+              strokeWidth="0.8"
+              opacity="0.2"
+              className="trace-draw"
+              style={{ "--trace-len": "170", animationDelay: "0.6s" } as React.CSSProperties}
+            />
+            <path
+              d="M280,180 L280,350"
+              stroke="var(--accent-secondary)"
+              strokeWidth="1"
+              opacity="0.2"
+              className="trace-draw"
+              style={{ "--trace-len": "170", animationDelay: "0.8s" } as React.CSSProperties}
+            />
+            <path
+              d="M360,180 L360,350"
+              stroke="var(--accent)"
+              strokeWidth="0.6"
+              opacity="0.15"
+              className="trace-draw"
+              style={{ "--trace-len": "170", animationDelay: "1s" } as React.CSSProperties}
+            />
+            {/* Horizontal standard cell row traces */}
+            <path
+              d="M80,220 L420,220"
+              stroke="var(--border)"
+              strokeWidth="0.5"
+              opacity="0.2"
+              className="trace-draw"
+              style={{ "--trace-len": "340", animationDelay: "1.2s" } as React.CSSProperties}
+            />
+            <path
+              d="M80,280 L420,280"
+              stroke="var(--border)"
+              strokeWidth="0.5"
+              opacity="0.15"
+              className="trace-draw"
+              style={{ "--trace-len": "340", animationDelay: "1.4s" } as React.CSSProperties}
+            />
+            <path
+              d="M80,320 L420,320"
+              stroke="var(--accent-secondary)"
+              strokeWidth="0.5"
+              opacity="0.15"
+              className="trace-draw"
+              style={{ "--trace-len": "340", animationDelay: "1.6s" } as React.CSSProperties}
+            />
+          </svg>
           <div
             style={{
               position: "absolute",

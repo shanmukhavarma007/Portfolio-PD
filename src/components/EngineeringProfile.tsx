@@ -1,5 +1,8 @@
 "use client";
 
+import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { WaveformHr } from "./WaveformHr";
+
 const FOUNDATIONS = ["Digital Design", "CMOS", "Linux", "Tcl"];
 const BUILDING = ["Physical Design", "STA", "EDA Implementation Flow"];
 const EDA_TOOLS = ["Cadence Innovus", "Cadence Tempus", "Cadence Genus"];
@@ -78,13 +81,21 @@ function SkillGroup({
 }
 
 export function EngineeringProfile() {
+  const ref = useScrollReveal();
+
   return (
     <section
       id="engineering"
+      ref={ref}
+      className="scroll-reveal"
       style={{
         padding: "clamp(48px, 8vw, 96px) clamp(16px, 4vw, 48px)",
+        position: "relative",
       }}
     >
+      {/* Decorative section number */}
+      <div className="section-deco-number" aria-hidden="true">01</div>
+
       <div
         style={{
           maxWidth: "1400px",
@@ -92,6 +103,7 @@ export function EngineeringProfile() {
           display: "grid",
           gridTemplateColumns: "1fr",
           gap: "48px",
+          position: "relative",
         }}
         className="lg:!grid-cols-[7fr_5fr]"
       >
@@ -110,7 +122,7 @@ export function EngineeringProfile() {
             01 / ENGINEERING PROFILE
           </div>
 
-          <hr className="editorial-hr" style={{ marginBottom: "32px" }} />
+          <WaveformHr style={{ marginBottom: "32px" }} />
 
           <h2
             style={{
@@ -190,10 +202,10 @@ export function EngineeringProfile() {
 
         {/* Right: technical summary */}
         <div
+          className="card-depth-border"
           style={{
             padding: "32px",
             background: "var(--surface-1)",
-            border: "1px solid var(--border-subtle)",
           }}
         >
           <div

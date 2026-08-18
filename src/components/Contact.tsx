@@ -1,5 +1,8 @@
 "use client";
 
+import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { WaveformHr } from "./WaveformHr";
+
 const LINKS = [
   {
     label: "GITHUB",
@@ -26,14 +29,22 @@ const LINKS = [
 ];
 
 export function Contact() {
+  const ref = useScrollReveal();
+
   return (
     <section
       id="contact"
+      ref={ref}
+      className="scroll-reveal"
       style={{
         padding: "clamp(48px, 8vw, 96px) clamp(16px, 4vw, 48px)",
+        position: "relative",
       }}
     >
-      <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
+      {/* Decorative section number */}
+      <div className="section-deco-number" aria-hidden="true">09</div>
+
+      <div style={{ maxWidth: "1400px", margin: "0 auto", position: "relative" }}>
         <div
           style={{
             fontFamily: "var(--font-mono)",
@@ -46,7 +57,7 @@ export function Contact() {
         >
           09 / LET&apos;S CONNECT
         </div>
-        <hr className="editorial-hr" style={{ marginBottom: "48px" }} />
+        <WaveformHr style={{ marginBottom: "48px" }} />
 
         <div
           style={{
@@ -117,6 +128,7 @@ export function Contact() {
                   →
                 </span>
                 <span
+                  className="animated-underline"
                   style={{
                     fontFamily: "var(--font-display)",
                     fontSize: "16px",

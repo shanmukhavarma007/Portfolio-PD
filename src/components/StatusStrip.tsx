@@ -1,5 +1,7 @@
 "use client";
 
+import { useScrollReveal } from "@/hooks/useScrollReveal";
+
 const STRIP_ITEMS = [
   { label: "CURRENTLY", value: "INTENSIVE VLSI PD TRAINING" },
   { label: "FOCUS", value: "PHYSICAL DESIGN · STA · EDA" },
@@ -8,8 +10,12 @@ const STRIP_ITEMS = [
 ];
 
 export function StatusStrip() {
+  const ref = useScrollReveal();
+
   return (
     <div
+      ref={ref}
+      className="scroll-reveal"
       style={{
         borderTop: "1px solid var(--border-subtle)",
         borderBottom: "1px solid var(--border-subtle)",

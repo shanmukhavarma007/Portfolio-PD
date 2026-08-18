@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { WaveformHr } from "./WaveformHr";
 
 const FOUNDATION_NODES = [
   {
@@ -65,6 +67,7 @@ function splitConcepts(concepts: string): string[] {
 export function LearningJourney() {
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
   const [expandedNode, setExpandedNode] = useState<string | null>(null);
+  const ref = useScrollReveal();
 
   const getVisibleNode = (id: string) => {
     if (hoveredNode === id || expandedNode === id) return id;
@@ -74,6 +77,8 @@ export function LearningJourney() {
   return (
     <section
       id="journey"
+      ref={ref}
+      className="scroll-reveal"
       style={{
         padding: "clamp(48px, 8vw, 96px) clamp(16px, 4vw, 48px)",
         background: "var(--surface-1)",
@@ -83,17 +88,44 @@ export function LearningJourney() {
         overflow: "hidden",
       }}
     >
+      {/* IC floorplan-style background pattern */}
       <div
         style={{
           position: "absolute",
           inset: 0,
-          backgroundImage:
-            "linear-gradient(var(--border-subtle) 1px, transparent 1px), linear-gradient(90deg, var(--border-subtle) 1px, transparent 1px)",
-          backgroundSize: "48px 48px",
-          opacity: 0.12,
           pointerEvents: "none",
+          opacity: 0.06,
         }}
-      />
+        aria-hidden="true"
+      >
+        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="fp-grid" x="0" y="0" width="120" height="120" patternUnits="userSpaceOnUse">
+              {/* Outer block boundary */}
+              <rect x="4" y="4" width="112" height="112" fill="none" stroke="var(--border)" strokeWidth="0.5" />
+              {/* Inner blocks of varying sizes — die floorplan */}
+              <rect x="8" y="8" width="48" height="32" fill="none" stroke="var(--border)" strokeWidth="0.3" />
+              <rect x="60" y="8" width="52" height="20" fill="none" stroke="var(--border)" strokeWidth="0.3" />
+              <rect x="60" y="28" width="24" height="12" fill="none" stroke="var(--accent)" strokeWidth="0.3" opacity="0.5" />
+              <rect x="8" y="44" width="32" height="28" fill="none" stroke="var(--border)" strokeWidth="0.3" />
+              <rect x="44" y="44" width="36" height="20" fill="none" stroke="var(--border)" strokeWidth="0.3" />
+              <rect x="84" y="44" width="28" height="28" fill="none" stroke="var(--border)" strokeWidth="0.3" />
+              <rect x="8" y="76" width="68" height="36" fill="none" stroke="var(--border)" strokeWidth="0.3" />
+              <rect x="80" y="76" width="32" height="36" fill="none" stroke="var(--accent-secondary)" strokeWidth="0.3" opacity="0.4" />
+              {/* Routing lines */}
+              <line x1="56" y1="8" x2="56" y2="112" stroke="var(--accent)" strokeWidth="0.2" opacity="0.3" />
+              <line x1="8" y1="42" x2="112" y2="42" stroke="var(--border)" strokeWidth="0.2" opacity="0.3" />
+              <line x1="8" y1="74" x2="112" y2="74" stroke="var(--border)" strokeWidth="0.2" opacity="0.2" />
+              <line x1="40" y1="8" x2="40" y2="112" stroke="var(--border)" strokeWidth="0.15" opacity="0.2" />
+              <line x1="80" y1="8" x2="80" y2="112" stroke="var(--border)" strokeWidth="0.15" opacity="0.2" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#fp-grid)" />
+        </svg>
+      </div>
+
+      {/* Decorative section number */}
+      <div className="section-deco-number" aria-hidden="true">06</div>
 
       <div
         style={{
@@ -115,7 +147,7 @@ export function LearningJourney() {
         >
           06 / FOUNDATION BUILT
         </div>
-        <hr className="editorial-hr" style={{ marginBottom: "48px" }} />
+        <WaveformHr style={{ marginBottom: "48px" }} />
 
         {/* Main content: heading + foundation map */}
         <div
@@ -744,11 +776,13 @@ export function LearningJourney() {
                 }}
               >
                 <span
+                  className="status-dot-pulse"
                   style={{
                     width: "5px",
                     height: "5px",
                     borderRadius: "50%",
                     background: "var(--warning)",
+                    color: "var(--warning)",
                   }}
                 />
                 <span

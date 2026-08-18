@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { WaveformHr } from "./WaveformHr";
 
 interface PDStage {
   id: string;
@@ -71,19 +73,26 @@ const PD_STAGES: PDStage[] = [
 
 export function PDFlow() {
   const [activeStage, setActiveStage] = useState<string | null>(null);
+  const ref = useScrollReveal();
 
   const activeData = PD_STAGES.find((s) => s.id === activeStage);
 
   return (
     <section
+      ref={ref}
+      className="scroll-reveal"
       style={{
         padding: "clamp(48px, 8vw, 96px) clamp(16px, 4vw, 48px)",
         background: "var(--surface-1)",
         borderTop: "1px solid var(--border-subtle)",
         borderBottom: "1px solid var(--border-subtle)",
+        position: "relative",
       }}
     >
-      <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
+      {/* Decorative section number */}
+      <div className="section-deco-number" aria-hidden="true">02</div>
+
+      <div style={{ maxWidth: "1400px", margin: "0 auto", position: "relative" }}>
         {/* Section header */}
         <div
           style={{
@@ -97,7 +106,7 @@ export function PDFlow() {
         >
           02 / PHYSICAL DESIGN FLOW
         </div>
-        <hr className="editorial-hr" style={{ marginBottom: "48px" }} />
+        <WaveformHr style={{ marginBottom: "48px" }} />
 
         {/* Flow visualization — horizontal on desktop */}
         <div

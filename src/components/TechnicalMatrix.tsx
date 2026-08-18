@@ -1,5 +1,8 @@
 "use client";
 
+import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { WaveformHr } from "./WaveformHr";
+
 interface TechRow {
   domain: string;
   technologies: string;
@@ -186,11 +189,13 @@ function TableSection({
               }}
             >
               <span
+                className="status-dot-pulse"
                 style={{
                   width: "5px",
                   height: "5px",
                   borderRadius: "50%",
                   background: row.statusColor,
+                  color: row.statusColor,
                   flexShrink: 0,
                 }}
               />
@@ -213,13 +218,21 @@ function TableSection({
 }
 
 export function TechnicalMatrix() {
+  const ref = useScrollReveal();
+
   return (
     <section
+      ref={ref}
+      className="scroll-reveal"
       style={{
         padding: "clamp(48px, 8vw, 96px) clamp(16px, 4vw, 48px)",
+        position: "relative",
       }}
     >
-      <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
+      {/* Decorative section number */}
+      <div className="section-deco-number" aria-hidden="true">03</div>
+
+      <div style={{ maxWidth: "1400px", margin: "0 auto", position: "relative" }}>
         {/* Header */}
         <div
           style={{
@@ -233,7 +246,7 @@ export function TechnicalMatrix() {
         >
           03 / TECHNICAL ARSENAL
         </div>
-        <hr className="editorial-hr" style={{ marginBottom: "48px" }} />
+        <WaveformHr style={{ marginBottom: "48px" }} />
 
         <TableSection title="" rows={TECH_ROWS} />
         <TableSection title="EDA ENVIRONMENT" rows={EDA_ROWS} />

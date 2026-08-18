@@ -1,5 +1,8 @@
 "use client";
 
+import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { WaveformHr } from "./WaveformHr";
+
 const ITEMS = [
   { label: "PHYSICAL DESIGN", state: "LEARNING", color: "var(--warning)" },
   { label: "STA", state: "PRACTICING", color: "var(--warning)" },
@@ -9,14 +12,30 @@ const ITEMS = [
   { label: "CMOS", state: "EXPLORING", color: "var(--accent-secondary)" },
 ];
 
+function handleCardMouseMove(e: React.MouseEvent<HTMLDivElement>) {
+  const rect = e.currentTarget.getBoundingClientRect();
+  const x = ((e.clientX - rect.left) / rect.width) * 100;
+  const y = ((e.clientY - rect.top) / rect.height) * 100;
+  e.currentTarget.style.setProperty("--x", `${x}%`);
+  e.currentTarget.style.setProperty("--y", `${y}%`);
+}
+
 export function CurrentlyBuilding() {
+  const ref = useScrollReveal();
+
   return (
     <section
+      ref={ref}
+      className="scroll-reveal"
       style={{
         padding: "clamp(48px, 8vw, 96px) clamp(16px, 4vw, 48px)",
+        position: "relative",
       }}
     >
-      <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
+      {/* Decorative section number */}
+      <div className="section-deco-number" aria-hidden="true">05</div>
+
+      <div style={{ maxWidth: "1400px", margin: "0 auto", position: "relative" }}>
         {/* Header */}
         <div
           style={{
@@ -30,7 +49,7 @@ export function CurrentlyBuilding() {
         >
           05 / CURRENTLY BUILDING
         </div>
-        <hr className="editorial-hr" style={{ marginBottom: "48px" }} />
+        <WaveformHr style={{ marginBottom: "48px" }} />
 
         {/* Grid */}
         <div
@@ -45,11 +64,13 @@ export function CurrentlyBuilding() {
           {ITEMS.map((item) => (
             <div
               key={item.label}
+              className="cursor-glow-card"
               style={{
                 padding: "24px",
                 background: "var(--bg)",
                 transition: "background 0.2s ease",
               }}
+              onMouseMove={handleCardMouseMove}
               onMouseEnter={(e) => {
                 (e.currentTarget as HTMLElement).style.background =
                   "var(--surface-1)";
@@ -65,6 +86,8 @@ export function CurrentlyBuilding() {
                   alignItems: "center",
                   justifyContent: "space-between",
                   gap: "16px",
+                  position: "relative",
+                  zIndex: 2,
                 }}
               >
                 <div
@@ -87,11 +110,13 @@ export function CurrentlyBuilding() {
                   }}
                 >
                   <span
+                    className="status-dot-pulse"
                     style={{
                       width: "5px",
                       height: "5px",
                       borderRadius: "50%",
                       background: item.color,
+                      color: item.color,
                     }}
                   />
                   <span
