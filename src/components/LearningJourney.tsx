@@ -4,92 +4,107 @@ import { useState } from "react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { WaveformHr } from "./WaveformHr";
 
-type StageStatus = "COMPLETED" | "ACTIVE" | "QUEUED";
+type StageStatus = "mastered" | "active" | "queued";
 
-interface PDStage {
+interface FlowStage {
   id: string;
-  number: string;
+  padId: string;
+  stageNumber: string;
   title: string;
-  subtitle: string;
   status: StageStatus;
-  statusLabel: string;
-  metadata: string;
-  topics: string[];
-  deliverables?: { label: string; href: string }[];
+  description: string;
+  artifacts?: string[];
+  tags: string[];
+  prerequisite?: string;
+  links?: { label: string; url: string }[];
 }
 
-const PD_STAGES: PDStage[] = [
+const pipelineStages: FlowStage[] = [
   {
     id: "foundation",
-    number: "01",
+    padId: "PAD_01",
+    stageNumber: "STAGE_01",
     title: "VLSI Foundation",
-    subtitle: "Digital Design, CMOS, Linux, RTL/Verilog, Tcl",
-    status: "COMPLETED",
-    statusLabel: "Mastered",
-    metadata: "Artifacts: RTL Verilog, Tcl Scripts, Linux Automation",
-    topics: ["Digital Design", "CMOS", "Linux", "Verilog", "Tcl"],
-    deliverables: [
-      { label: "RTL Labs Repo", href: "https://github.com/shanmukhavarma007" },
-      { label: "Timing Basics", href: "#journey" },
-      { label: "Tcl Automations", href: "https://github.com/shanmukhavarma007" },
+    status: "mastered",
+    description: "Digital Design, CMOS logic, Linux environment, RTL modeling in Verilog, and Tcl scripting.",
+    artifacts: ["RTL Verilog", "Tcl Scripts", "Linux Automation"],
+    tags: ["DIGITAL DESIGN", "CMOS", "LINUX", "VERILOG", "TCL"],
+    links: [
+      { label: "RTL LABS REPO", url: "https://github.com/shanmukhavarma007" },
+      { label: "TIMING BASICS", url: "#journey" },
+      { label: "TCL AUTOMATIONS", url: "https://github.com/shanmukhavarma007" },
     ],
   },
   {
+    id: "synthesis",
+    padId: "PAD_02",
+    stageNumber: "STAGE_02",
+    title: "Logic Synthesis",
+    status: "active",
+    description: "Translating RTL descriptions to gate-level netlists with timing constraints (SDC), area tradeoffs, and cell mapping.",
+    artifacts: ["Synthesized Netlists", "SDC Constraints", "Area/Timing Reports"],
+    tags: ["GENUS / YOSYS", "SDC", "NETLIST", "GATE MAPPING", "STA BASICS"],
+  },
+  {
     id: "floorplanning",
-    number: "02",
+    padId: "PAD_03",
+    stageNumber: "STAGE_03",
     title: "Floorplanning",
-    subtitle: "Die Area, Power Grid, Macro Placement",
-    status: "ACTIVE",
-    statusLabel: "Active Focus",
-    metadata: "Target: Q2 / In Lab",
-    topics: ["Die Area", "Power Grid", "Macros", "IO Planning"],
+    status: "queued",
+    description: "Die area estimation, aspect ratio selection, core utilization, I/O pin allocation, and macro placement.",
+    prerequisite: "Stage 02 (Logic Synthesis)",
+    tags: ["DIE AREA", "ASPECT RATIO", "MACRO PLACEMENT", "IO PADS"],
+  },
+  {
+    id: "powerplanning",
+    padId: "PAD_04",
+    stageNumber: "STAGE_04",
+    title: "Power Planning",
+    status: "queued",
+    description: "Power Distribution Network (PDN) design: core power rings, vertical/horizontal stripes, rails, and IR-drop analysis.",
+    prerequisite: "Stage 03 (Floorplanning)",
+    tags: ["PDN", "POWER RINGS", "STRIPES", "IR DROP", "POWER RAILS"],
   },
   {
     id: "placement",
-    number: "03",
+    padId: "PAD_05",
+    stageNumber: "STAGE_05",
     title: "Placement",
-    subtitle: "Utilization, Congestion, Timing",
-    status: "QUEUED",
-    statusLabel: "Queued",
-    metadata: "Prerequisite: Stage 02",
-    topics: ["Utilization", "Congestion", "Cell Density"],
+    status: "queued",
+    description: "Coarse and detailed standard cell placement, cell density balancing, and congestion reduction.",
+    prerequisite: "Stage 04 (Power Planning)",
+    tags: ["STD CELLS", "CONGESTION", "CELL DENSITY", "TIMING OPT"],
   },
   {
     id: "cts",
-    number: "04",
+    padId: "PAD_06",
+    stageNumber: "STAGE_06",
     title: "Clock Tree Synthesis",
-    subtitle: "Skew, Latency, CTS Cells",
-    status: "QUEUED",
-    statusLabel: "Queued",
-    metadata: "Prerequisite: Stage 03",
-    topics: ["Skew", "Latency", "CTS Cells", "Balance"],
+    status: "queued",
+    description: "Clock distribution network construction, skew and insertion delay minimization, and clock buffer sizing.",
+    prerequisite: "Stage 05 (Placement)",
+    tags: ["CLOCK SKEW", "LATENCY", "BUFFER INSERTION", "CLOCK ROOTS"],
   },
   {
     id: "routing",
-    number: "05",
+    padId: "PAD_07",
+    stageNumber: "STAGE_07",
     title: "Routing",
-    subtitle: "Metal Layers, DRC, Antenna",
-    status: "QUEUED",
-    statusLabel: "Queued",
-    metadata: "Prerequisite: Stage 04",
-    topics: ["Metal Layers", "DRC", "Antenna", "Vias"],
+    status: "queued",
+    description: "Global routing and detailed signal routing across metal layers while adhering to design rules and antenna limits.",
+    prerequisite: "Stage 06 (CTS)",
+    tags: ["GLOBAL ROUTING", "DETAIL ROUTING", "DRC", "CROSSTALK"],
   },
   {
     id: "signoff",
-    number: "06",
-    title: "Sign-Off",
-    subtitle: "STA, DRC, LVS",
-    status: "QUEUED",
-    statusLabel: "Queued",
-    metadata: "Prerequisite: Stage 05",
-    topics: ["STA", "DRC", "LVS", "IR Drop"],
+    padId: "PAD_08",
+    stageNumber: "STAGE_08",
+    title: "Signoff & Tapeout",
+    status: "queued",
+    description: "Comprehensive timing closure (STA), DRC/LVS physical verification, and GDSII/OASIS stream generation.",
+    prerequisite: "Stage 07 (Routing)",
+    tags: ["PRIMETIME", "CALIBRE DRC", "LVS", "GDSII EXPORT"],
   },
-];
-
-const BUILDING_ITEMS = [
-  { label: "PHYSICAL DESIGN", concepts: "Floorplanning \u00b7 Placement \u00b7 CTS \u00b7 Routing" },
-  { label: "STA", concepts: "Setup \u00b7 Hold \u00b7 Timing Analysis" },
-  { label: "EDA", concepts: "Innovus \u00b7 Tempus \u00b7 Genus" },
 ];
 
 /* Waveform segment generator - creates clock-like rising/falling edges */
@@ -111,17 +126,14 @@ function generateWaveformPath(
     const width = Math.min(segmentWidth, remaining);
 
     if (isActive) {
-      /* Rising edge */
       segments.push(`M${x},${midY}`);
       segments.push(`L${x + 4},${highY}`);
       segments.push(`L${x + width / 2 - 4},${highY}`);
       segments.push(`L${x + width / 2},${midY}`);
-      /* Falling edge */
       segments.push(`L${x + width / 2 + 4},${midY + highHeight}`);
       segments.push(`L${x + width - 4},${midY + highHeight}`);
       segments.push(`L${x + width},${midY}`);
     } else {
-      /* Flat low line for inactive */
       segments.push(`M${x},${midY + 4}`);
       segments.push(`L${x + width},${midY + 4}`);
     }
@@ -138,7 +150,7 @@ export function LearningJourney() {
 
   const getStageStyles = (status: StageStatus) => {
     switch (status) {
-      case "COMPLETED":
+      case "mastered":
         return {
           border: "2px solid #00f0ff",
           background: "color-mix(in srgb, #00f0ff 6%, transparent)",
@@ -146,8 +158,10 @@ export function LearningJourney() {
           numberColor: "#00f0ff",
           titleColor: "var(--text)",
           opacity: 1,
+          statusBg: "#00f0ff",
+          statusColor: "#000",
         };
-      case "ACTIVE":
+      case "active":
         return {
           border: "2px solid var(--warning)",
           background: "color-mix(in srgb, var(--warning) 8%, transparent)",
@@ -155,8 +169,10 @@ export function LearningJourney() {
           numberColor: "var(--warning)",
           titleColor: "var(--text)",
           opacity: 1,
+          statusBg: "var(--warning)",
+          statusColor: "#000",
         };
-      case "QUEUED":
+      case "queued":
         return {
           border: "1px dashed var(--border)",
           background: "color-mix(in srgb, var(--surface-2) 40%, transparent)",
@@ -164,6 +180,8 @@ export function LearningJourney() {
           numberColor: "var(--text-muted)",
           titleColor: "var(--text-secondary)",
           opacity: 0.6,
+          statusBg: "var(--surface-3)",
+          statusColor: "var(--text-muted)",
         };
     }
   };
@@ -172,9 +190,8 @@ export function LearningJourney() {
     <section
       id="journey"
       ref={ref}
-      className="scroll-reveal"
+      className="scroll-reveal section-container"
       style={{
-        padding: "clamp(32px, 6vw, 96px) clamp(16px, 4vw, 48px)",
         background: "var(--surface-1)",
         borderTop: "1px solid var(--border-subtle)",
         borderBottom: "1px solid var(--border-subtle)",
@@ -227,7 +244,7 @@ export function LearningJourney() {
           className="badge badge--muted"
           style={{ marginBottom: "12px" }}
         >
-          06 / SILICON TAPEOUT PATH
+          06 / ASIC PHYSICAL DESIGN PIPELINE
         </div>
         <WaveformHr style={{ marginBottom: "clamp(24px, 4vw, 48px)" }} />
 
@@ -248,14 +265,14 @@ export function LearningJourney() {
         <p
           style={{
             fontFamily: "var(--font-body)",
-            fontSize: "clamp(13px, 2.5vw, 15px)",
+            fontSize: "clamp(14px, 2.5vw, 16px)",
             color: "var(--text-secondary)",
             margin: "0 0 clamp(24px, 4vw, 48px) 0",
             maxWidth: "600px",
           }}
         >
-          From foundational knowledge through silicon tapeout. Each stage builds
-          on the previous, moving from RTL to signed-off GDSII.
+          From RTL to signed-off GDSII. Each stage builds on the previous,
+          moving through the complete ASIC physical design flow.
         </p>
 
         {/* Digital Waveform Track + Pin Nodes */}
@@ -266,9 +283,8 @@ export function LearningJourney() {
             overflow: "visible",
           }}
         >
-          {/* Waveform SVG */}
           <svg
-            viewBox="0 0 900 60"
+            viewBox="0 0 1200 60"
             style={{
               width: "100%",
               height: "60px",
@@ -276,21 +292,19 @@ export function LearningJourney() {
             }}
             preserveAspectRatio="xMidYMid meet"
           >
-            {/* Active waveform (solid glowing) for stages 01-02 */}
+            {/* Active waveform for stages 01-02 */}
             <path
               d={generateWaveformPath(50, 350, 40, true, 50, 14)}
               fill="none"
               stroke="#00f0ff"
               strokeWidth="2"
               opacity="0.8"
-              style={{
-                filter: "drop-shadow(0 0 4px #00f0ff80)",
-              }}
+              style={{ filter: "drop-shadow(0 0 4px #00f0ff80)" }}
             />
 
-            {/* Inactive waveform (dashed dimmed) for stages 03-06 */}
+            {/* Inactive waveform for stages 03-08 */}
             <path
-              d={generateWaveformPath(350, 850, 40, false, 50, 14)}
+              d={generateWaveformPath(350, 1150, 40, false, 50, 14)}
               fill="none"
               stroke="var(--text-muted)"
               strokeWidth="1.5"
@@ -299,40 +313,38 @@ export function LearningJourney() {
             />
 
             {/* Pin nodes */}
-            {PD_STAGES.map((stage, i) => {
-              const x = 50 + i * 160;
+            {pipelineStages.map((stage, i) => {
+              const x = 50 + i * 150;
               const y = 40;
-              const isActive = stage.status === "COMPLETED" || stage.status === "ACTIVE";
+              const isActive = stage.status === "mastered" || stage.status === "active";
 
               return (
                 <g key={stage.id}>
-                  {/* Pin circle */}
                   <circle
                     cx={x}
                     cy={y}
                     r="8"
-                    fill={isActive ? "#00f0ff" : "var(--surface-3)"}
-                    stroke={isActive ? "#00f0ff" : "var(--border)"}
+                    fill={isActive ? (stage.status === "mastered" ? "#00f0ff" : "var(--warning)") : "var(--surface-3)"}
+                    stroke={isActive ? (stage.status === "mastered" ? "#00f0ff" : "var(--warning)") : "var(--border)"}
                     strokeWidth={isActive ? "2" : "1"}
-                    opacity={stage.status === "QUEUED" ? 0.5 : 1}
-                    style={stage.status === "ACTIVE" ? {
+                    opacity={stage.status === "queued" ? 0.5 : 1}
+                    style={stage.status === "active" ? {
                       filter: "drop-shadow(0 0 6px var(--warning))",
-                    } : isActive ? {
+                    } : stage.status === "mastered" ? {
                       filter: "drop-shadow(0 0 4px #00f0ff80)",
                     } : {}}
                   />
-                  {/* Pin label */}
                   <text
                     x={x}
                     y={y + 22}
                     textAnchor="middle"
-                    fill={isActive ? "#00f0ff" : "var(--text-muted)"}
-                    fontSize="8"
+                    fill={isActive ? (stage.status === "mastered" ? "#00f0ff" : "var(--warning)") : "var(--text-muted)"}
+                    fontSize="7"
                     fontFamily="var(--font-mono)"
                     letterSpacing="0.05em"
-                    opacity={stage.status === "QUEUED" ? 0.5 : 1}
+                    opacity={stage.status === "queued" ? 0.5 : 1}
                   >
-                    PAD_{stage.number}
+                    {stage.padId}
                   </text>
                 </g>
               );
@@ -340,28 +352,27 @@ export function LearningJourney() {
           </svg>
         </div>
 
-        {/* Stage Cards Grid */}
+        {/* Stage Cards Grid - 4 columns on desktop */}
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+            gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
             gap: "16px",
           }}
         >
-          {PD_STAGES.map((stage) => {
+          {pipelineStages.map((stage) => {
             const styles = getStageStyles(stage.status);
             const isExpanded = expandedStage === stage.id;
 
             return (
               <div
                 key={stage.id}
-                className="surface-card"
+                className="card"
                 style={{
                   border: styles.border,
                   background: styles.background,
                   boxShadow: styles.shadow,
-                  borderRadius: "12px",
-                  padding: "clamp(16px, 2.5vw, 24px)",
+                  padding: "clamp(16px, 2.5vw, 20px)",
                   cursor: "pointer",
                   transition: "all 0.3s ease",
                   opacity: styles.opacity,
@@ -371,13 +382,13 @@ export function LearningJourney() {
                 onClick={() => setExpandedStage(isExpanded ? null : stage.id)}
               >
                 {/* Lock icon for queued stages */}
-                {stage.status === "QUEUED" && (
+                {stage.status === "queued" && (
                   <div
                     style={{
                       position: "absolute",
                       top: "12px",
                       right: "12px",
-                      fontSize: "14px",
+                      fontSize: "12px",
                       opacity: 0.5,
                     }}
                   >
@@ -394,11 +405,11 @@ export function LearningJourney() {
                     marginBottom: "12px",
                   }}
                 >
-                  {stage.status === "COMPLETED" && (
+                  {stage.status === "mastered" && (
                     <div
                       style={{
-                        width: "24px",
-                        height: "24px",
+                        width: "20px",
+                        height: "20px",
                         borderRadius: "50%",
                         background: "#00f0ff",
                         display: "flex",
@@ -410,7 +421,7 @@ export function LearningJourney() {
                       <span
                         style={{
                           fontFamily: "var(--font-mono)",
-                          fontSize: "12px",
+                          fontSize: "10px",
                           color: "#000",
                           fontWeight: 700,
                         }}
@@ -419,11 +430,11 @@ export function LearningJourney() {
                       </span>
                     </div>
                   )}
-                  {stage.status === "ACTIVE" && (
+                  {stage.status === "active" && (
                     <div
                       style={{
-                        width: "24px",
-                        height: "24px",
+                        width: "20px",
+                        height: "20px",
                         borderRadius: "50%",
                         background: "color-mix(in srgb, var(--warning) 30%, transparent)",
                         display: "flex",
@@ -434,8 +445,8 @@ export function LearningJourney() {
                     >
                       <div
                         style={{
-                          width: "8px",
-                          height: "8px",
+                          width: "6px",
+                          height: "6px",
                           borderRadius: "50%",
                           background: "var(--warning)",
                         }}
@@ -443,34 +454,33 @@ export function LearningJourney() {
                     </div>
                   )}
                   <span
-                    className={`badge ${
-                      stage.status === "COMPLETED"
-                        ? "badge--accent-secondary"
-                        : stage.status === "ACTIVE"
-                        ? "badge--warning"
-                        : "badge--muted"
-                    }`}
+                    className="badge"
+                    style={{
+                      background: styles.statusBg,
+                      color: styles.statusColor,
+                      fontSize: "8px",
+                    }}
                   >
-                    {stage.statusLabel}
+                    {stage.status === "mastered" ? "MASTERED" : stage.status === "active" ? "ACTIVE FOCUS" : "QUEUED"}
                   </span>
                 </div>
 
-                {/* Stage number and title */}
+                {/* Stage pin and title */}
                 <div
                   style={{
                     fontFamily: "var(--font-mono)",
-                    fontSize: "11px",
+                    fontSize: "10px",
                     color: styles.numberColor,
                     letterSpacing: "0.1em",
                     marginBottom: "4px",
                   }}
                 >
-                  STAGE_{stage.number}
+                  {stage.stageNumber} {stage.padId}
                 </div>
                 <h3
                   style={{
                     fontFamily: "var(--font-display)",
-                    fontSize: "clamp(18px, 3vw, 22px)",
+                    fontSize: "clamp(16px, 2.5vw, 18px)",
                     fontWeight: 600,
                     lineHeight: 1.2,
                     color: styles.titleColor,
@@ -482,52 +492,67 @@ export function LearningJourney() {
                 <p
                   style={{
                     fontFamily: "var(--font-body)",
-                    fontSize: "13px",
+                    fontSize: "12px",
                     color: "var(--text-secondary)",
                     margin: "0 0 12px 0",
                     lineHeight: 1.5,
                   }}
                 >
-                  {stage.subtitle}
+                  {stage.description}
                 </p>
 
-                {/* Metadata */}
-                <div
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: "10px",
-                    color: "var(--text-muted)",
-                    letterSpacing: "0.05em",
-                    marginBottom: "12px",
-                  }}
-                >
-                  {stage.metadata}
-                </div>
+                {/* Prerequisite */}
+                {stage.prerequisite && (
+                  <div
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "9px",
+                      color: "var(--text-muted)",
+                      letterSpacing: "0.05em",
+                      marginBottom: "12px",
+                    }}
+                  >
+                    PREREQUISITE: {stage.prerequisite}
+                  </div>
+                )}
 
-                {/* Topic badges */}
+                {/* Artifacts */}
+                {stage.artifacts && (
+                  <div
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "9px",
+                      color: "var(--text-muted)",
+                      letterSpacing: "0.05em",
+                      marginBottom: "12px",
+                    }}
+                  >
+                    ARTIFACTS: {stage.artifacts.join(", ")}
+                  </div>
+                )}
+
+                {/* Tags */}
                 <div
                   style={{
                     display: "flex",
                     flexWrap: "wrap",
                     gap: "6px",
-                    marginBottom: stage.deliverables ? "16px" : 0,
+                    marginBottom: stage.links ? "12px" : 0,
                   }}
                 >
-                  {stage.topics.map((topic) => (
+                  {stage.tags.map((tag) => (
                     <span
-                      key={topic}
-                      className={`badge ${
-                        stage.status === "QUEUED" ? "badge--muted" : "badge--accent"
-                      }`}
-                      style={{ fontSize: "8px" }}
+                      key={tag}
+                      className={`badge ${stage.status === "queued" ? "badge--muted" : stage.status === "mastered" ? "badge--accent-secondary" : "badge--warning"}`}
+                      style={{ fontSize: "7px" }}
                     >
-                      {topic}
+                      {tag}
                     </span>
                   ))}
                 </div>
 
-                {/* Deliverables (only for completed stages) */}
-                {stage.deliverables && (
+                {/* Links */}
+                {stage.links && (
                   <div
                     style={{
                       display: "flex",
@@ -537,22 +562,22 @@ export function LearningJourney() {
                       borderTop: "1px solid var(--border-subtle)",
                     }}
                   >
-                    {stage.deliverables.map((d) => (
+                    {stage.links.map((link) => (
                       <a
-                        key={d.label}
-                        href={d.href}
-                        target={d.href.startsWith("http") ? "_blank" : undefined}
-                        rel={d.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                        key={link.label}
+                        href={link.url}
+                        target={link.url.startsWith("http") ? "_blank" : undefined}
+                        rel={link.url.startsWith("http") ? "noopener noreferrer" : undefined}
                         className="badge badge--accent-secondary"
                         style={{
-                          fontSize: "9px",
+                          fontSize: "8px",
                           textDecoration: "none",
                           cursor: "pointer",
                           transition: "all 0.2s ease",
                         }}
                         onClick={(e) => e.stopPropagation()}
                       >
-                        {d.label} ↗
+                        {link.label} ↗
                       </a>
                     ))}
                   </div>
@@ -576,171 +601,6 @@ export function LearningJourney() {
               </div>
             );
           })}
-        </div>
-
-        {/* Transition strip */}
-        <div
-          style={{
-            marginTop: "clamp(32px, 5vw, 56px)",
-            textAlign: "center",
-          }}
-        >
-          <div
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: "9px",
-              letterSpacing: "0.2em",
-              color: "#00f0ff",
-              marginBottom: "4px",
-            }}
-          >
-            FOUNDATION COMPLETE
-          </div>
-          <div
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: "12px",
-              color: "var(--text-muted)",
-              lineHeight: 1,
-            }}
-          >
-            ↓
-          </div>
-          <div
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: "9px",
-              letterSpacing: "0.2em",
-              color: "var(--warning)",
-              marginTop: "4px",
-              marginBottom: "clamp(20px, 3vw, 36px)",
-            }}
-          >
-            CURRENTLY BUILDING
-          </div>
-        </div>
-
-        {/* Currently Building */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr",
-            gap: "1px",
-            background: "var(--border-subtle)",
-            border: "1px solid var(--border-subtle)",
-            borderRadius: "12px",
-            overflow: "hidden",
-          }}
-          className="md:!grid-cols-3"
-        >
-          {BUILDING_ITEMS.map((item) => (
-            <div
-              key={item.label}
-              style={{
-                padding: "24px",
-                background: "var(--bg)",
-                transition: "background 0.2s ease",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.background =
-                  "var(--surface-2)";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.background =
-                  "var(--bg)";
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "8px",
-                  marginBottom: "8px",
-                }}
-              >
-                <span
-                  className="status-dot-pulse"
-                  style={{
-                    width: "5px",
-                    height: "5px",
-                    borderRadius: "50%",
-                    background: "var(--warning)",
-                    color: "var(--warning)",
-                  }}
-                />
-                <span
-                  style={{
-                    fontFamily: "var(--font-display)",
-                    fontSize: "15px",
-                    fontWeight: 500,
-                    letterSpacing: "0.03em",
-                    color: "var(--text)",
-                  }}
-                >
-                  {item.label}
-                </span>
-              </div>
-              <div
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "10px",
-                  letterSpacing: "0.05em",
-                  color: "var(--text-muted)",
-                  lineHeight: 1.7,
-                }}
-              >
-                {item.concepts}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Open-Source Exploration */}
-        <div
-          style={{
-            marginTop: "32px",
-            display: "flex",
-            alignItems: "center",
-            gap: "12px",
-          }}
-        >
-          <div
-            style={{
-              height: "1px",
-              flex: 1,
-              background: "var(--border-subtle)",
-            }}
-          />
-          <span
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: "9px",
-              letterSpacing: "0.15em",
-              color: "var(--text-muted)",
-              whiteSpace: "nowrap",
-            }}
-          >
-            OPEN-SOURCE EXPLORATION
-          </span>
-          <div
-            style={{
-              height: "1px",
-              flex: "1",
-              background: "var(--border-subtle)",
-            }}
-          />
-        </div>
-        <div
-          style={{
-            textAlign: "center",
-            fontFamily: "var(--font-mono)",
-            fontSize: "11px",
-            letterSpacing: "0.06em",
-            color: "var(--text-secondary)",
-            marginTop: "12px",
-          }}
-        >
-          OpenLane — Installed
         </div>
       </div>
     </section>
