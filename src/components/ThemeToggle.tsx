@@ -1,14 +1,29 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 export function ThemeToggle({ className = "" }: { className?: string }) {
-  const [isLight, setIsLight] = useState(() => {
-    if (typeof document !== "undefined") {
-      return document.documentElement.getAttribute("data-theme") === "light";
+  const [isLight, setIsLight] = useState(false);
+
+  useEffect(() => {
+    let theme: "light" | "dark" | null = null;
+    try {
+      theme = localStorage.getItem("theme") as "light" | "dark" | null;
+    } catch {}
+
+    if (theme === "light") {
+      setIsLight(true);
+    } else if (theme === "dark") {
+      setIsLight(false);
+    } else if (typeof document !== "undefined") {
+      const attr = document.documentElement.getAttribute("data-theme");
+      if (attr === "light") {
+        setIsLight(true);
+      } else if (attr === "dark") {
+        setIsLight(false);
+      }
     }
-    return false;
-  });
+  }, []);
 
   const toggle = useCallback(() => {
     const next = !isLight;
