@@ -124,9 +124,6 @@ export function LearningJourney() {
         </svg>
       </div>
 
-      {/* Decorative section number */}
-      <div className="section-deco-number" aria-hidden="true">06</div>
-
       <div
         style={{
           maxWidth: "1400px",

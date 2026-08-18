@@ -32,11 +32,11 @@ export function Hero() {
         }}
       />
 
-      {/* Radial glow behind focal area — larger, more prominent */}
+      {/* Radial glow behind focal area — positioned behind text, not overlapping */}
       <div
         style={{
           position: "absolute",
-          top: "15%",
+          top: "5%",
           left: "50%",
           transform: "translateX(-50%)",
           width: "min(700px, 90vw)",
@@ -161,7 +161,7 @@ export function Hero() {
         </div>
 
         {/* Engineering identity — text content */}
-        <div style={{ maxWidth: "680px" }}>
+        <div style={{ maxWidth: "680px", position: "relative", zIndex: 1 }}>
           {/* Section tag */}
           <div
             style={{
@@ -180,7 +180,7 @@ export function Hero() {
           <h1
             style={{
               fontFamily: "var(--font-display)",
-              fontSize: "clamp(48px, 12vw, 96px)",
+              fontSize: "clamp(36px, 10vw, 96px)",
               fontWeight: 700,
               lineHeight: 1.02,
               letterSpacing: "-0.03em",
@@ -241,11 +241,12 @@ export function Hero() {
           {/* CTAs — primary, secondary, social */}
           <div
             style={{
-              display: "flex",
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
               gap: "10px",
-              flexWrap: "wrap",
               alignItems: "center",
             }}
+            className="sm:!flex"
           >
             <a
               href="#work"
@@ -259,6 +260,7 @@ export function Hero() {
                 color: "var(--bg)",
                 textDecoration: "none",
                 display: "inline-block",
+                textAlign: "center",
               }}
               onMouseEnter={(e) => {
                 (e.target as HTMLElement).style.background = "var(--accent-secondary)";
@@ -283,6 +285,7 @@ export function Hero() {
                 color: "var(--text-secondary)",
                 textDecoration: "none",
                 display: "inline-block",
+                textAlign: "center",
               }}
               onMouseEnter={(e) => {
                 (e.currentTarget as HTMLElement).style.borderColor = "var(--accent)";
@@ -295,7 +298,6 @@ export function Hero() {
             >
               RESUME
             </a>
-            <span className="hidden sm:inline" style={{ width: "1px", height: "20px", background: "var(--border-subtle)" }} />
             <a
               href="https://github.com/shanmukhavarma007"
               target="_blank"
@@ -308,6 +310,7 @@ export function Hero() {
                 color: "var(--text-muted)",
                 textDecoration: "none",
                 transition: "color 0.2s ease",
+                textAlign: "center",
               }}
               onMouseEnter={(e) => {
                 (e.target as HTMLElement).style.color = "var(--text)";
@@ -330,6 +333,7 @@ export function Hero() {
                 color: "var(--text-muted)",
                 textDecoration: "none",
                 transition: "color 0.2s ease",
+                textAlign: "center",
               }}
               onMouseEnter={(e) => {
                 (e.target as HTMLElement).style.color = "var(--text)";

@@ -93,6 +93,12 @@ body {
   min-height: 100vh;
 }
 
+/* Headings: never break mid-word; let font-size clamp handle overflow */
+h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
 ::selection {
   background: color-mix(in srgb, var(--accent) 30%, transparent);
   color: var(--text);
@@ -235,23 +241,6 @@ body {
   transform: translateY(0);
 }
 
-/* ─── Section Decorative Number ─── */
-
-.section-deco-number {
-  font-family: var(--font-display);
-  font-size: clamp(80px, 10vw, 120px);
-  font-weight: 700;
-  line-height: 1;
-  color: var(--text);
-  opacity: 0.03;
-  position: absolute;
-  top: 0;
-  right: 0;
-  pointer-events: none;
-  user-select: none;
-  z-index: 0;
-}
-
 /* ─── Card Depth Border ─── */
 
 .card-depth-border {
@@ -360,18 +349,6 @@ body {
   animation: tracePathDraw 1.8s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
 }
 
-/* ─── Noise Overlay ─── */
-
-.noise-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  pointer-events: none;
-  opacity: 0.03;
-  width: 100%;
-  height: 100%;
-}
-
 /* ─── Waveform HR ─── */
 
 .waveform-hr {
@@ -448,15 +425,26 @@ body {
   isolation: isolate;
 }
 
-/* Mobile overlay — explicitly below nav */
+/* Mobile overlay — solid backdrop, above page content but below nav */
 .site-nav-overlay {
   position: fixed;
-  z-index: 99;
+  inset: 0;
+  z-index: 150;
+  background: var(--bg);
 }
 
 /* Hamburger / X button — above overlay within nav context */
 .site-nav-hamburger {
   position: relative;
   z-index: 10;
+  pointer-events: auto;
+}
+
+/* Close button inside overlay — highest z-index in the overlay */
+.site-nav-close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  z-index: 160;
   pointer-events: auto;
 }

@@ -54,11 +54,9 @@ export function EngineeringProfile() {
       style={{
         padding: "clamp(32px, 6vw, 96px) clamp(16px, 4vw, 48px)",
         position: "relative",
+        overflow: "hidden",
       }}
     >
-      {/* Decorative section number */}
-      <div className="section-deco-number" aria-hidden="true">01</div>
-
       <div
         style={{
           maxWidth: "1400px",
@@ -98,22 +96,22 @@ export function EngineeringProfile() {
               margin: "0 0 16px 0",
             }}
           >
-            Shanmukha Varma Penmetsa
+            Engineering Profile
           </h2>
 
           <div
             style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: "clamp(11px, 2.5vw, 13px)",
-              letterSpacing: "0.12em",
-              color: "var(--accent-secondary)",
-              textTransform: "uppercase",
+              fontFamily: "var(--font-body)",
+              fontSize: "clamp(13px, 2.5vw, 15px)",
+              lineHeight: 1.6,
+              color: "var(--text-secondary)",
               marginBottom: "clamp(16px, 3vw, 24px)",
               paddingBottom: "16px",
               borderBottom: "1px solid var(--border-subtle)",
+              maxWidth: "480px",
             }}
           >
-            VLSI PHYSICAL DESIGN ENGINEER
+            Location, education, training focus and core technical capabilities.
           </div>
 
           {/* Metadata — visual card-style layout instead of label/value rows */}

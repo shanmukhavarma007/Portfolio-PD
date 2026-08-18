@@ -30,10 +30,9 @@ export function CurrentlyBuilding() {
       style={{
         padding: "clamp(32px, 6vw, 96px) clamp(16px, 4vw, 48px)",
         position: "relative",
+        overflow: "hidden",
       }}
     >
-      <div className="section-deco-number" aria-hidden="true">05</div>
-
       <div style={{ maxWidth: "1400px", margin: "0 auto", position: "relative" }}>
         <div
           style={{

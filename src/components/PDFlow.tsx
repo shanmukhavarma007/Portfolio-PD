@@ -87,11 +87,9 @@ export function PDFlow() {
         borderTop: "1px solid var(--border-subtle)",
         borderBottom: "1px solid var(--border-subtle)",
         position: "relative",
+        overflow: "hidden",
       }}
     >
-      {/* Decorative section number */}
-      <div className="section-deco-number" aria-hidden="true">02</div>
-
       <div style={{ maxWidth: "1400px", margin: "0 auto", position: "relative" }}>
         {/* Section header */}
         <div

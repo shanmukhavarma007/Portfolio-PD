@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -29,6 +29,11 @@ export const metadata: Metadata = {
     "VLSI Physical Design Engineer building hands-on expertise in Physical Design, STA and Tcl automation. Currently undergoing intensive training.",
 };
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -49,18 +54,6 @@ export default function RootLayout({
       </head>
       <body>
         {children}
-        {/* Noise texture overlay */}
-        <svg className="noise-overlay" aria-hidden="true">
-          <filter id="noiseFilter">
-            <feTurbulence
-              type="fractalNoise"
-              baseFrequency="0.65"
-              numOctaves="3"
-              stitchTiles="stitch"
-            />
-          </filter>
-          <rect width="100%" height="100%" filter="url(#noiseFilter)" />
-        </svg>
       </body>
     </html>
   );

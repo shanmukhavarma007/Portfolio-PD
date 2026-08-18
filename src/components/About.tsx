@@ -25,10 +25,9 @@ export function About() {
         borderTop: "1px solid var(--border-subtle)",
         borderBottom: "1px solid var(--border-subtle)",
         position: "relative",
+        overflow: "hidden",
       }}
     >
-      <div className="section-deco-number" aria-hidden="true">08</div>
-
       <div
         style={{
           maxWidth: "1400px",
