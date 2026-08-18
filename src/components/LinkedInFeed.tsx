@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Script from "next/script";
+import { WaveformHr } from "./WaveformHr";
 
 const ELFSIGHT_APP_ID = "6319c12b-b5ad-4cb5-a073-1dfecd804068";
 const LINKEDIN_URL = "https://www.linkedin.com/in/shanmukhavarma-penmetsa/";
@@ -83,7 +84,7 @@ export function LinkedInFeed() {
             >
               07 / PROFESSIONAL ACTIVITY
             </div>
-            <hr className="editorial-hr" style={{ marginBottom: "24px" }} />
+            <WaveformHr style={{ marginBottom: "24px" }} />
 
             <h2
               style={{

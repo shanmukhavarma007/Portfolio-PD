@@ -1,77 +1,90 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #0B0D10;
-  --surface-1: #11151A;
-  --surface-2: #161B21;
-  --surface-3: #1C222A;
-  --surface-4: #232A34;
-  --border: #2A3038;
-  --border-subtle: #1E242B;
-  --text: #F1F3F5;
-  --text-secondary: #9AA3AF;
-  --text-muted: #5C6570;
-  --accent: #3D8BFD;
-  --accent-secondary: #67D0D8;
-  --success: #3FD87E;
-  --warning: #FFB84D;
-  --error: #FF5F57;
+  /* Dark surfaces — deeper base, wider spread between layers */
+  --bg: #080A0E;
+  --surface-1: #0E1218;
+  --surface-2: #141A22;
+  --surface-3: #1A222C;
+  --surface-4: #222D38;
+  --border: #2C3640;
+  --border-subtle: #1C2430;
+
+  /* Text — high contrast hierarchy */
+  --text: #F4F6F8;
+  --text-secondary: #A0AAC0;
+  --text-muted: #687890;
+
+  /* Accents — vivid, saturated */
+  --accent: #5BA0FF;
+  --accent-secondary: #5EE0E8;
+
+  /* Status — distinct, high-saturation */
+  --success: #34E07A;
+  --warning: #FFBE40;
+  --error: #FF6B63;
+
   --radius: 4px;
   --font-display: "Space Grotesk", system-ui, sans-serif;
   --font-body: "Inter", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
-  /* Floorplan canvas colors — dark theme (visible hierarchy, dark aesthetic) */
-  --fp-die: #2A3038CC;
-  --fp-accent-dim: #3D8BFD28;
-  --fp-accent-border: #3D8BFD30;
-  --fp-cell-row: #3D8BFD22;
-  --fp-cell-line: #2A303866;
-  --fp-route-clock: #67D0D840;
-  --fp-route-line: #3D8BFD1A;
-  --fp-htree: #67D0D835;
-  --fp-timing: #3D8BFD40;
-  --fp-mesh: #2A303890;
-  --fp-pin: #9AA3AF50;
-  --fp-label: #5C6570B0;
-  --fp-macro-border: #67D0D855;
-  --fp-macro-fill: #67D0D814;
-  --fp-macro-label: #67D0D8B0;
+  /* Floorplan canvas — dark theme (vivid hierarchy on dark) */
+  --fp-die: #2C3640CC;
+  --fp-accent-dim: #5BA0FF30;
+  --fp-accent-border: #5BA0FF40;
+  --fp-cell-row: #5BA0FF28;
+  --fp-cell-line: #2C364080;
+  --fp-route-clock: #5EE0E850;
+  --fp-route-line: #5BA0FF22;
+  --fp-htree: #5EE0E840;
+  --fp-timing: #5BA0FF50;
+  --fp-mesh: #2C3640A0;
+  --fp-pin: #A0AAC060;
+  --fp-label: #687890C0;
+  --fp-macro-border: #5EE0E868;
+  --fp-macro-fill: #5EE0E818;
+  --fp-macro-label: #5EE0E8C0;
 }
 
 [data-theme="light"] {
-  --bg: #F5F6F8;
+  --bg: #F3F5F8;
   --surface-1: #FFFFFF;
-  --surface-2: #F0F1F4;
-  --surface-3: #E8E9EC;
-  --surface-4: #DDDFE3;
-  --border: #D0D3D8;
-  --border-subtle: #E2E4E8;
-  --text: #1A1D23;
-  --text-secondary: #4A5060;
-  --text-muted: #8890A0;
-  --accent: #1A6AD4;
-  --accent-secondary: #247D85;
-  --success: #1E8F42;
-  --warning: #B58535;
-  --error: #E04540;
+  --surface-2: #EEF0F4;
+  --surface-3: #E4E6EA;
+  --surface-4: #D8DBE0;
+  --border: #C4C8D0;
+  --border-subtle: #DCE0E6;
 
-  /* Floorplan canvas colors — light theme (clear contrast on light background) */
-  --fp-die: #2A3038E8;
-  --fp-accent-dim: #1A6AD420;
-  --fp-accent-border: #1A6AD445;
-  --fp-cell-row: #1A6AD430;
-  --fp-cell-line: #C0C5CCA0;
-  --fp-route-clock: #247D8560;
-  --fp-route-line: #1A6AD428;
-  --fp-htree: #247D8550;
-  --fp-timing: #1A6AD460;
-  --fp-mesh: #C8CCD4B0;
-  --fp-pin: #8890A065;
-  --fp-label: #5C6570E0;
-  --fp-macro-border: #247D8580;
-  --fp-macro-fill: #247D851A;
-  --fp-macro-label: #247D85E0;
+  --text: #12151C;
+  --text-secondary: #3C4458;
+  --text-muted: #7480A0;
+
+  /* Accents — deeper for WCAG contrast on light bg */
+  --accent: #1460C8;
+  --accent-secondary: #1A7078;
+
+  /* Status — vivid, distinct */
+  --success: #1A8840;
+  --warning: #A07020;
+  --error: #D03830;
+
+  /* Floorplan canvas — light theme (strong lines on light bg) */
+  --fp-die: #2C3640E8;
+  --fp-accent-dim: #1460C822;
+  --fp-accent-border: #1460C850;
+  --fp-cell-row: #1460C838;
+  --fp-cell-line: #B0B8C8B0;
+  --fp-route-clock: #1A707870;
+  --fp-route-line: #1460C830;
+  --fp-htree: #1A707860;
+  --fp-timing: #1460C870;
+  --fp-mesh: #C0C8D4C0;
+  --fp-pin: #7480A070;
+  --fp-label: #3C4458E0;
+  --fp-macro-border: #1A707890;
+  --fp-macro-fill: #1A707820;
+  --fp-macro-label: #1A7078E8;
 }
 
 html {
@@ -125,6 +138,10 @@ h1, h2, h3, h4, h5, h6 {
     transform: none !important;
   }
   .status-dot-pulse {
+    animation: none !important;
+  }
+  /* Pause SMIL animations in SVGs */
+  animate, animateMotion, animateTransform {
     animation: none !important;
   }
 }

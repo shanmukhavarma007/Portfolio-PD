@@ -35,15 +35,15 @@ const FOUNDATION_NODES = [
 ];
 
 const CX = 300;
-const CY = 220;
-const RADIUS = 150;
-const SVG_H = 520;
+const CY = 240;
+const RADIUS = 160;
+const SVG_H = 560;
 const NODE_POSITIONS: [number, number][] = [
-  [CX, CY - RADIUS + 70],
-  [CX - RADIUS * 0.95, CY - RADIUS * 0.31 + 70],
-  [CX + RADIUS * 0.95, CY - RADIUS * 0.31 + 70],
-  [CX - RADIUS * 0.59, CY + RADIUS * 0.81 + 70],
-  [CX + RADIUS * 0.59, CY + RADIUS * 0.81 + 70],
+  [CX, CY - RADIUS + 60],
+  [CX - RADIUS * 0.95, CY - RADIUS * 0.31 + 60],
+  [CX + RADIUS * 0.95, CY - RADIUS * 0.31 + 60],
+  [CX - RADIUS * 0.59, CY + RADIUS * 0.81 + 60],
+  [CX + RADIUS * 0.59, CY + RADIUS * 0.81 + 60],
 ];
 
 const BUILDING_ITEMS = [
@@ -51,6 +51,12 @@ const BUILDING_ITEMS = [
   { label: "STA", concepts: "Setup · Hold · Timing Analysis" },
   { label: "EDA", concepts: "Innovus · Tempus · Genus" },
 ];
+
+/** Manhattan routing path from hub center to satellite node */
+function manhattanPath(hubX: number, hubY: number, nx: number, ny: number): string {
+  const midX = Math.round((hubX + nx) / 2);
+  return `M${hubX},${hubY} L${midX},${hubY} L${midX},${ny} L${nx},${ny}`;
+}
 
 function splitLabel(label: string): string[] {
   const idx = label.indexOf(" / ");
@@ -101,9 +107,7 @@ export function LearningJourney() {
         <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <pattern id="fp-grid" x="0" y="0" width="120" height="120" patternUnits="userSpaceOnUse">
-              {/* Outer block boundary */}
               <rect x="4" y="4" width="112" height="112" fill="none" stroke="var(--border)" strokeWidth="0.5" />
-              {/* Inner blocks of varying sizes — die floorplan */}
               <rect x="8" y="8" width="48" height="32" fill="none" stroke="var(--border)" strokeWidth="0.3" />
               <rect x="60" y="8" width="52" height="20" fill="none" stroke="var(--border)" strokeWidth="0.3" />
               <rect x="60" y="28" width="24" height="12" fill="none" stroke="var(--accent)" strokeWidth="0.3" opacity="0.5" />
@@ -112,7 +116,6 @@ export function LearningJourney() {
               <rect x="84" y="44" width="28" height="28" fill="none" stroke="var(--border)" strokeWidth="0.3" />
               <rect x="8" y="76" width="68" height="36" fill="none" stroke="var(--border)" strokeWidth="0.3" />
               <rect x="80" y="76" width="32" height="36" fill="none" stroke="var(--accent-secondary)" strokeWidth="0.3" opacity="0.4" />
-              {/* Routing lines */}
               <line x1="56" y1="8" x2="56" y2="112" stroke="var(--accent)" strokeWidth="0.2" opacity="0.3" />
               <line x1="8" y1="42" x2="112" y2="42" stroke="var(--border)" strokeWidth="0.2" opacity="0.3" />
               <line x1="8" y1="74" x2="112" y2="74" stroke="var(--border)" strokeWidth="0.2" opacity="0.2" />
@@ -220,65 +223,156 @@ export function LearningJourney() {
                     <feMergeNode in="SourceGraphic" />
                   </feMerge>
                 </filter>
+                <filter id="hub-glow">
+                  <feGaussianBlur stdDeviation="8" result="blur" />
+                  <feMerge>
+                    <feMergeNode in="blur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+                {/* Radial gradient for node fills */}
+                <radialGradient id="node-grad" cx="50%" cy="40%" r="55%">
+                  <stop offset="0%" stopColor="var(--surface-3)" />
+                  <stop offset="100%" stopColor="var(--surface-1)" />
+                </radialGradient>
+                <radialGradient id="node-grad-active" cx="50%" cy="40%" r="55%">
+                  <stop offset="0%" stopColor="var(--surface-4)" />
+                  <stop offset="100%" stopColor="var(--surface-2)" />
+                </radialGradient>
               </defs>
 
-              {/* Connection lines */}
+              {/* Manhattan routing traces — connection lines */}
               {FOUNDATION_NODES.map((node, i) => {
                 const [nx, ny] = NODE_POSITIONS[i];
                 const visible = getVisibleNode(node.id);
+                const d = manhattanPath(CX, CY, nx, ny);
                 return (
-                  <line
-                    key={`conn-${node.id}`}
-                    x1={CX}
-                    y1={CY}
-                    x2={nx}
-                    y2={ny}
-                    className="fd-conn"
-                    stroke={visible ? "var(--accent)" : "var(--border)"}
-                    strokeOpacity={visible ? 0.55 : 0.25}
-                    strokeWidth="1"
-                  />
+                  <g key={`conn-${node.id}`}>
+                    {/* Trace background (wider, dimmer) */}
+                    <path
+                      d={d}
+                      fill="none"
+                      stroke={visible ? "var(--accent)" : "var(--border)"}
+                      strokeOpacity={visible ? 0.15 : 0.08}
+                      strokeWidth="4"
+                      strokeLinecap="square"
+                    />
+                    {/* Main trace */}
+                    <path
+                      d={d}
+                      fill="none"
+                      className="fd-conn"
+                      stroke={visible ? "var(--accent)" : "var(--border)"}
+                      strokeOpacity={visible ? 0.6 : 0.3}
+                      strokeWidth="1"
+                      strokeLinecap="square"
+                    />
+                    {/* Animated signal pulse along trace */}
+                    <circle r="2.5" fill="var(--accent)" opacity="0.7">
+                      <animateMotion
+                        dur="3s"
+                        repeatCount="indefinite"
+                        begin={`${i * 0.6}s`}
+                        path={d}
+                      />
+                    </circle>
+                    <circle r="1.2" fill="var(--accent)" opacity="0.4">
+                      <animateMotion
+                        dur="3s"
+                        repeatCount="indefinite"
+                        begin={`${i * 0.6}s`}
+                        path={d}
+                      />
+                    </circle>
+                  </g>
                 );
               })}
 
-              {/* Central hub */}
-              <rect
-                x={CX - 68}
-                y={CY - 22}
-                width={136}
-                height={44}
-                fill="var(--surface-3)"
-                stroke="var(--accent)"
-                strokeWidth="1"
-                strokeOpacity={0.5}
-                rx="2"
-                filter="url(#glow)"
-              />
-              <text
-                x={CX}
-                y={CY - 4}
-                textAnchor="middle"
-                fontFamily="var(--font-display)"
-                fontSize="11"
-                fontWeight="600"
-                letterSpacing="0.16em"
-                fill="var(--text)"
-              >
-                VLSI
-              </text>
-              <text
-                x={CX}
-                y={CY + 11}
-                textAnchor="middle"
-                fontFamily="var(--font-mono)"
-                fontSize="7"
-                letterSpacing="0.2em"
-                fill="var(--text-muted)"
-              >
-                FOUNDATION
-              </text>
+              {/* Central hub — larger, glowing, pulsing border */}
+              <g>
+                {/* Outer glow halo */}
+                <circle
+                  cx={CX}
+                  cy={CY}
+                  r={48}
+                  fill="var(--accent)"
+                  opacity={0.04}
+                  filter="url(#hub-glow)"
+                />
+                {/* Pulsing outer ring */}
+                <circle
+                  cx={CX}
+                  cy={CY}
+                  r={40}
+                  fill="none"
+                  stroke="var(--accent)"
+                  strokeWidth="1"
+                  strokeOpacity={0.3}
+                >
+                  <animate
+                    attributeName="r"
+                    values="40;44;40"
+                    dur="4s"
+                    repeatCount="indefinite"
+                  />
+                  <animate
+                    attributeName="stroke-opacity"
+                    values="0.3;0.12;0.3"
+                    dur="4s"
+                    repeatCount="indefinite"
+                  />
+                </circle>
+                {/* Hub body — rounded rect with gradient feel */}
+                <rect
+                  x={CX - 72}
+                  y={CY - 26}
+                  width={144}
+                  height={52}
+                  fill="var(--surface-2)"
+                  stroke="var(--accent)"
+                  strokeWidth="1.5"
+                  strokeOpacity={0.6}
+                  rx="3"
+                  filter="url(#glow)"
+                />
+                {/* Inner accent line */}
+                <rect
+                  x={CX - 70}
+                  y={CY - 24}
+                  width={140}
+                  height={48}
+                  fill="none"
+                  stroke="var(--accent)"
+                  strokeWidth="0.5"
+                  strokeOpacity={0.15}
+                  rx="2"
+                />
+                <text
+                  x={CX}
+                  y={CY - 3}
+                  textAnchor="middle"
+                  fontFamily="var(--font-display)"
+                  fontSize="13"
+                  fontWeight="600"
+                  letterSpacing="0.18em"
+                  fill="var(--text)"
+                >
+                  VLSI
+                </text>
+                <text
+                  x={CX}
+                  y={CY + 13}
+                  textAnchor="middle"
+                  fontFamily="var(--font-mono)"
+                  fontSize="7.5"
+                  letterSpacing="0.22em"
+                  fill="var(--text-muted)"
+                >
+                  FOUNDATION
+                </text>
+              </g>
 
-              {/* Foundation nodes */}
+              {/* Foundation nodes — concentric ring style with radial gradient */}
               {FOUNDATION_NODES.map((node, i) => {
                 const [nx, ny] = NODE_POSITIONS[i];
                 const visible = getVisibleNode(node.id);
@@ -308,17 +402,17 @@ export function LearningJourney() {
 
                 return (
                   <g key={node.id}>
-                    {/* Node labels — rendered first so card layers on top when needed */}
+                    {/* Node labels */}
                     {lines.map((line, li) => {
                       let labelY: number;
                       if (visible) {
                         if (cardAboveActual) {
-                          labelY = ny + 44 + li * 13;
+                          labelY = ny + 48 + li * 13;
                         } else {
                           labelY = cardY - 20 - (lines.length - 1 - li) * 13;
                         }
                       } else {
-                        labelY = ny + 44 + li * 13;
+                        labelY = ny + 48 + li * 13;
                       }
                       return (
                         <text
@@ -339,18 +433,6 @@ export function LearningJourney() {
                       );
                     })}
 
-                    {/* Connection line */}
-                    <line
-                      x1={CX}
-                      y1={CY}
-                      x2={nx}
-                      y2={ny}
-                      className="fd-conn"
-                      stroke={visible ? "var(--accent)" : "var(--border)"}
-                      strokeOpacity={visible ? 0.55 : 0.25}
-                      strokeWidth="1"
-                    />
-
                     {/* Interactive hitbox + visual node */}
                     <g
                       style={{ cursor: "pointer" }}
@@ -369,42 +451,70 @@ export function LearningJourney() {
                         fill="transparent"
                       />
 
-                      {/* Glow background */}
+                      {/* Hover glow background */}
                       {visible && (
                         <circle
                           cx={nx}
                           cy={ny}
-                          r={34}
+                          r={36}
                           fill="var(--accent)"
-                          opacity={0.04}
+                          opacity={0.06}
                         />
                       )}
 
-                      {/* Outer ring */}
+                      {/* Outer ring — via/pad style */}
                       <circle
                         cx={nx}
                         cy={ny}
-                        r={26}
-                        fill={visible ? "var(--surface-2)" : "var(--surface-1)"}
+                        r={28}
+                        fill="none"
                         stroke={
                           visible ? "var(--accent)" : "var(--border-subtle)"
+                        }
+                        strokeWidth={visible ? 1.5 : 0.8}
+                        strokeOpacity={visible ? 0.5 : 0.4}
+                        style={{ transition: "all 0.3s ease" }}
+                      />
+
+                      {/* Main node body — radial gradient fill */}
+                      <circle
+                        cx={nx}
+                        cy={ny}
+                        r={22}
+                        fill={
+                          visible
+                            ? "url(#node-grad-active)"
+                            : "url(#node-grad)"
+                        }
+                        stroke={
+                          visible ? "var(--accent)" : "var(--border)"
                         }
                         strokeWidth={visible ? 1.5 : 1}
                         filter={visible ? "url(#glow)" : undefined}
                         style={{ transition: "all 0.3s ease" }}
                       />
 
-                      {/* Inner dot */}
+                      {/* Inner concentric ring — IC pad detail */}
                       <circle
                         cx={nx}
                         cy={ny}
-                        r={4}
-                        fill={
-                          visible
-                            ? "var(--accent)"
-                            : "var(--accent)"
+                        r={14}
+                        fill="none"
+                        stroke={
+                          visible ? "var(--accent)" : "var(--border-subtle)"
                         }
-                        opacity={visible ? 1 : 0.35}
+                        strokeWidth="0.5"
+                        strokeOpacity={visible ? 0.4 : 0.25}
+                        style={{ transition: "all 0.3s ease" }}
+                      />
+
+                      {/* Center dot */}
+                      <circle
+                        cx={nx}
+                        cy={ny}
+                        r={3.5}
+                        fill="var(--accent)"
+                        opacity={visible ? 1 : 0.4}
                         filter={visible ? "url(#glow-strong)" : undefined}
                         style={{ transition: "all 0.3s ease" }}
                       />
@@ -413,7 +523,7 @@ export function LearningJourney() {
                       {visible && (
                         <text
                           x={nx}
-                          y={ny - 36}
+                          y={ny - 38}
                           textAnchor="middle"
                           fontFamily="var(--font-mono)"
                           fontSize="9"
@@ -426,7 +536,7 @@ export function LearningJourney() {
                       )}
                     </g>
 
-                    {/* Node card — hover/click popup (rendered last, on top) */}
+                    {/* Node card — hover/click popup */}
                     {visible && (
                       <g className="fd-card-enter">
                         <rect
@@ -839,7 +949,7 @@ export function LearningJourney() {
           <div
             style={{
               height: "1px",
-              flex: 1,
+              flex: "1",
               background: "var(--border-subtle)",
             }}
           />

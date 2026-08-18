@@ -104,7 +104,7 @@ export function PDFlow() {
         >
           02 / PHYSICAL DESIGN FLOW
         </div>
-        <WaveformHr style={{ marginBottom: "clamp(24px, 4vw, 48px)" }} />
+        <WaveformHr variant="waveform" style={{ marginBottom: "clamp(24px, 4vw, 48px)" }} />
 
         {/* Flow visualization — horizontal on desktop */}
         <div
