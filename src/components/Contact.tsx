@@ -35,12 +35,7 @@ export function Contact() {
     <section
       id="contact"
       ref={ref}
-      className="scroll-reveal"
-      style={{
-        padding: "clamp(32px, 6vw, 96px) clamp(16px, 4vw, 48px)",
-        position: "relative",
-        overflow: "hidden",
-      }}
+      className="scroll-reveal section-container"
     >
       <div style={{ maxWidth: "1400px", margin: "0 auto", position: "relative" }}>
         <div
@@ -51,99 +46,167 @@ export function Contact() {
         </div>
         <WaveformHr style={{ marginBottom: "clamp(24px, 4vw, 48px)" }} />
 
+        {/* Centered conversion card */}
         <div
+          className="card"
           style={{
-            display: "grid",
-            gridTemplateColumns: "1fr",
-            gap: "48px",
+            maxWidth: "640px",
+            margin: "0 auto",
+            padding: "clamp(32px, 5vw, 48px)",
+            textAlign: "center",
           }}
-          className="lg:!grid-cols-[1fr_auto]"
         >
+          <h2
+            style={{
+              fontFamily: "var(--font-display)",
+              fontSize: "clamp(24px, 4vw, 36px)",
+              fontWeight: 600,
+              lineHeight: 1.15,
+              letterSpacing: "-0.01em",
+              color: "var(--text)",
+              margin: "0 0 12px 0",
+            }}
+          >
+            Let&apos;s build together
+          </h2>
           <p
             style={{
               fontFamily: "var(--font-body)",
-              fontSize: "16px",
-              lineHeight: 1.7,
+              fontSize: "clamp(14px, 2.5vw, 16px)",
+              lineHeight: 1.6,
               color: "var(--text-secondary)",
-              margin: 0,
-              maxWidth: "420px",
+              margin: "0 0 clamp(24px, 4vw, 32px) 0",
+              maxWidth: "480px",
+              marginLeft: "auto",
+              marginRight: "auto",
             }}
           >
-            For engineering opportunities, technical discussions and collaboration.
+            Open to opportunities in VLSI Physical Design, STA, and EDA
+            automation. Let&apos;s connect and discuss how I can contribute to
+            your team.
           </p>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: "0" }}>
-            {LINKS.map((link, i) => (
-              <a
-                key={link.label}
-                href={link.href}
-                download={"download" in link ? link.download : undefined}
-                aria-label={"ariaLabel" in link ? link.ariaLabel : undefined}
-                target={link.external ? "_blank" : undefined}
-                rel={link.external ? "noopener noreferrer" : undefined}
+          {/* Social links */}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              gap: "16px",
+              flexWrap: "wrap",
+            }}
+          >
+            <a
+              href="https://github.com/shanmukhavarma007"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="card"
+              style={{
+                padding: "16px 24px",
+                textDecoration: "none",
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                transition: "all 0.2s ease",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLElement).style.borderColor = "var(--accent)";
+                (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLElement).style.borderColor = "";
+                (e.currentTarget as HTMLElement).style.transform = "";
+              }}
+            >
+              <span style={{ fontSize: "18px" }}>GitHub</span>
+              <span
                 style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "12px",
-                  padding: "14px 0",
-                  borderBottom:
-                    i < LINKS.length - 1 ? "1px solid var(--border-subtle)" : "none",
-                  textDecoration: "none",
-                  transition: "all 0.2s ease",
-                }}
-                onMouseEnter={(e) => {
-                  const arrow = e.currentTarget.querySelector(".link-arrow") as HTMLElement;
-                  if (arrow) {
-                    arrow.style.transform = "translateX(4px)";
-                    arrow.style.color = "var(--accent)";
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  const arrow = e.currentTarget.querySelector(".link-arrow") as HTMLElement;
-                  if (arrow) {
-                    arrow.style.transform = "translateX(0)";
-                    arrow.style.color = "var(--text-muted)";
-                  }
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "10px",
+                  color: "var(--text-muted)",
                 }}
               >
-                <span
-                  className="link-arrow"
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: "11px",
-                    color: "var(--text-muted)",
-                    transition: "all 0.2s ease",
-                    flexShrink: 0,
-                    width: "20px",
-                  }}
-                >
-                  →
-                </span>
-                <span
-                  className="animated-underline"
-                  style={{
-                    fontFamily: "var(--font-display)",
-                    fontSize: "16px",
-                    fontWeight: 500,
-                    color: "var(--text)",
-                  }}
-                >
-                  {link.label}
-                </span>
-                {link.external && (
-                  <span
-                    style={{
-                      fontFamily: "var(--font-mono)",
-                      fontSize: "9px",
-                      color: "var(--text-muted)",
-                      marginLeft: "4px",
-                    }}
-                  >
-                    ↗
-                  </span>
-                )}
-              </a>
-            ))}
+                ↗
+              </span>
+            </a>
+            <a
+              href="https://www.linkedin.com/in/shanmukhavarma-penmetsa/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="card"
+              style={{
+                padding: "16px 24px",
+                textDecoration: "none",
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                transition: "all 0.2s ease",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLElement).style.borderColor = "var(--accent)";
+                (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLElement).style.borderColor = "";
+                (e.currentTarget as HTMLElement).style.transform = "";
+              }}
+            >
+              <span style={{ fontSize: "18px" }}>LinkedIn</span>
+              <span
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "10px",
+                  color: "var(--text-muted)",
+                }}
+              >
+                ↗
+              </span>
+            </a>
+            <a
+              href="mailto:psvarma.e@gmail.com"
+              className="card"
+              style={{
+                padding: "16px 24px",
+                textDecoration: "none",
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                transition: "all 0.2s ease",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLElement).style.borderColor = "var(--accent)";
+                (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLElement).style.borderColor = "";
+                (e.currentTarget as HTMLElement).style.transform = "";
+              }}
+            >
+              <span style={{ fontSize: "18px" }}>Email</span>
+            </a>
+            <a
+              href="/resume.pdf"
+              download="Shanmukha_Varma_Resume.pdf"
+              aria-label="Download Shanmukha Varma resume PDF"
+              className="card"
+              style={{
+                padding: "16px 24px",
+                textDecoration: "none",
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                transition: "all 0.2s ease",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLElement).style.borderColor = "var(--accent)";
+                (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLElement).style.borderColor = "";
+                (e.currentTarget as HTMLElement).style.transform = "";
+              }}
+            >
+              <span style={{ fontSize: "18px" }}>Resume</span>
+            </a>
           </div>
         </div>
       </div>

@@ -43,30 +43,20 @@ export function Nav() {
   return (
     <>
       <nav
-        className="site-nav"
+        className={`glass-nav ${scrolled ? "scrolled" : ""}`}
         style={{
-          top: 0,
-          left: 0,
-          right: 0,
-          height: "48px",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
           padding: "0 clamp(16px, 4vw, 48px)",
-          background: scrolled
-            ? "color-mix(in srgb, var(--bg) 92%, transparent)"
-            : "color-mix(in srgb, var(--bg) 60%, transparent)",
-          backdropFilter: "blur(8px)",
-          borderBottom: "1px solid var(--border-subtle)",
-          transition: "background 0.3s ease",
         }}
       >
         {/* Left: brand */}
         <div
           style={{
             fontFamily: "var(--font-display)",
-            fontSize: "12px",
-            letterSpacing: "0.14em",
+            fontSize: "14px",
+            letterSpacing: "0.08em",
             textTransform: "uppercase",
             color: "var(--text)",
             display: "flex",
@@ -121,7 +111,7 @@ export function Nav() {
           </div>
         )}
 
-        {/* Right: resume CTA (desktop only) */}
+        {/* Right: theme + social + CTA */}
         {isDesktop && (
           <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
             <ThemeToggle />
@@ -169,9 +159,7 @@ export function Nav() {
             </a>
             <span style={{ width: "1px", height: "12px", background: "var(--border-subtle)" }} />
             <a
-              href="/resume.pdf"
-              download="Shanmukha_Varma_Resume.pdf"
-              aria-label="Download Shanmukha Varma resume PDF"
+              href="#contact"
               style={{
                 fontFamily: "var(--font-mono)",
                 fontSize: "11px",
@@ -189,12 +177,12 @@ export function Nav() {
                 (e.currentTarget as HTMLElement).style.background = "var(--accent)";
               }}
             >
-              RESUME
+              GET IN TOUCH
             </a>
           </div>
         )}
 
-        {/* Mobile menu button (mobile only) */}
+        {/* Mobile menu button */}
         {!isDesktop && (
           <button
             type="button"
@@ -262,7 +250,6 @@ export function Nav() {
             gap: "32px",
           }}
         >
-          {/* Close button */}
           <button
             type="button"
             className="site-nav-close"
@@ -354,9 +341,7 @@ export function Nav() {
               </a>
             </div>
             <a
-              href="/resume.pdf"
-              download="Shanmukha_Varma_Resume.pdf"
-              aria-label="Download Shanmukha Varma resume PDF"
+              href="#contact"
               onClick={() => setMobileOpen(false)}
               style={{
                 fontFamily: "var(--font-mono)",
@@ -367,9 +352,10 @@ export function Nav() {
                 padding: "12px 24px",
                 textDecoration: "none",
                 display: "inline-block",
+                textAlign: "center",
               }}
             >
-              RESUME
+              GET IN TOUCH
             </a>
           </div>
         </div>

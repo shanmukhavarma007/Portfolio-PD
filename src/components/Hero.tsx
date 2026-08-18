@@ -11,13 +11,13 @@ export function Hero() {
         flexDirection: "column",
         justifyContent: "center",
         padding: "0 clamp(16px, 4vw, 48px)",
-        paddingTop: "64px",
+        paddingTop: "72px",
         paddingBottom: "clamp(24px, 4vw, 48px)",
         position: "relative",
         overflow: "hidden",
       }}
     >
-      {/* Background grid — IC floorplan style */}
+      {/* Background grid */}
       <div
         style={{
           position: "absolute",
@@ -32,7 +32,7 @@ export function Hero() {
         }}
       />
 
-      {/* Radial glow behind focal area — positioned behind text, not overlapping */}
+      {/* Radial glow */}
       <div
         style={{
           position: "absolute",
@@ -61,7 +61,7 @@ export function Hero() {
         }}
         className="lg:!grid-cols-[7fr_5fr]"
       >
-        {/* Chip visualization — appears FIRST on mobile for visual impact */}
+        {/* Chip visualization */}
         <div
           style={{
             position: "relative",
@@ -73,7 +73,6 @@ export function Hero() {
           className="lg:!order-none"
         >
           <ChipVisualization />
-          {/* SVG trace draw-in overlay */}
           <svg
             viewBox="0 0 500 425"
             style={{
@@ -85,7 +84,6 @@ export function Hero() {
             }}
             preserveAspectRatio="xMidYMid meet"
           >
-            {/* Routing traces that animate in */}
             <path
               d="M120,180 L120,350"
               stroke="var(--accent)"
@@ -118,7 +116,6 @@ export function Hero() {
               className="trace-draw"
               style={{ "--trace-len": "170", animationDelay: "1s" } as React.CSSProperties}
             />
-            {/* Horizontal standard cell row traces */}
             <path
               d="M80,220 L420,220"
               stroke="var(--border)"
@@ -160,194 +157,81 @@ export function Hero() {
           </div>
         </div>
 
-        {/* Engineering identity — text content */}
+        {/* Hero text content */}
         <div style={{ maxWidth: "680px", position: "relative", zIndex: 1 }}>
-          {/* Section tag */}
+          {/* Status pill */}
           <div
-            className="badge badge--muted"
+            className="badge badge--accent"
             style={{ marginBottom: "16px" }}
           >
-            ENGINEERING PROFILE
+            <span
+              className="status-dot-pulse"
+              style={{
+                width: "6px",
+                height: "6px",
+                borderRadius: "50%",
+                background: "var(--accent)",
+                color: "var(--accent)",
+              }}
+            />
+            VLSI Physical Design Engineer
           </div>
 
-          {/* Name — dramatically larger on mobile */}
+          {/* Name */}
           <h1
             style={{
               fontFamily: "var(--font-display)",
-              fontSize: "clamp(36px, 10vw, 96px)",
-              fontWeight: 700,
-              lineHeight: 1.1,
-              letterSpacing: "-0.01em",
+              fontSize: "clamp(40px, 10vw, 80px)",
+              fontWeight: 600,
+              lineHeight: 1.05,
+              letterSpacing: "-0.02em",
               color: "var(--text)",
               margin: "0 0 16px 0",
-              position: "relative",
             }}
           >
-            SHANMUKHA
+            Shanmukha
             <br />
-            <span style={{ color: "var(--accent)" }}>VARMA PENMETSA</span>
+            <span style={{ color: "var(--accent)" }}>Varma Penmetsa</span>
           </h1>
 
-          {/* Title */}
-          <div style={{ position: "relative", marginBottom: "16px", paddingBottom: "12px" }}>
-            <div
-              className="badge badge--accent-secondary boot-sequence"
-              style={{ marginBottom: "8px", fontSize: "10px" }}
-            >
-              VLSI PHYSICAL DESIGN ENGINEER
-            </div>
-            <div
-              style={{
-                position: "absolute",
-                bottom: 0,
-                left: 0,
-                right: 0,
-                height: "1px",
-                background: "var(--accent)",
-                opacity: 0.3,
-                transformOrigin: "left",
-              }}
-              className="accent-draw-in"
-            />
-          </div>
-
-          {/* Concise statement */}
+          {/* Bio */}
           <p
             style={{
               fontFamily: "var(--font-body)",
-              fontSize: "clamp(14px, 3.5vw, 16px)",
-              lineHeight: 1.7,
+              fontSize: "clamp(16px, 3.5vw, 20px)",
+              lineHeight: 1.6,
               color: "var(--text-secondary)",
-              margin: "0 0 clamp(16px, 3vw, 24px) 0",
+              margin: "0 0 clamp(24px, 4vw, 40px) 0",
               maxWidth: "520px",
             }}
           >
-            Building hands-on expertise in VLSI Physical Design, STA and Tcl automation.
-            Currently undergoing intensive training and building toward a career in Physical Design engineering.
+            Building hands-on expertise in VLSI Physical Design, STA and Tcl
+            automation. Currently undergoing intensive training and building
+            toward a career in silicon engineering.
           </p>
 
-          {/* Glass bar — key stats */}
+          {/* CTAs */}
           <div
             style={{
               display: "flex",
-              gap: "clamp(16px, 3vw, 32px)",
-              padding: "clamp(12px, 2vw, 16px) clamp(16px, 3vw, 24px)",
-              background: "color-mix(in srgb, var(--surface-1) 60%, transparent)",
-              backdropFilter: "blur(12px)",
-              border: "1px solid rgba(255, 255, 255, 0.06)",
-              borderRadius: "12px",
-              marginBottom: "clamp(20px, 4vw, 32px)",
-              maxWidth: "fit-content",
+              gap: "12px",
+              flexWrap: "wrap",
             }}
-          >
-            <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
-              <span
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "clamp(18px, 3vw, 24px)",
-                  fontWeight: 600,
-                  color: "var(--accent)",
-                }}
-              >
-                6+
-              </span>
-              <span
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "9px",
-                  letterSpacing: "0.1em",
-                  color: "var(--text-muted)",
-                  textTransform: "uppercase",
-                }}
-              >
-                Tools
-              </span>
-            </div>
-            <div
-              style={{
-                width: "1px",
-                background: "var(--border-subtle)",
-                alignSelf: "stretch",
-              }}
-            />
-            <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
-              <span
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "clamp(18px, 3vw, 24px)",
-                  fontWeight: 600,
-                  color: "var(--accent-secondary)",
-                }}
-              >
-                1
-              </span>
-              <span
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "9px",
-                  letterSpacing: "0.1em",
-                  color: "var(--text-muted)",
-                  textTransform: "uppercase",
-                }}
-              >
-                Project
-              </span>
-            </div>
-            <div
-              style={{
-                width: "1px",
-                background: "var(--border-subtle)",
-                alignSelf: "stretch",
-              }}
-            />
-            <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
-              <span
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "clamp(18px, 3vw, 24px)",
-                  fontWeight: 600,
-                  color: "var(--warning)",
-                }}
-              >
-                2026
-              </span>
-              <span
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "9px",
-                  letterSpacing: "0.1em",
-                  color: "var(--text-muted)",
-                  textTransform: "uppercase",
-                }}
-              >
-                Graduate
-              </span>
-            </div>
-          </div>
-
-          {/* CTAs — primary, secondary, social */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: "10px",
-              alignItems: "center",
-            }}
-            className="sm:!flex"
           >
             <a
-              href="#work"
+              href="#contact"
               className="btn-hover-lift"
               style={{
                 fontFamily: "var(--font-mono)",
-                fontSize: "11px",
-                letterSpacing: "0.1em",
-                padding: "12px 24px",
+                fontSize: "12px",
+                letterSpacing: "0.08em",
+                padding: "14px 28px",
                 background: "var(--accent)",
                 color: "var(--bg)",
                 textDecoration: "none",
                 display: "inline-block",
                 textAlign: "center",
+                borderRadius: "8px",
               }}
               onMouseEnter={(e) => {
                 (e.target as HTMLElement).style.background = "var(--accent-secondary)";
@@ -356,23 +240,22 @@ export function Hero() {
                 (e.target as HTMLElement).style.background = "var(--accent)";
               }}
             >
-              VIEW ENGINEERING WORK
+              GET IN TOUCH
             </a>
             <a
-              href="/resume.pdf"
-              download="Shanmukha_Varma_Resume.pdf"
-              aria-label="Download Shanmukha Varma resume PDF"
+              href="#work"
               className="btn-hover-lift"
               style={{
                 fontFamily: "var(--font-mono)",
-                fontSize: "11px",
-                letterSpacing: "0.1em",
-                padding: "12px 24px",
+                fontSize: "12px",
+                letterSpacing: "0.08em",
+                padding: "14px 28px",
                 border: "1px solid var(--border)",
                 color: "var(--text-secondary)",
                 textDecoration: "none",
                 display: "inline-block",
                 textAlign: "center",
+                borderRadius: "8px",
               }}
               onMouseEnter={(e) => {
                 (e.currentTarget as HTMLElement).style.borderColor = "var(--accent)";
@@ -383,53 +266,7 @@ export function Hero() {
                 (e.currentTarget as HTMLElement).style.color = "var(--text-secondary)";
               }}
             >
-              RESUME
-            </a>
-            <a
-              href="https://github.com/shanmukhavarma007"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                fontFamily: "var(--font-mono)",
-                fontSize: "11px",
-                letterSpacing: "0.06em",
-                padding: "12px 12px",
-                color: "var(--text-muted)",
-                textDecoration: "none",
-                transition: "color 0.2s ease",
-                textAlign: "center",
-              }}
-              onMouseEnter={(e) => {
-                (e.target as HTMLElement).style.color = "var(--text)";
-              }}
-              onMouseLeave={(e) => {
-                (e.target as HTMLElement).style.color = "var(--text-muted)";
-              }}
-            >
-              GITHUB
-            </a>
-            <a
-              href="https://www.linkedin.com/in/shanmukhavarma-penmetsa/"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                fontFamily: "var(--font-mono)",
-                fontSize: "11px",
-                letterSpacing: "0.06em",
-                padding: "12px 12px",
-                color: "var(--text-muted)",
-                textDecoration: "none",
-                transition: "color 0.2s ease",
-                textAlign: "center",
-              }}
-              onMouseEnter={(e) => {
-                (e.target as HTMLElement).style.color = "var(--text)";
-              }}
-              onMouseLeave={(e) => {
-                (e.target as HTMLElement).style.color = "var(--text-muted)";
-              }}
-            >
-              LINKEDIN
+              VIEW LAB REPORTS
             </a>
           </div>
         </div>

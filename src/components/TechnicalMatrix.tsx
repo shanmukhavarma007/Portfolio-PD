@@ -36,21 +36,21 @@ const SKILLS: Record<string, SkillItem[]> = {
     { label: "Python / AWK", status: "INTERMEDIATE", dots: 3, context: "Data processing, Report parsing" },
   ],
   pd: [
-    { label: "Physical Design Flow", status: "ACTIVE TRAINING", dots: 4, context: "Floorplan → Signoff" },
+    { label: "Physical Design Flow", status: "ACTIVE TRAINING", dots: 4, context: "Floorplan \u2192 Signoff" },
     { label: "Static Timing Analysis", status: "ACTIVE TRAINING", dots: 4, context: "Setup, Hold, Slack analysis" },
     { label: "Power Analysis", status: "USUALLY USE", dots: 3, context: "Power grid, IR drop basics" },
     { label: "Low-Power Design", status: "FAMILIAR", dots: 2, context: "Power domains, Isolation" },
   ],
 };
 
-const STATUS_STYLES: Record<string, { color: string; bg: string; badgeVariant: string }> = {
-  STRONG: { color: "var(--accent-secondary)", bg: "color-mix(in srgb, var(--accent-secondary) 8%, transparent)", badgeVariant: "accent-secondary" },
-  "ACTIVE TRAINING": { color: "var(--warning)", bg: "color-mix(in srgb, var(--warning) 8%, transparent)", badgeVariant: "warning" },
-  TRAINING: { color: "var(--accent)", bg: "color-mix(in srgb, var(--accent) 8%, transparent)", badgeVariant: "accent" },
-  INTERMEDIATE: { color: "var(--accent-secondary)", bg: "color-mix(in srgb, var(--accent-secondary) 5%, transparent)", badgeVariant: "accent-secondary" },
-  "USUALLY USE": { color: "var(--accent-secondary)", bg: "color-mix(in srgb, var(--accent-secondary) 5%, transparent)", badgeVariant: "accent-secondary" },
-  FAMILIAR: { color: "var(--text-muted)", bg: "transparent", badgeVariant: "muted" },
-  EXPLORING: { color: "var(--text-muted)", bg: "transparent", badgeVariant: "muted" },
+const STATUS_STYLES: Record<string, { color: string; badgeVariant: string }> = {
+  STRONG: { color: "var(--accent-secondary)", badgeVariant: "accent-secondary" },
+  "ACTIVE TRAINING": { color: "var(--warning)", badgeVariant: "warning" },
+  TRAINING: { color: "var(--accent)", badgeVariant: "accent" },
+  INTERMEDIATE: { color: "var(--accent-secondary)", badgeVariant: "accent-secondary" },
+  "USUALLY USE": { color: "var(--accent-secondary)", badgeVariant: "accent-secondary" },
+  FAMILIAR: { color: "var(--text-muted)", badgeVariant: "muted" },
+  EXPLORING: { color: "var(--text-muted)", badgeVariant: "muted" },
 };
 
 function SkillCard({ label, status, dots, context }: SkillItem) {
@@ -58,14 +58,12 @@ function SkillCard({ label, status, dots, context }: SkillItem) {
 
   return (
     <div
-      className="surface-card"
+      className="card"
       style={{
         padding: "clamp(16px, 2.5vw, 24px)",
-        background: style.bg,
         display: "flex",
         flexDirection: "column",
         gap: "8px",
-        borderRadius: "12px",
       }}
     >
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "8px" }}>
@@ -124,12 +122,7 @@ export function TechnicalMatrix() {
   return (
     <section
       ref={ref}
-      className="scroll-reveal"
-      style={{
-        padding: "clamp(32px, 6vw, 96px) clamp(16px, 4vw, 48px)",
-        position: "relative",
-        overflow: "hidden",
-      }}
+      className="scroll-reveal section-container"
     >
       <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
         <div
@@ -142,25 +135,24 @@ export function TechnicalMatrix() {
         <WaveformHr style={{ marginBottom: "clamp(20px, 4vw, 32px)" }} />
 
         {/* Section header */}
-        <h3
+        <h2
           style={{
             fontFamily: "var(--font-display)",
-            fontSize: "clamp(20px, 4vw, 32px)",
-            fontWeight: 500,
-            lineHeight: 1.2,
+            fontSize: "clamp(24px, 4vw, 40px)",
+            fontWeight: 600,
+            lineHeight: 1.15,
             letterSpacing: "-0.01em",
             color: "var(--text)",
             margin: "0 0 4px 0",
           }}
         >
           Tech & Skills
-        </h3>
+        </h2>
         <p
           style={{
-            fontFamily: "var(--font-mono)",
-            fontSize: "11px",
-            color: "var(--text-muted)",
-            letterSpacing: "0.06em",
+            fontFamily: "var(--font-body)",
+            fontSize: "clamp(13px, 2.5vw, 15px)",
+            color: "var(--text-secondary)",
             margin: "0 0 clamp(16px, 3vw, 24px) 0",
           }}
         >

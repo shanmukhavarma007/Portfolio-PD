@@ -1,90 +1,90 @@
 @import "tailwindcss";
 
 :root {
-  /* Dark surfaces — deeper base, wider spread between layers */
-  --bg: #080A0E;
-  --surface-1: #0E1218;
-  --surface-2: #141A22;
-  --surface-3: #1A222C;
-  --surface-4: #222D38;
-  --border: #2C3640;
-  --border-subtle: #1C2430;
+  /* Dark surfaces — slate-based for clarity */
+  --bg: #0B0F14;
+  --surface-1: #111827;
+  --surface-2: #1E293B;
+  --surface-3: #334155;
+  --surface-4: #475569;
+  --border: #334155;
+  --border-subtle: #1E293B;
 
   /* Text — high contrast hierarchy */
-  --text: #F4F6F8;
-  --text-secondary: #A0AAC0;
-  --text-muted: #687890;
+  --text: #F8FAFC;
+  --text-secondary: #CBD5E1;
+  --text-muted: #94A3B8;
 
   /* Accents — vivid, saturated */
-  --accent: #5BA0FF;
-  --accent-secondary: #5EE0E8;
+  --accent: #38BDF8;
+  --accent-secondary: #22D3EE;
 
   /* Status — distinct, high-saturation */
-  --success: #34E07A;
-  --warning: #FFBE40;
-  --error: #FF6B63;
+  --success: #34D399;
+  --warning: #FBBF24;
+  --error: #F87171;
 
-  --radius: 4px;
-  --font-display: "Space Grotesk", system-ui, sans-serif;
+  --radius: 16px;
+  --font-display: "Geist", "Inter", system-ui, sans-serif;
   --font-body: "Inter", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
-  /* Floorplan canvas — dark theme (vivid hierarchy on dark) */
-  --fp-die: #2C3640CC;
-  --fp-accent-dim: #5BA0FF30;
-  --fp-accent-border: #5BA0FF40;
-  --fp-cell-row: #5BA0FF28;
-  --fp-cell-line: #2C364080;
-  --fp-route-clock: #5EE0E850;
-  --fp-route-line: #5BA0FF22;
-  --fp-htree: #5EE0E840;
-  --fp-timing: #5BA0FF50;
-  --fp-mesh: #2C3640A0;
-  --fp-pin: #A0AAC060;
-  --fp-label: #687890C0;
-  --fp-macro-border: #5EE0E868;
-  --fp-macro-fill: #5EE0E818;
-  --fp-macro-label: #5EE0E8C0;
+  /* Floorplan canvas — dark theme */
+  --fp-die: #334155CC;
+  --fp-accent-dim: #38BDF830;
+  --fp-accent-border: #38BDF840;
+  --fp-cell-row: #38BDF828;
+  --fp-cell-line: #33415580;
+  --fp-route-clock: #22D3EE50;
+  --fp-route-line: #38BDF822;
+  --fp-htree: #22D3EE40;
+  --fp-timing: #38BDF850;
+  --fp-mesh: #334155A0;
+  --fp-pin: #94A3B860;
+  --fp-label: #64748BC0;
+  --fp-macro-border: #22D3EE68;
+  --fp-macro-fill: #22D3EE18;
+  --fp-macro-label: #22D3EEC0;
 }
 
 [data-theme="light"] {
-  --bg: #F7F7F8;
-  --surface-1: #F2F3F5;
-  --surface-2: #E8E9EB;
-  --surface-3: #DFE1E6;
-  --surface-4: #D5D8DF;
-  --border: #CACFD2;
-  --border-subtle: #DFE1E6;
+  --bg: #FFFFFF;
+  --surface-1: #F8FAFC;
+  --surface-2: #F1F5F9;
+  --surface-3: #E2E8F0;
+  --surface-4: #CBD5E1;
+  --border: #E2E8F0;
+  --border-subtle: #F1F5F9;
 
-  --text: #12151C;
+  --text: #0F172A;
   --text-secondary: #475569;
   --text-muted: #64748B;
 
-  /* Accents — deeper for WCAG contrast on light bg */
-  --accent: #1460C8;
-  --accent-secondary: #1A7078;
+  /* Accents — deeper for WCAG contrast */
+  --accent: #0284C7;
+  --accent-secondary: #0891B2;
 
   /* Status — vivid, distinct */
-  --success: #1A8840;
-  --warning: #A07020;
-  --error: #D03830;
+  --success: #059669;
+  --warning: #D97706;
+  --error: #DC2626;
 
-  /* Floorplan canvas — light theme (strong lines on light bg) */
-  --fp-die: #2C3640E8;
-  --fp-accent-dim: #1460C822;
-  --fp-accent-border: #1460C850;
-  --fp-cell-row: #1460C838;
-  --fp-cell-line: #B0B8C8B0;
-  --fp-route-clock: #1A707870;
-  --fp-route-line: #1460C830;
-  --fp-htree: #1A707860;
-  --fp-timing: #1460C870;
-  --fp-mesh: #C0C8D4C0;
-  --fp-pin: #7480A070;
-  --fp-label: #3C4458E0;
-  --fp-macro-border: #1A707890;
-  --fp-macro-fill: #1A707820;
-  --fp-macro-label: #1A7078E8;
+  /* Floorplan canvas — light theme */
+  --fp-die: #1E293BE8;
+  --fp-accent-dim: #0284C722;
+  --fp-accent-border: #0284C750;
+  --fp-cell-row: #0284C738;
+  --fp-cell-line: #CBD5E1B0;
+  --fp-route-clock: #0891B270;
+  --fp-route-line: #0284C730;
+  --fp-htree: #0891B260;
+  --fp-timing: #0284C770;
+  --fp-mesh: #CBD5E1C0;
+  --fp-pin: #64748B70;
+  --fp-label: #475569E0;
+  --fp-macro-border: #0891B290;
+  --fp-macro-fill: #0891B220;
+  --fp-macro-label: #0891B2E8;
 }
 
 html {
@@ -106,7 +106,7 @@ body {
   min-height: 100vh;
 }
 
-/* Headings: never break mid-word; let font-size clamp handle overflow */
+/* Headings: never break mid-word */
 h1, h2, h3, h4, h5, h6 {
   overflow-wrap: normal;
   word-break: normal;
@@ -140,42 +140,19 @@ h1, h2, h3, h4, h5, h6 {
   .status-dot-pulse {
     animation: none !important;
   }
-  /* Pause SMIL animations in SVGs */
   animate, animateMotion, animateTransform {
     animation: none !important;
   }
 }
 
-/* Editorial section number styling */
-.section-number {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  color: var(--text-muted);
-  text-transform: uppercase;
+/* ─── Section Spacing ─── */
+
+.section-container {
+  padding: clamp(32px, 5vw, 80px) clamp(16px, 4vw, 48px);
 }
 
-.section-label {
-  font-family: var(--font-display);
-  font-size: 13px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--text-secondary);
-}
-
-/* Status indicator dot */
-.status-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
-/* Editorial horizontal rule */
-.editorial-hr {
-  border: none;
-  border-top: 1px solid var(--border-subtle);
-  margin: 0;
+.section-container--tight {
+  padding: clamp(24px, 4vw, 64px) clamp(16px, 4vw, 48px);
 }
 
 /* ─── Keyframes ─── */
@@ -194,6 +171,7 @@ h1, h2, h3, h4, h5, h6 {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.5; }
 }
+
 @keyframes statusPulse {
   0%, 100% { box-shadow: 0 0 0 0 currentColor; opacity: 1; }
   50% { box-shadow: 0 0 6px 2px currentColor; opacity: 0.7; }
@@ -262,22 +240,6 @@ h1, h2, h3, h4, h5, h6 {
   transform: translateY(0);
 }
 
-/* ─── Card Depth Border ─── */
-
-.card-depth-border {
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.04),
-    0 1px 3px rgba(0, 0, 0, 0.08);
-}
-
-[data-theme="light"] .card-depth-border {
-  border-color: var(--border-subtle);
-  box-shadow:
-    inset 0 1px 0 rgba(242, 243, 245, 0.7),
-    0 1px 3px rgba(0, 0, 0, 0.04);
-}
-
 /* ─── Badge / Pill ─── */
 
 .badge {
@@ -296,26 +258,26 @@ h1, h2, h3, h4, h5, h6 {
 
 .badge--accent {
   color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 8%, transparent);
-  border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
 }
 
 .badge--accent-secondary {
   color: var(--accent-secondary);
-  background: color-mix(in srgb, var(--accent-secondary) 8%, transparent);
-  border: 1px solid color-mix(in srgb, var(--accent-secondary) 20%, transparent);
+  background: color-mix(in srgb, var(--accent-secondary) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent-secondary) 25%, transparent);
 }
 
 .badge--warning {
   color: var(--warning);
-  background: color-mix(in srgb, var(--warning) 8%, transparent);
-  border: 1px solid color-mix(in srgb, var(--warning) 20%, transparent);
+  background: color-mix(in srgb, var(--warning) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--warning) 25%, transparent);
 }
 
 .badge--success {
   color: var(--success);
-  background: color-mix(in srgb, var(--success) 8%, transparent);
-  border: 1px solid color-mix(in srgb, var(--success) 20%, transparent);
+  background: color-mix(in srgb, var(--success) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--success) 25%, transparent);
 }
 
 .badge--muted {
@@ -324,18 +286,44 @@ h1, h2, h3, h4, h5, h6 {
   border: 1px solid var(--border-subtle);
 }
 
-/* ─── Surface Card (dark mode elevated) ─── */
+/* ─── Card System ─── */
 
-.surface-card {
+.card {
   background: color-mix(in srgb, var(--surface-1) 60%, transparent);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 12px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  transition: all 0.2s ease;
 }
 
-[data-theme="light"] .surface-card {
-  background: var(--surface-1);
-  border-color: var(--border-subtle);
+[data-theme="light"] .card {
+  background: #FFFFFF;
+  border-color: var(--border);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--accent) 10%, transparent);
+}
+
+/* ─── Glass Navbar ─── */
+
+.glass-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 56px;
+  z-index: 100;
+  background: color-mix(in srgb, var(--bg) 80%, transparent);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-subtle);
+  transition: background 0.3s ease;
+}
+
+.glass-nav.scrolled {
+  background: color-mix(in srgb, var(--bg) 95%, transparent);
 }
 
 /* ─── Cursor Glow Card ─── */
@@ -446,7 +434,8 @@ h1, h2, h3, h4, h5, h6 {
   height: 24px;
 }
 
-/* PD Flow node hover */
+/* ─── PD Flow Node ─── */
+
 .pd-node {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -473,12 +462,14 @@ h1, h2, h3, h4, h5, h6 {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Foundation map node hover animation */
+/* ─── Foundation Map Node ─── */
+
 .fd-card-enter {
   animation: fadeInUp 0.25s ease-out both;
 }
 
-/* Nav link hover */
+/* ─── Nav Link ─── */
+
 .nav-link {
   position: relative;
 }
@@ -498,16 +489,14 @@ h1, h2, h3, h4, h5, h6 {
   width: 100%;
 }
 
-/* Chip visualization — no global opacity; per-layer contrast via --fp-* tokens */
+/* ─── Nav Stacking Context ─── */
 
-/* Nav stacking context — ensures header is above all page content */
 .site-nav {
   position: fixed;
   z-index: 100;
   isolation: isolate;
 }
 
-/* Mobile overlay — solid backdrop, above page content but below nav */
 .site-nav-overlay {
   position: fixed;
   inset: 0;
@@ -515,14 +504,12 @@ h1, h2, h3, h4, h5, h6 {
   background: var(--bg);
 }
 
-/* Hamburger / X button — above overlay within nav context */
 .site-nav-hamburger {
   position: relative;
   z-index: 10;
   pointer-events: auto;
 }
 
-/* Close button inside overlay — highest z-index in the overlay */
 .site-nav-close {
   position: absolute;
   top: 12px;

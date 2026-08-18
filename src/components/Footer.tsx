@@ -8,10 +8,9 @@ export function Footer() {
   return (
     <footer
       ref={ref}
-      className="scroll-reveal"
+      className="scroll-reveal section-container--tight"
       style={{
         borderTop: "1px solid var(--border-subtle)",
-        padding: "clamp(20px, 3vw, 32px) clamp(16px, 4vw, 48px)",
       }}
     >
       <div
@@ -28,8 +27,8 @@ export function Footer() {
           <div
             style={{
               fontFamily: "var(--font-display)",
-              fontSize: "11px",
-              letterSpacing: "0.12em",
+              fontSize: "12px",
+              letterSpacing: "0.08em",
               color: "var(--text-muted)",
               textTransform: "uppercase",
             }}

@@ -2,11 +2,10 @@
 
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 
-const STRIP_ITEMS = [
-  { label: "CURRENTLY", value: "INTENSIVE VLSI PD TRAINING" },
-  { label: "FOCUS", value: "PHYSICAL DESIGN · STA · EDA" },
-  { label: "COMPLETED", value: "TCL — HANDS-ON" },
-  { label: "DIRECTION", value: "BUILDING TOWARD SILICON" },
+const METRICS = [
+  { label: "Foundations Mastered", value: "100%", accent: true },
+  { label: "Lab Repos", value: "3+", accent: false },
+  { label: "Target Domain", value: "ASIC / Physical Design", accent: false },
 ];
 
 export function StatusStrip() {
@@ -19,52 +18,56 @@ export function StatusStrip() {
       style={{
         borderTop: "1px solid var(--border-subtle)",
         borderBottom: "1px solid var(--border-subtle)",
-        background: "var(--surface-1)",
+        background: "color-mix(in srgb, var(--surface-1) 80%, transparent)",
       }}
     >
       <div
         style={{
           maxWidth: "1400px",
           margin: "0 auto",
-          padding: "0 clamp(16px, 4vw, 48px)",
-          display: "grid",
-          gridTemplateColumns: "repeat(4, 1fr)",
+          padding: "clamp(12px, 2vw, 16px) clamp(16px, 4vw, 48px)",
+          display: "flex",
+          justifyContent: "center",
+          gap: "clamp(24px, 4vw, 48px)",
+          flexWrap: "wrap",
         }}
-        className="!grid-cols-2 md:!grid-cols-4"
       >
-        {STRIP_ITEMS.map((item, i) => (
+        {METRICS.map((item, i) => (
           <div
             key={item.label}
             style={{
-              padding: "clamp(10px, 2vw, 16px) clamp(12px, 2vw, 20px)",
-              borderRight:
-                i < STRIP_ITEMS.length - 1 ? "1px solid var(--border-subtle)" : "none",
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
             }}
-            className="[&:nth-child(2)]:!border-r-0 [&:nth-child(2)]:max-md:!border-r-0 max-md:[&:nth-child(2)]:border-r-1 max-md:[&:nth-child(2)]:!border-r-[var(--border-subtle)]"
           >
-            <div
+            {i > 0 && (
+              <span
+                style={{
+                  width: "1px",
+                  height: "12px",
+                  background: "var(--border-subtle)",
+                  marginRight: "8px",
+                }}
+              />
+            )}
+            <span
               style={{
                 fontFamily: "var(--font-mono)",
-                fontSize: "9px",
-                letterSpacing: "0.15em",
+                fontSize: "10px",
+                letterSpacing: "0.1em",
                 color: "var(--text-muted)",
                 textTransform: "uppercase",
-                marginBottom: "4px",
               }}
             >
               {item.label}
-            </div>
-            <div
-              style={{
-                fontFamily: "var(--font-mono)",
-                fontSize: "clamp(10px, 2vw, 11px)",
-                letterSpacing: "0.04em",
-                color: "var(--text-secondary)",
-                lineHeight: 1.3,
-              }}
+            </span>
+            <span
+              className={`badge ${item.accent ? "badge--accent" : "badge--muted"}`}
+              style={{ fontSize: "10px", padding: "2px 8px" }}
             >
               {item.value}
-            </div>
+            </span>
           </div>
         ))}
       </div>

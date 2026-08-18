@@ -26,12 +26,7 @@ export function CurrentlyBuilding() {
   return (
     <section
       ref={ref}
-      className="scroll-reveal"
-      style={{
-        padding: "clamp(32px, 6vw, 96px) clamp(16px, 4vw, 48px)",
-        position: "relative",
-        overflow: "hidden",
-      }}
+      className="scroll-reveal section-container"
     >
       <div style={{ maxWidth: "1400px", margin: "0 auto", position: "relative" }}>
         <div
@@ -43,40 +38,30 @@ export function CurrentlyBuilding() {
 
         <WaveformHr style={{ marginBottom: "clamp(24px, 4vw, 40px)" }} />
 
-        {/* Cards — larger, 1-col mobile / 2-col tablet / 3-col desktop */}
+        {/* Cards grid */}
         <div
           style={{
             display: "grid",
             gridTemplateColumns: "1fr",
-            gap: "1px",
-            background: "var(--border-subtle)",
-            border: "1px solid var(--border-subtle)",
+            gap: "12px",
           }}
           className="sm:!grid-cols-2 lg:!grid-cols-3"
         >
           {ITEMS.map((item) => (
             <div
               key={item.label}
-              className="cursor-glow-card surface-card"
+              className="card cursor-glow-card"
               style={{
                 padding: "clamp(16px, 2.5vw, 24px)",
-                background: "var(--bg)",
                 display: "flex",
                 flexDirection: "column",
                 gap: "12px",
                 position: "relative",
                 overflow: "hidden",
-                borderRadius: "12px",
               }}
               onMouseMove={handleCardMouseMove}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.background = "var(--surface-1)";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.background = "var(--bg)";
-              }}
             >
-              {/* Color accent strip at top */}
+              {/* Color accent strip */}
               <div
                 style={{
                   position: "absolute",
@@ -142,31 +127,9 @@ export function CurrentlyBuilding() {
               >
                 {item.desc}
               </div>
-
-              {/* Subtle horizontal line separator */}
-              <div
-                style={{
-                  marginTop: "auto",
-                  height: "1px",
-                  background: `linear-gradient(90deg, ${item.color} 0%, transparent 100%)`,
-                  opacity: 0.2,
-                }}
-              />
             </div>
           ))}
         </div>
-
-        <p
-          style={{
-            fontFamily: "var(--font-body)",
-            fontSize: "clamp(12px, 2.5vw, 14px)",
-            color: "var(--text-muted)",
-            marginTop: "clamp(16px, 3vw, 24px)",
-            fontStyle: "italic",
-          }}
-        >
-          Actively progressing through intensive training and project-based learning.
-        </p>
       </div>
     </section>
   );

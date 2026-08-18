@@ -19,7 +19,7 @@ const SKILL_GROUPS = [
     progress: 65,
   },
   {
-    title: "EDA — INSTITUTE",
+    title: "EDA \u2014 INSTITUTE",
     items: ["Cadence Innovus", "Cadence Tempus", "Cadence Genus"],
     statusColor: "var(--accent)",
     statusLabel: "TRAINING",
@@ -36,11 +36,11 @@ const SKILL_GROUPS = [
 
 const METADATA = [
   { label: "LOCATION", value: "Hyderabad, India" },
-  { label: "EDUCATION", value: "B.Tech — ECE · 2026\nVignan\u2019s Institute of Information Technology" },
+  { label: "EDUCATION", value: "B.Tech \u2014 ECE \u00b7 2026\nVignan\u2019s Institute of Information Technology" },
   { label: "TRAINING", value: "Currently undergoing intensive VLSI Physical Design training at Sumedha IT" },
-  { label: "CURRENT FOCUS", value: "Physical Design · STA · EDA" },
-  { label: "AUTOMATION", value: "Tcl · Linux · AWK" },
-  { label: "EDA", value: "Cadence Innovus · Tempus · Genus · OpenLane" },
+  { label: "CURRENT FOCUS", value: "Physical Design \u00b7 STA \u00b7 EDA" },
+  { label: "AUTOMATION", value: "Tcl \u00b7 Linux \u00b7 AWK" },
+  { label: "EDA", value: "Cadence Innovus \u00b7 Tempus \u00b7 Genus \u00b7 OpenLane" },
 ];
 
 export function EngineeringProfile() {
@@ -50,12 +50,7 @@ export function EngineeringProfile() {
     <section
       id="engineering"
       ref={ref}
-      className="scroll-reveal"
-      style={{
-        padding: "clamp(32px, 6vw, 96px) clamp(16px, 4vw, 48px)",
-        position: "relative",
-        overflow: "hidden",
-      }}
+      className="scroll-reveal section-container"
     >
       <div
         style={{
@@ -83,7 +78,7 @@ export function EngineeringProfile() {
             style={{
               fontFamily: "var(--font-display)",
               fontSize: "clamp(28px, 5vw, 48px)",
-              fontWeight: 500,
+              fontWeight: 600,
               lineHeight: 1.15,
               letterSpacing: "-0.01em",
               color: "var(--text)",
@@ -96,7 +91,7 @@ export function EngineeringProfile() {
           <div
             style={{
               fontFamily: "var(--font-body)",
-              fontSize: "clamp(13px, 2.5vw, 15px)",
+              fontSize: "clamp(14px, 2.5vw, 16px)",
               lineHeight: 1.6,
               color: "var(--text-secondary)",
               marginBottom: "clamp(16px, 3vw, 24px)",
@@ -108,7 +103,7 @@ export function EngineeringProfile() {
             Location, education, training focus and core technical capabilities.
           </div>
 
-          {/* Metadata — visual card-style layout instead of label/value rows */}
+          {/* Metadata grid */}
           <div
             style={{
               display: "grid",
@@ -116,6 +111,8 @@ export function EngineeringProfile() {
               gap: "1px",
               background: "var(--border-subtle)",
               border: "1px solid var(--border-subtle)",
+              borderRadius: "12px",
+              overflow: "hidden",
             }}
           >
             {METADATA.map((item) => (
@@ -150,11 +147,9 @@ export function EngineeringProfile() {
 
         {/* Right: technical summary with progress bars */}
         <div
-          className="surface-card"
+          className="card"
           style={{
             padding: "clamp(20px, 3vw, 32px)",
-            background: "var(--surface-1)",
-            borderRadius: "12px",
           }}
         >
           <div
@@ -218,6 +213,7 @@ export function EngineeringProfile() {
                   background: "var(--border-subtle)",
                   marginBottom: "10px",
                   overflow: "hidden",
+                  borderRadius: "2px",
                 }}
               >
                 <div
@@ -226,23 +222,18 @@ export function EngineeringProfile() {
                     width: `${group.progress}%`,
                     background: group.statusColor,
                     transition: "width 0.8s cubic-bezier(0.16, 1, 0.3, 1)",
+                    borderRadius: "2px",
                   }}
                 />
               </div>
 
-              {/* Items as compact chips */}
+              {/* Items as chips */}
               <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
                 {group.items.map((item) => (
                   <span
                     key={item}
-                    style={{
-                      fontFamily: "var(--font-body)",
-                      fontSize: "12px",
-                      color: "var(--text-secondary)",
-                      padding: "3px 8px",
-                      background: "var(--surface-2)",
-                      border: "1px solid var(--border-subtle)",
-                    }}
+                    className="badge badge--muted"
+                    style={{ fontSize: "9px" }}
                   >
                     {item}
                   </span>

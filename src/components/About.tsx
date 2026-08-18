@@ -4,10 +4,10 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { WaveformHr } from "./WaveformHr";
 
 const METADATA = [
-  { label: "EDUCATION", value: "B.Tech — ECE · 2026\nVignan\u2019s Institute of Information Technology" },
+  { label: "EDUCATION", value: "B.Tech \u2014 ECE \u00b7 2026\nVignan\u2019s Institute of Information Technology" },
   { label: "TRAINING", value: "Currently undergoing intensive VLSI Physical Design training at Sumedha IT" },
   { label: "CURRENT FOCUS", value: "VLSI PHYSICAL DESIGN" },
-  { label: "INTERESTS", value: "Physical Design · STA · Automation" },
+  { label: "INTERESTS", value: "Physical Design \u00b7 STA \u00b7 Automation" },
   { label: "STATUS", value: "Intensive Training" },
 ];
 
@@ -18,14 +18,11 @@ export function About() {
     <section
       id="about"
       ref={ref}
-      className="scroll-reveal"
+      className="scroll-reveal section-container"
       style={{
-        padding: "clamp(32px, 6vw, 96px) clamp(16px, 4vw, 48px)",
         background: "var(--surface-1)",
         borderTop: "1px solid var(--border-subtle)",
         borderBottom: "1px solid var(--border-subtle)",
-        position: "relative",
-        overflow: "hidden",
       }}
     >
       <div
@@ -65,7 +62,7 @@ export function About() {
           </p>
         </div>
 
-        {/* Right: metadata — stacked cards instead of grid rows */}
+        {/* Right: metadata cards */}
         <div
           style={{
             display: "flex",
@@ -73,6 +70,8 @@ export function About() {
             gap: "1px",
             background: "var(--border-subtle)",
             border: "1px solid var(--border-subtle)",
+            borderRadius: "12px",
+            overflow: "hidden",
           }}
         >
           {METADATA.map((item) => (

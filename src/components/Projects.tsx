@@ -39,14 +39,11 @@ export function Projects() {
     <section
       id="work"
       ref={ref}
-      className="scroll-reveal"
+      className="scroll-reveal section-container"
       style={{
-        padding: "clamp(32px, 6vw, 96px) clamp(16px, 4vw, 48px)",
         background: "var(--surface-1)",
         borderTop: "1px solid var(--border-subtle)",
         borderBottom: "1px solid var(--border-subtle)",
-        position: "relative",
-        overflow: "hidden",
       }}
     >
       <div style={{ maxWidth: "1400px", margin: "0 auto", position: "relative" }}>
@@ -74,11 +71,11 @@ export function Projects() {
               style={{
                 display: "grid",
                 gridTemplateColumns: "1fr",
-                gap: "32px",
+                gap: "24px",
               }}
-              className="md:!grid-cols-[1fr_2fr]"
+              className="md:!grid-cols-[1fr_1fr]"
             >
-              {/* Left: meta + buttons */}
+              {/* Left: problem/architecture + tech pills + links */}
               <div>
                 <div
                   className="badge badge--muted"
@@ -117,7 +114,7 @@ export function Projects() {
                   <p
                     style={{
                       fontFamily: "var(--font-body)",
-                      fontSize: "13px",
+                      fontSize: "14px",
                       lineHeight: 1.6,
                       color: "var(--text-secondary)",
                       margin: 0,
@@ -137,7 +134,7 @@ export function Projects() {
                   <p
                     style={{
                       fontFamily: "var(--font-body)",
-                      fontSize: "13px",
+                      fontSize: "14px",
                       lineHeight: 1.6,
                       color: "var(--text-secondary)",
                       margin: 0,
@@ -224,30 +221,14 @@ export function Projects() {
                 </div>
               </div>
 
-              {/* Right: preview/flow visualization */}
+              {/* Right: framed schematic/waveform window */}
               <div
-                className="surface-card"
+                className="card"
                 style={{
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "center",
                   padding: "clamp(20px, 3vw, 32px)",
-                  background: "var(--surface-2)",
-                  borderRadius: "12px",
-                  transition: "transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease",
-                  cursor: "default",
-                }}
-                onMouseEnter={(e) => {
-                  const el = e.currentTarget;
-                  el.style.transform = "translateY(-2px)";
-                  el.style.borderColor = "var(--accent)";
-                  el.style.boxShadow = "0 4px 16px rgba(0, 0, 0, 0.12)";
-                }}
-                onMouseLeave={(e) => {
-                  const el = e.currentTarget;
-                  el.style.transform = "translateY(0)";
-                  el.style.borderColor = "";
-                  el.style.boxShadow = "";
                 }}
               >
                 <div

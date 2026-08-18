@@ -49,8 +49,8 @@ export function LinkedInFeed() {
   return (
     <section
       id="activity"
+      className="section-container"
       style={{
-        padding: "clamp(48px, 8vw, 96px) clamp(16px, 4vw, 48px)",
         borderTop: "1px solid var(--border-subtle)",
         borderBottom: "1px solid var(--border-subtle)",
       }}
