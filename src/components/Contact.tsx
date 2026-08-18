@@ -63,7 +63,7 @@ export function Contact() {
               fontWeight: 600,
               lineHeight: 1.15,
               letterSpacing: "-0.01em",
-              color: "var(--text)",
+              color: "#0F172A",
               margin: "0 0 12px 0",
             }}
           >
@@ -74,7 +74,7 @@ export function Contact() {
               fontFamily: "var(--font-body)",
               fontSize: "clamp(14px, 2.5vw, 16px)",
               lineHeight: 1.6,
-              color: "var(--text-secondary)",
+              color: "#475569",
               margin: "0 0 clamp(24px, 4vw, 32px) 0",
               maxWidth: "480px",
               marginLeft: "auto",
@@ -109,7 +109,7 @@ export function Contact() {
                 transition: "all 0.2s ease",
               }}
               onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.borderColor = "var(--accent)";
+                (e.currentTarget as HTMLElement).style.borderColor = "#0284C7";
                 (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)";
               }}
               onMouseLeave={(e) => {
@@ -122,7 +122,7 @@ export function Contact() {
                 style={{
                   fontFamily: "var(--font-mono)",
                   fontSize: "10px",
-                  color: "var(--text-muted)",
+                  color: "#64748B",
                 }}
               >
                 ↗
@@ -142,7 +142,7 @@ export function Contact() {
                 transition: "all 0.2s ease",
               }}
               onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.borderColor = "var(--accent)";
+                (e.currentTarget as HTMLElement).style.borderColor = "#0284C7";
                 (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)";
               }}
               onMouseLeave={(e) => {
@@ -155,7 +155,7 @@ export function Contact() {
                 style={{
                   fontFamily: "var(--font-mono)",
                   fontSize: "10px",
-                  color: "var(--text-muted)",
+                  color: "#64748B",
                 }}
               >
                 ↗
@@ -173,7 +173,7 @@ export function Contact() {
                 transition: "all 0.2s ease",
               }}
               onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.borderColor = "var(--accent)";
+                (e.currentTarget as HTMLElement).style.borderColor = "#0284C7";
                 (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)";
               }}
               onMouseLeave={(e) => {
@@ -197,7 +197,7 @@ export function Contact() {
                 transition: "all 0.2s ease",
               }}
               onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.borderColor = "var(--accent)";
+                (e.currentTarget as HTMLElement).style.borderColor = "#0284C7";
                 (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)";
               }}
               onMouseLeave={(e) => {

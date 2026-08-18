@@ -164,17 +164,17 @@ export function Nav() {
                 fontFamily: "var(--font-mono)",
                 fontSize: "11px",
                 letterSpacing: "0.1em",
-                color: "var(--bg)",
-                background: "var(--accent)",
+                color: "#FFF",
+                background: "#0F172A",
                 padding: "6px 16px",
                 textDecoration: "none",
                 transition: "all 0.2s ease",
               }}
               onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.background = "var(--accent-secondary)";
+                (e.currentTarget as HTMLElement).style.background = "#1E293B";
               }}
               onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.background = "var(--accent)";
+                (e.currentTarget as HTMLElement).style.background = "#0F172A";
               }}
             >
               GET IN TOUCH

@@ -44,13 +44,13 @@ const SKILLS: Record<string, SkillItem[]> = {
 };
 
 const STATUS_STYLES: Record<string, { color: string; badgeVariant: string }> = {
-  STRONG: { color: "var(--accent-secondary)", badgeVariant: "accent-secondary" },
-  "ACTIVE TRAINING": { color: "var(--warning)", badgeVariant: "warning" },
-  TRAINING: { color: "var(--accent)", badgeVariant: "accent" },
-  INTERMEDIATE: { color: "var(--accent-secondary)", badgeVariant: "accent-secondary" },
-  "USUALLY USE": { color: "var(--accent-secondary)", badgeVariant: "accent-secondary" },
-  FAMILIAR: { color: "var(--text-muted)", badgeVariant: "muted" },
-  EXPLORING: { color: "var(--text-muted)", badgeVariant: "muted" },
+  EXPERT: { color: "#0D9488", badgeVariant: "accent-secondary" },
+  PROFICIENT: { color: "#0284C7", badgeVariant: "accent" },
+  ADVANCED: { color: "#0284C7", badgeVariant: "accent" },
+  INTERMEDIATE: { color: "#0891B2", badgeVariant: "accent-secondary" },
+  "USUALLY USE": { color: "#0891B2", badgeVariant: "accent-secondary" },
+  FAMILIAR: { color: "#94A3B8", badgeVariant: "muted" },
+  EXPLORING: { color: "#94A3B8", badgeVariant: "muted" },
 };
 
 function SkillCard({ label, status, dots, context }: SkillItem) {

@@ -226,18 +226,18 @@ export function Hero() {
                 fontSize: "12px",
                 letterSpacing: "0.08em",
                 padding: "14px 28px",
-                background: "var(--accent)",
-                color: "var(--bg)",
+                background: "#0F172A",
+                color: "#FFF",
                 textDecoration: "none",
                 display: "inline-block",
                 textAlign: "center",
                 borderRadius: "8px",
               }}
               onMouseEnter={(e) => {
-                (e.target as HTMLElement).style.background = "var(--accent-secondary)";
+                (e.target as HTMLElement).style.background = "#1E293B";
               }}
               onMouseLeave={(e) => {
-                (e.target as HTMLElement).style.background = "var(--accent)";
+                (e.target as HTMLElement).style.background = "#0F172A";
               }}
             >
               GET IN TOUCH
@@ -250,20 +250,20 @@ export function Hero() {
                 fontSize: "12px",
                 letterSpacing: "0.08em",
                 padding: "14px 28px",
-                border: "1px solid var(--border)",
-                color: "var(--text-secondary)",
+                border: "1px solid #E2E8F0",
+                color: "#475569",
                 textDecoration: "none",
                 display: "inline-block",
                 textAlign: "center",
                 borderRadius: "8px",
               }}
               onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.borderColor = "var(--accent)";
-                (e.currentTarget as HTMLElement).style.color = "var(--text)";
+                (e.currentTarget as HTMLElement).style.borderColor = "#0284C7";
+                (e.currentTarget as HTMLElement).style.color = "#0284C7";
               }}
               onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.borderColor = "var(--border)";
-                (e.currentTarget as HTMLElement).style.color = "var(--text-secondary)";
+                (e.currentTarget as HTMLElement).style.borderColor = "#E2E8F0";
+                (e.currentTarget as HTMLElement).style.color = "#475569";
               }}
             >
               VIEW LAB REPORTS

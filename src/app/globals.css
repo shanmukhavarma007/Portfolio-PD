@@ -48,24 +48,26 @@
 }
 
 [data-theme="light"] {
-  --bg: #FFFFFF;
-  --surface-1: #F8FAFC;
+  /* Silicon Paper — Industrial Engineering palette */
+  --bg: #F8FAFC;
+  --surface-1: #FFFFFF;
   --surface-2: #F1F5F9;
   --surface-3: #E2E8F0;
   --surface-4: #CBD5E1;
   --border: #E2E8F0;
   --border-subtle: #F1F5F9;
 
+  /* Text — deep slate hierarchy */
   --text: #0F172A;
   --text-secondary: #475569;
   --text-muted: #64748B;
 
-  /* Accents — deeper for WCAG contrast */
+  /* Accents — engineering blues and warm teals */
   --accent: #0284C7;
   --accent-secondary: #0891B2;
 
-  /* Status — vivid, distinct */
-  --success: #059669;
+  /* Status — engineering-grade colors */
+  --success: #0D9488;
   --warning: #D97706;
   --error: #DC2626;
 
@@ -298,13 +300,31 @@ h1, h2, h3, h4, h5, h6 {
 
 [data-theme="light"] .card {
   background: #FFFFFF;
-  border-color: var(--border);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border-color: #E2E8F0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
 }
 
 .card:hover {
   border-color: var(--accent);
   box-shadow: 0 4px 16px color-mix(in srgb, var(--accent) 10%, transparent);
+}
+
+/* Silicon Paper — Status card variants for light mode */
+[data-theme="light"] .card--mastered {
+  background: #F0FDFA;
+  border-color: #99F6E4;
+}
+
+[data-theme="light"] .card--active {
+  background: #FFFBEB;
+  border-color: #FDE68A;
+}
+
+[data-theme="light"] .card--queued {
+  background: #F8FAFC;
+  border-color: #E2E8F0;
+  border-style: dashed;
+  opacity: 0.7;
 }
 
 /* ─── Glass Navbar ─── */

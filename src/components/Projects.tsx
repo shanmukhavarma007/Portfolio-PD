@@ -90,7 +90,7 @@ export function Projects() {
                     fontWeight: 600,
                     lineHeight: 1.2,
                     letterSpacing: "-0.01em",
-                    color: "var(--text)",
+                    color: "#0F172A",
                     margin: "0 0 12px 0",
                   }}
                 >
@@ -116,7 +116,7 @@ export function Projects() {
                       fontFamily: "var(--font-body)",
                       fontSize: "14px",
                       lineHeight: 1.6,
-                      color: "var(--text-secondary)",
+                      color: "#475569",
                       margin: 0,
                     }}
                   >
@@ -136,7 +136,7 @@ export function Projects() {
                       fontFamily: "var(--font-body)",
                       fontSize: "14px",
                       lineHeight: 1.6,
-                      color: "var(--text-secondary)",
+                      color: "#475569",
                       margin: 0,
                     }}
                   >

@@ -152,14 +152,17 @@ export function LearningJourney() {
     switch (status) {
       case "mastered":
         return {
-          border: "2px solid #00f0ff",
-          background: "color-mix(in srgb, #00f0ff 6%, transparent)",
-          shadow: "0 0 20px color-mix(in srgb, #00f0ff 15%, transparent)",
-          numberColor: "#00f0ff",
+          border: "2px solid var(--success)",
+          background: "color-mix(in srgb, var(--success) 6%, transparent)",
+          shadow: "0 0 20px color-mix(in srgb, var(--success) 15%, transparent)",
+          numberColor: "var(--success)",
           titleColor: "var(--text)",
           opacity: 1,
-          statusBg: "#00f0ff",
-          statusColor: "#000",
+          statusBg: "var(--success)",
+          statusColor: "#FFF",
+          tagBg: "var(--surface-2)",
+          tagColor: "var(--text-secondary)",
+          tagBorder: "var(--border)",
         };
       case "active":
         return {
@@ -170,18 +173,24 @@ export function LearningJourney() {
           titleColor: "var(--text)",
           opacity: 1,
           statusBg: "var(--warning)",
-          statusColor: "#000",
+          statusColor: "#FFF",
+          tagBg: "var(--surface-2)",
+          tagColor: "var(--text-secondary)",
+          tagBorder: "var(--border)",
         };
       case "queued":
         return {
           border: "1px dashed var(--border)",
-          background: "color-mix(in srgb, var(--surface-2) 40%, transparent)",
+          background: "var(--surface-2)",
           shadow: "none",
           numberColor: "var(--text-muted)",
           titleColor: "var(--text-secondary)",
-          opacity: 0.6,
+          opacity: 0.7,
           statusBg: "var(--surface-3)",
           statusColor: "var(--text-muted)",
+          tagBg: "var(--surface-3)",
+          tagColor: "var(--text-muted)",
+          tagBorder: "var(--border-subtle)",
         };
     }
   };
@@ -296,20 +305,20 @@ export function LearningJourney() {
             <path
               d={generateWaveformPath(50, 350, 40, true, 50, 14)}
               fill="none"
-              stroke="#00f0ff"
+              stroke="var(--success)"
               strokeWidth="2"
               opacity="0.8"
-              style={{ filter: "drop-shadow(0 0 4px #00f0ff80)" }}
+              style={{ filter: "drop-shadow(0 0 4px color-mix(in srgb, var(--success) 50%, transparent))" }}
             />
 
             {/* Inactive waveform for stages 03-08 */}
             <path
               d={generateWaveformPath(350, 1150, 40, false, 50, 14)}
               fill="none"
-              stroke="var(--text-muted)"
+              stroke="var(--border)"
               strokeWidth="1.5"
               strokeDasharray="6 4"
-              opacity="0.3"
+              opacity="0.5"
             />
 
             {/* Pin nodes */}
@@ -324,21 +333,21 @@ export function LearningJourney() {
                     cx={x}
                     cy={y}
                     r="8"
-                    fill={isActive ? (stage.status === "mastered" ? "#00f0ff" : "var(--warning)") : "var(--surface-3)"}
-                    stroke={isActive ? (stage.status === "mastered" ? "#00f0ff" : "var(--warning)") : "var(--border)"}
+                    fill={isActive ? (stage.status === "mastered" ? "var(--success)" : "var(--warning)") : "var(--surface-3)"}
+                    stroke={isActive ? (stage.status === "mastered" ? "var(--success)" : "var(--warning)") : "var(--border)"}
                     strokeWidth={isActive ? "2" : "1"}
                     opacity={stage.status === "queued" ? 0.5 : 1}
                     style={stage.status === "active" ? {
-                      filter: "drop-shadow(0 0 6px var(--warning))",
+                      filter: "drop-shadow(0 0 6px color-mix(in srgb, var(--warning) 50%, transparent))",
                     } : stage.status === "mastered" ? {
-                      filter: "drop-shadow(0 0 4px #00f0ff80)",
+                      filter: "drop-shadow(0 0 4px color-mix(in srgb, var(--success) 50%, transparent))",
                     } : {}}
                   />
                   <text
                     x={x}
                     y={y + 22}
                     textAnchor="middle"
-                    fill={isActive ? (stage.status === "mastered" ? "#00f0ff" : "var(--warning)") : "var(--text-muted)"}
+                    fill={isActive ? (stage.status === "mastered" ? "var(--success)" : "var(--warning)") : "var(--text-muted)"}
                     fontSize="7"
                     fontFamily="var(--font-mono)"
                     letterSpacing="0.05em"
@@ -411,18 +420,18 @@ export function LearningJourney() {
                         width: "20px",
                         height: "20px",
                         borderRadius: "50%",
-                        background: "#00f0ff",
+                        background: "var(--success)",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        boxShadow: "0 0 12px #00f0ff80",
+                        boxShadow: "0 0 12px color-mix(in srgb, var(--success) 40%, transparent)",
                       }}
                     >
                       <span
                         style={{
                           fontFamily: "var(--font-mono)",
                           fontSize: "10px",
-                          color: "#000",
+                          color: "#FFF",
                           fontWeight: 700,
                         }}
                       >
@@ -543,8 +552,13 @@ export function LearningJourney() {
                   {stage.tags.map((tag) => (
                     <span
                       key={tag}
-                      className={`badge ${stage.status === "queued" ? "badge--muted" : stage.status === "mastered" ? "badge--accent-secondary" : "badge--warning"}`}
-                      style={{ fontSize: "7px" }}
+                      className="badge"
+                      style={{
+                        fontSize: "7px",
+                        background: styles.tagBg,
+                        color: styles.tagColor,
+                        border: `1px solid ${styles.tagBorder}`,
+                      }}
                     >
                       {tag}
                     </span>
