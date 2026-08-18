@@ -35,14 +35,8 @@ export function CurrentlyBuilding() {
     >
       <div style={{ maxWidth: "1400px", margin: "0 auto", position: "relative" }}>
         <div
-          style={{
-            fontFamily: "var(--font-mono)",
-            fontSize: "10px",
-            letterSpacing: "0.15em",
-            color: "var(--text-muted)",
-            marginBottom: "12px",
-            textTransform: "uppercase",
-          }}
+          className="badge badge--muted"
+          style={{ marginBottom: "12px" }}
         >
           05 / CURRENTLY BUILDING
         </div>
@@ -63,15 +57,16 @@ export function CurrentlyBuilding() {
           {ITEMS.map((item) => (
             <div
               key={item.label}
-              className="cursor-glow-card"
+              className="cursor-glow-card surface-card"
               style={{
-                padding: "clamp(20px, 3vw, 28px)",
+                padding: "clamp(16px, 2.5vw, 24px)",
                 background: "var(--bg)",
                 display: "flex",
                 flexDirection: "column",
                 gap: "12px",
                 position: "relative",
                 overflow: "hidden",
+                borderRadius: "12px",
               }}
               onMouseMove={handleCardMouseMove}
               onMouseEnter={(e) => {
@@ -114,12 +109,8 @@ export function CurrentlyBuilding() {
                     }}
                   />
                   <span
-                    style={{
-                      fontFamily: "var(--font-mono)",
-                      fontSize: "10px",
-                      letterSpacing: "0.1em",
-                      color: item.color,
-                    }}
+                    className="badge"
+                    style={{ color: item.color, padding: 0, border: "none", background: "transparent" }}
                   >
                     {item.state}
                   </span>

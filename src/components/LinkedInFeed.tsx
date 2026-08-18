@@ -73,14 +73,8 @@ export function LinkedInFeed() {
         >
           <div>
             <div
-              style={{
-                fontFamily: "var(--font-mono)",
-                fontSize: "10px",
-                letterSpacing: "0.15em",
-                color: "var(--text-muted)",
-                marginBottom: "12px",
-                textTransform: "uppercase",
-              }}
+              className="badge badge--muted"
+              style={{ marginBottom: "12px" }}
             >
               07 / PROFESSIONAL ACTIVITY
             </div>
@@ -91,6 +85,7 @@ export function LinkedInFeed() {
                 fontFamily: "var(--font-display)",
                 fontSize: "clamp(24px, 3.5vw, 40px)",
                 fontWeight: 500,
+                lineHeight: 1.15,
                 color: "var(--text)",
                 margin: "0 0 12px 0",
                 letterSpacing: "-0.01em",

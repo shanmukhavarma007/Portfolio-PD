@@ -164,14 +164,8 @@ export function Hero() {
         <div style={{ maxWidth: "680px", position: "relative", zIndex: 1 }}>
           {/* Section tag */}
           <div
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: "10px",
-              letterSpacing: "0.15em",
-              color: "var(--text-muted)",
-              marginBottom: "16px",
-              textTransform: "uppercase",
-            }}
+            className="badge badge--muted"
+            style={{ marginBottom: "16px" }}
           >
             ENGINEERING PROFILE
           </div>
@@ -182,8 +176,8 @@ export function Hero() {
               fontFamily: "var(--font-display)",
               fontSize: "clamp(36px, 10vw, 96px)",
               fontWeight: 700,
-              lineHeight: 1.02,
-              letterSpacing: "-0.03em",
+              lineHeight: 1.1,
+              letterSpacing: "-0.01em",
               color: "var(--text)",
               margin: "0 0 16px 0",
               position: "relative",
@@ -197,14 +191,8 @@ export function Hero() {
           {/* Title */}
           <div style={{ position: "relative", marginBottom: "16px", paddingBottom: "12px" }}>
             <div
-              style={{
-                fontFamily: "var(--font-mono)",
-                fontSize: "clamp(11px, 2.5vw, 13px)",
-                letterSpacing: "0.12em",
-                color: "var(--accent-secondary)",
-                textTransform: "uppercase",
-              }}
-              className="boot-sequence"
+              className="badge badge--accent-secondary boot-sequence"
+              style={{ marginBottom: "8px", fontSize: "10px" }}
             >
               VLSI PHYSICAL DESIGN ENGINEER
             </div>
@@ -230,13 +218,112 @@ export function Hero() {
               fontSize: "clamp(14px, 3.5vw, 16px)",
               lineHeight: 1.7,
               color: "var(--text-secondary)",
-              margin: "0 0 clamp(20px, 4vw, 32px) 0",
+              margin: "0 0 clamp(16px, 3vw, 24px) 0",
               maxWidth: "520px",
             }}
           >
             Building hands-on expertise in VLSI Physical Design, STA and Tcl automation.
             Currently undergoing intensive training and building toward a career in Physical Design engineering.
           </p>
+
+          {/* Glass bar — key stats */}
+          <div
+            style={{
+              display: "flex",
+              gap: "clamp(16px, 3vw, 32px)",
+              padding: "clamp(12px, 2vw, 16px) clamp(16px, 3vw, 24px)",
+              background: "color-mix(in srgb, var(--surface-1) 60%, transparent)",
+              backdropFilter: "blur(12px)",
+              border: "1px solid rgba(255, 255, 255, 0.06)",
+              borderRadius: "12px",
+              marginBottom: "clamp(20px, 4vw, 32px)",
+              maxWidth: "fit-content",
+            }}
+          >
+            <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+              <span
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "clamp(18px, 3vw, 24px)",
+                  fontWeight: 600,
+                  color: "var(--accent)",
+                }}
+              >
+                6+
+              </span>
+              <span
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "9px",
+                  letterSpacing: "0.1em",
+                  color: "var(--text-muted)",
+                  textTransform: "uppercase",
+                }}
+              >
+                Tools
+              </span>
+            </div>
+            <div
+              style={{
+                width: "1px",
+                background: "var(--border-subtle)",
+                alignSelf: "stretch",
+              }}
+            />
+            <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+              <span
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "clamp(18px, 3vw, 24px)",
+                  fontWeight: 600,
+                  color: "var(--accent-secondary)",
+                }}
+              >
+                1
+              </span>
+              <span
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "9px",
+                  letterSpacing: "0.1em",
+                  color: "var(--text-muted)",
+                  textTransform: "uppercase",
+                }}
+              >
+                Project
+              </span>
+            </div>
+            <div
+              style={{
+                width: "1px",
+                background: "var(--border-subtle)",
+                alignSelf: "stretch",
+              }}
+            />
+            <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+              <span
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "clamp(18px, 3vw, 24px)",
+                  fontWeight: 600,
+                  color: "var(--warning)",
+                }}
+              >
+                2026
+              </span>
+              <span
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "9px",
+                  letterSpacing: "0.1em",
+                  color: "var(--text-muted)",
+                  textTransform: "uppercase",
+                }}
+              >
+                Graduate
+              </span>
+            </div>
+          </div>
 
           {/* CTAs — primary, secondary, social */}
           <div

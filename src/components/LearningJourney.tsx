@@ -223,14 +223,8 @@ export function LearningJourney() {
       >
         {/* Header */}
         <div
-          style={{
-            fontFamily: "var(--font-mono)",
-            fontSize: "10px",
-            letterSpacing: "0.15em",
-            color: "var(--text-muted)",
-            marginBottom: "12px",
-            textTransform: "uppercase",
-          }}
+          className="badge badge--muted"
+          style={{ marginBottom: "12px" }}
         >
           06 / FOUNDATION BUILT
         </div>
@@ -271,6 +265,7 @@ export function LearningJourney() {
             {PD_STAGES.map((stage) => (
               <div
                 key={stage.id}
+                className="surface-card"
                 style={{
                   background:
                     stage.status === "COMPLETED"
@@ -284,8 +279,8 @@ export function LearningJourney() {
                     : stage.status === "ACTIVE"
                       ? "3px solid color-mix(in srgb, var(--accent) 60%, transparent)"
                       : "3px solid var(--border-subtle)",
-                  borderRadius: "4px",
-                  padding: "14px 12px",
+                  borderRadius: "12px",
+                  padding: "clamp(16px, 2.5vw, 24px)",
                   cursor: "pointer",
                   transition: "all 0.3s ease",
                   minHeight: "110px",

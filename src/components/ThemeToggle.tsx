@@ -65,7 +65,16 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
         (e.currentTarget as HTMLElement).style.borderColor = "var(--border-subtle)";
       }}
     >
-      <span style={{ fontSize: "12px" }}>{isLight ? "☀" : "☾"}</span>
+      <span
+        style={{
+          fontSize: "12px",
+          display: "inline-block",
+          transition: "transform 0.3s ease",
+          transform: isLight ? "rotate(0deg)" : "rotate(180deg)",
+        }}
+      >
+        {isLight ? "☀" : "☾"}
+      </span>
     </button>
   );
 }

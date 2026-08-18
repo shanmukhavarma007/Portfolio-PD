@@ -71,14 +71,8 @@ export function EngineeringProfile() {
         {/* Left: profile info + metadata */}
         <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
           <div
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: "10px",
-              letterSpacing: "0.15em",
-              color: "var(--text-muted)",
-              marginBottom: "12px",
-              textTransform: "uppercase",
-            }}
+            className="badge badge--muted"
+            style={{ marginBottom: "12px" }}
           >
             01 / ENGINEERING PROFILE
           </div>
@@ -91,7 +85,7 @@ export function EngineeringProfile() {
               fontSize: "clamp(28px, 5vw, 48px)",
               fontWeight: 500,
               lineHeight: 1.15,
-              letterSpacing: "-0.02em",
+              letterSpacing: "-0.01em",
               color: "var(--text)",
               margin: "0 0 16px 0",
             }}
@@ -133,14 +127,8 @@ export function EngineeringProfile() {
                 }}
               >
                 <div
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: "9px",
-                    letterSpacing: "0.12em",
-                    color: "var(--text-muted)",
-                    textTransform: "uppercase",
-                    marginBottom: "4px",
-                  }}
+                  className="badge badge--muted"
+                  style={{ marginBottom: "4px", fontSize: "8px", padding: "2px 6px" }}
                 >
                   {item.label}
                 </div>
@@ -162,22 +150,19 @@ export function EngineeringProfile() {
 
         {/* Right: technical summary with progress bars */}
         <div
-          className="card-depth-border"
+          className="surface-card"
           style={{
             padding: "clamp(20px, 3vw, 32px)",
             background: "var(--surface-1)",
+            borderRadius: "12px",
           }}
         >
           <div
+            className="badge badge--muted"
             style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: "10px",
-              letterSpacing: "0.15em",
-              color: "var(--text-muted)",
               marginBottom: "clamp(20px, 3vw, 28px)",
               paddingBottom: "12px",
               borderBottom: "1px solid var(--border-subtle)",
-              textTransform: "uppercase",
             }}
           >
             TECHNICAL STATUS
@@ -206,24 +191,21 @@ export function EngineeringProfile() {
                     }}
                   />
                   <span
+                    className="badge"
                     style={{
-                      fontFamily: "var(--font-mono)",
-                      fontSize: "10px",
-                      letterSpacing: "0.12em",
                       color: group.statusColor,
-                      textTransform: "uppercase",
+                      padding: 0,
+                      border: "none",
+                      background: "transparent",
+                      fontSize: "10px",
                     }}
                   >
                     {group.title}
                   </span>
                 </div>
                 <span
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: "9px",
-                    letterSpacing: "0.06em",
-                    color: "var(--text-muted)",
-                  }}
+                  className="badge badge--muted"
+                  style={{ fontSize: "8px" }}
                 >
                   {group.statusLabel}
                 </span>

@@ -44,14 +44,8 @@ export function Contact() {
     >
       <div style={{ maxWidth: "1400px", margin: "0 auto", position: "relative" }}>
         <div
-          style={{
-            fontFamily: "var(--font-mono)",
-            fontSize: "10px",
-            letterSpacing: "0.15em",
-            color: "var(--text-muted)",
-            marginBottom: "12px",
-            textTransform: "uppercase",
-          }}
+          className="badge badge--muted"
+          style={{ marginBottom: "12px" }}
         >
           09 / LET&apos;S CONNECT
         </div>

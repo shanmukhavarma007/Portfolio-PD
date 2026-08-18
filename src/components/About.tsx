@@ -42,14 +42,8 @@ export function About() {
         {/* Left */}
         <div>
           <div
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: "10px",
-              letterSpacing: "0.15em",
-              color: "var(--text-muted)",
-              marginBottom: "12px",
-              textTransform: "uppercase",
-            }}
+            className="badge badge--muted"
+            style={{ marginBottom: "12px" }}
           >
             08 / ABOUT THE ENGINEER
           </div>
@@ -93,13 +87,8 @@ export function About() {
               }}
             >
               <div
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "9px",
-                  letterSpacing: "0.12em",
-                  color: "var(--text-muted)",
-                  textTransform: "uppercase",
-                }}
+                className="badge badge--muted"
+                style={{ fontSize: "8px", padding: "2px 6px" }}
               >
                 {item.label}
               </div>
