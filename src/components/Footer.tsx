@@ -11,7 +11,7 @@ export function Footer() {
       className="scroll-reveal"
       style={{
         borderTop: "1px solid var(--border-subtle)",
-        padding: "32px clamp(16px, 4vw, 48px)",
+        padding: "clamp(20px, 3vw, 32px) clamp(16px, 4vw, 48px)",
       }}
     >
       <div

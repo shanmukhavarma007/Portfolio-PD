@@ -36,7 +36,7 @@ export function StatusStrip() {
           <div
             key={item.label}
             style={{
-              padding: "16px 20px",
+              padding: "clamp(10px, 2vw, 16px) clamp(12px, 2vw, 20px)",
               borderRight:
                 i < STRIP_ITEMS.length - 1 ? "1px solid var(--border-subtle)" : "none",
             }}
@@ -49,7 +49,7 @@ export function StatusStrip() {
                 letterSpacing: "0.15em",
                 color: "var(--text-muted)",
                 textTransform: "uppercase",
-                marginBottom: "6px",
+                marginBottom: "4px",
               }}
             >
               {item.label}
@@ -57,10 +57,10 @@ export function StatusStrip() {
             <div
               style={{
                 fontFamily: "var(--font-mono)",
-                fontSize: "11px",
+                fontSize: "clamp(10px, 2vw, 11px)",
                 letterSpacing: "0.04em",
                 color: "var(--text-secondary)",
-                lineHeight: 1.4,
+                lineHeight: 1.3,
               }}
             >
               {item.value}

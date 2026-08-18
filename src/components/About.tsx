@@ -20,14 +20,13 @@ export function About() {
       ref={ref}
       className="scroll-reveal"
       style={{
-        padding: "clamp(48px, 8vw, 96px) clamp(16px, 4vw, 48px)",
+        padding: "clamp(32px, 6vw, 96px) clamp(16px, 4vw, 48px)",
         background: "var(--surface-1)",
         borderTop: "1px solid var(--border-subtle)",
         borderBottom: "1px solid var(--border-subtle)",
         position: "relative",
       }}
     >
-      {/* Decorative section number */}
       <div className="section-deco-number" aria-hidden="true">08</div>
 
       <div
@@ -36,7 +35,7 @@ export function About() {
           margin: "0 auto",
           display: "grid",
           gridTemplateColumns: "1fr",
-          gap: "48px",
+          gap: "clamp(24px, 4vw, 48px)",
           position: "relative",
         }}
         className="lg:!grid-cols-[7fr_5fr]"
@@ -55,11 +54,11 @@ export function About() {
           >
             08 / ABOUT THE ENGINEER
           </div>
-          <WaveformHr style={{ marginBottom: "32px" }} />
+          <WaveformHr style={{ marginBottom: "clamp(16px, 3vw, 32px)" }} />
           <p
             style={{
               fontFamily: "var(--font-body)",
-              fontSize: "16px",
+              fontSize: "clamp(14px, 3vw, 16px)",
               lineHeight: 1.7,
               color: "var(--text-secondary)",
               margin: 0,
@@ -73,32 +72,32 @@ export function About() {
           </p>
         </div>
 
-        {/* Right: metadata */}
+        {/* Right: metadata — stacked cards instead of grid rows */}
         <div
           style={{
             display: "flex",
             flexDirection: "column",
-            gap: "0",
-            borderTop: "1px solid var(--border-subtle)",
+            gap: "1px",
+            background: "var(--border-subtle)",
+            border: "1px solid var(--border-subtle)",
           }}
         >
           {METADATA.map((item) => (
             <div
               key={item.label}
               style={{
-                display: "grid",
-                gridTemplateColumns: "140px 1fr",
-                gap: "16px",
-                padding: "14px 0",
-                borderBottom: "1px solid var(--border-subtle)",
+                padding: "clamp(12px, 2vw, 16px)",
+                background: "var(--bg)",
+                display: "flex",
+                flexDirection: "column",
+                gap: "4px",
               }}
-              className="max-md:!grid-cols-1 max-md:!gap-1"
             >
               <div
                 style={{
                   fontFamily: "var(--font-mono)",
-                  fontSize: "10px",
-                  letterSpacing: "0.1em",
+                  fontSize: "9px",
+                  letterSpacing: "0.12em",
                   color: "var(--text-muted)",
                   textTransform: "uppercase",
                 }}
@@ -108,9 +107,10 @@ export function About() {
               <div
                 style={{
                   fontFamily: "var(--font-body)",
-                  fontSize: "14px",
+                  fontSize: "clamp(13px, 2.5vw, 15px)",
                   color: "var(--text)",
                   whiteSpace: "pre-line",
+                  lineHeight: 1.4,
                 }}
               >
                 {item.value}

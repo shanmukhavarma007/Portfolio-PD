@@ -37,7 +37,7 @@ export function Projects() {
       ref={ref}
       className="scroll-reveal"
       style={{
-        padding: "clamp(48px, 8vw, 96px) clamp(16px, 4vw, 48px)",
+        padding: "clamp(32px, 6vw, 96px) clamp(16px, 4vw, 48px)",
         background: "var(--surface-1)",
         borderTop: "1px solid var(--border-subtle)",
         borderBottom: "1px solid var(--border-subtle)",
@@ -61,7 +61,7 @@ export function Projects() {
         >
           04 / SELECTED WORK
         </div>
-        <WaveformHr style={{ marginBottom: "48px" }} />
+        <WaveformHr style={{ marginBottom: "clamp(24px, 4vw, 48px)" }} />
 
         {/* Project blocks */}
         {PROJECTS.map((project, i) => (

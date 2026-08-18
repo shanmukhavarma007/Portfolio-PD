@@ -3,214 +3,88 @@
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { WaveformHr } from "./WaveformHr";
 
-interface TechRow {
-  domain: string;
-  technologies: string;
-  status: string;
-  statusColor: string;
-}
-
-const TECH_ROWS: TechRow[] = [
-  {
-    domain: "Physical Design",
-    technologies: "Floorplan / Placement / CTS / Routing",
-    status: "LEARNING",
-    statusColor: "var(--warning)",
-  },
-  {
-    domain: "Timing",
-    technologies: "STA / Setup / Hold Analysis",
-    status: "PRACTICING",
-    statusColor: "var(--warning)",
-  },
-  {
-    domain: "Automation",
-    technologies: "Tcl — Variables / Control Flow / Procedures / Regexp / File I/O",
-    status: "COMPLETED / HANDS-ON",
-    statusColor: "var(--success)",
-  },
-  {
-    domain: "Systems",
-    technologies: "Linux / AWK / Shell",
-    status: "HANDS-ON",
-    statusColor: "var(--success)",
-  },
-  {
-    domain: "RTL",
-    technologies: "Verilog",
-    status: "FOUNDATION",
-    statusColor: "var(--accent-secondary)",
-  },
-  {
-    domain: "CMOS",
-    technologies: "CMOS Fundamentals / Digital Design",
-    status: "FOUNDATION",
-    statusColor: "var(--accent-secondary)",
-  },
+const TECH = [
+  { label: "Tcl", status: "STRONG", dots: 5 },
+  { label: "Linux / Shell", status: "STRONG", dots: 5 },
+  { label: "Python / AWK", status: "INTERMEDIATE", dots: 3 },
+  { label: "CMOS Fundamentals", status: "STRONG", dots: 5 },
+  { label: "Digital Design", status: "STRONG", dots: 5 },
+  { label: "Static Timing Analysis", status: "ACTIVE TRAINING", dots: 4 },
+  { label: "Physical Design Flow", status: "ACTIVE TRAINING", dots: 4 },
+  { label: "Low-Power Design", status: "FAMILIAR", dots: 2 },
+  { label: "RTL Design Basics", status: "FAMILIAR", dots: 2 },
+  { label: "Power Analysis", status: "USUALLY USE", dots: 3 },
 ];
 
-const EDA_ROWS: TechRow[] = [
-  {
-    domain: "Cadence Innovus",
-    technologies: "Physical Design / Implementation",
-    status: "INSTITUTE — TRAINING",
-    statusColor: "var(--accent)",
-  },
-  {
-    domain: "Cadence Tempus",
-    technologies: "Static Timing Analysis",
-    status: "INSTITUTE — TRAINING",
-    statusColor: "var(--accent)",
-  },
-  {
-    domain: "Cadence Genus",
-    technologies: "Synthesis",
-    status: "INSTITUTE — TRAINING",
-    statusColor: "var(--accent)",
-  },
-  {
-    domain: "OpenLane",
-    technologies: "RTL-to-GDSII / Open-source implementation flow",
-    status: "INSTALLED / EXPLORING",
-    statusColor: "var(--accent-secondary)",
-  },
+const EDA = [
+  { label: "Cadence Innovus", status: "TRAINING", dots: 4 },
+  { label: "Cadence Tempus", status: "TRAINING", dots: 4 },
+  { label: "Cadence Genus", status: "TRAINING", dots: 4 },
+  { label: "OpenLane", status: "EXPLORING", dots: 2 },
 ];
 
-function TableSection({
-  title,
-  rows,
-}: {
-  title: string;
-  rows: TechRow[];
-}) {
+const STATUS_STYLES: Record<string, { color: string; bg: string }> = {
+  STRONG: { color: "var(--accent-secondary)", bg: "color-mix(in srgb, var(--accent-secondary) 8%, transparent)" },
+  "ACTIVE TRAINING": { color: "var(--warning)", bg: "color-mix(in srgb, var(--warning) 8%, transparent)" },
+  TRAINING: { color: "var(--accent)", bg: "color-mix(in srgb, var(--accent) 8%, transparent)" },
+  INTERMEDIATE: { color: "var(--accent-secondary)", bg: "color-mix(in srgb, var(--accent-secondary) 5%, transparent)" },
+  "USUALLY USE": { color: "var(--accent-secondary)", bg: "color-mix(in srgb, var(--accent-secondary) 5%, transparent)" },
+  FAMILIAR: { color: "var(--text-muted)", bg: "transparent" },
+  EXPLORING: { color: "var(--text-muted)", bg: "transparent" },
+};
+
+function SkillCard({ label, status, dots }: { label: string; status: string; dots: number }) {
+  const style = STATUS_STYLES[status] || STATUS_STYLES.FAMILIAR;
+
   return (
-    <div style={{ marginBottom: "48px" }}>
-      {title && (
-        <div
+    <div
+      style={{
+        padding: "clamp(12px, 2vw, 16px)",
+        background: style.bg,
+        border: "1px solid var(--border-subtle)",
+        display: "flex",
+        flexDirection: "column",
+        gap: "8px",
+      }}
+    >
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "8px" }}>
+        <span
+          style={{
+            fontFamily: "var(--font-body)",
+            fontSize: "clamp(14px, 3vw, 16px)",
+            fontWeight: 500,
+            color: "var(--text)",
+          }}
+        >
+          {label}
+        </span>
+        <span
           style={{
             fontFamily: "var(--font-mono)",
-            fontSize: "10px",
-            letterSpacing: "0.12em",
-            color: "var(--text-muted)",
-            marginBottom: "16px",
-            textTransform: "uppercase",
+            fontSize: "9px",
+            letterSpacing: "0.08em",
+            color: style.color,
+            padding: "2px 6px",
+            border: `1px solid color-mix(in srgb, ${style.color} 30%, transparent)`,
+            flexShrink: 0,
           }}
         >
-          {title}
-        </div>
-      )}
-      <div style={{ borderTop: "1px solid var(--border-subtle)" }}>
-        {/* Header row */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "180px 1fr 160px",
-            gap: "24px",
-            padding: "12px 16px",
-            borderBottom: "1px solid var(--border-subtle)",
-            background: "var(--surface-1)",
-          }}
-          className="max-md:!grid-cols-1 max-md:!gap-1"
-        >
+          {status}
+        </span>
+      </div>
+      {/* Visual dot indicators */}
+      <div style={{ display: "flex", gap: "4px", alignItems: "center" }}>
+        {Array.from({ length: 5 }).map((_, i) => (
           <div
+            key={i}
             style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: "9px",
-              letterSpacing: "0.12em",
-              color: "var(--text-muted)",
-              textTransform: "uppercase",
+              width: "8px",
+              height: "8px",
+              borderRadius: "50%",
+              background: i < dots ? style.color : "var(--border-subtle)",
+              transition: "background 0.3s ease",
             }}
-          >
-            DOMAIN
-          </div>
-          <div
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: "9px",
-              letterSpacing: "0.12em",
-              color: "var(--text-muted)",
-              textTransform: "uppercase",
-            }}
-          >
-            TECHNOLOGIES
-          </div>
-          <div
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: "9px",
-              letterSpacing: "0.12em",
-              color: "var(--text-muted)",
-              textTransform: "uppercase",
-            }}
-          >
-            STATUS
-          </div>
-        </div>
-
-        {/* Data rows */}
-        {rows.map((row) => (
-          <div
-            key={row.domain}
-            style={{
-              display: "grid",
-              gridTemplateColumns: "180px 1fr 160px",
-              gap: "24px",
-              padding: "14px 16px",
-              borderBottom: "1px solid var(--border-subtle)",
-              transition: "background 0.15s ease",
-              cursor: "default",
-            }}
-            className="max-md:!grid-cols-1 max-md:!gap-1 hover:!bg-[var(--surface-2)]"
-          >
-            <div
-              style={{
-                fontFamily: "var(--font-display)",
-                fontSize: "14px",
-                fontWeight: 500,
-                color: "var(--text)",
-              }}
-            >
-              {row.domain}
-            </div>
-            <div
-              style={{
-                fontFamily: "var(--font-body)",
-                fontSize: "13px",
-                color: "var(--text-secondary)",
-              }}
-            >
-              {row.technologies}
-            </div>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "6px",
-              }}
-            >
-              <span
-                className="status-dot-pulse"
-                style={{
-                  width: "5px",
-                  height: "5px",
-                  borderRadius: "50%",
-                  background: row.statusColor,
-                  color: row.statusColor,
-                  flexShrink: 0,
-                }}
-              />
-              <span
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "10px",
-                  letterSpacing: "0.08em",
-                  color: row.statusColor,
-                }}
-              >
-                {row.status}
-              </span>
-            </div>
-          </div>
+          />
         ))}
       </div>
     </div>
@@ -225,15 +99,13 @@ export function TechnicalMatrix() {
       ref={ref}
       className="scroll-reveal"
       style={{
-        padding: "clamp(48px, 8vw, 96px) clamp(16px, 4vw, 48px)",
+        padding: "clamp(32px, 6vw, 96px) clamp(16px, 4vw, 48px)",
         position: "relative",
       }}
     >
-      {/* Decorative section number */}
       <div className="section-deco-number" aria-hidden="true">03</div>
 
-      <div style={{ maxWidth: "1400px", margin: "0 auto", position: "relative" }}>
-        {/* Header */}
+      <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
         <div
           style={{
             fontFamily: "var(--font-mono)",
@@ -244,12 +116,87 @@ export function TechnicalMatrix() {
             textTransform: "uppercase",
           }}
         >
-          03 / TECHNICAL ARSENAL
+          03 / TECHNICAL MATRIX
         </div>
-        <WaveformHr style={{ marginBottom: "48px" }} />
 
-        <TableSection title="" rows={TECH_ROWS} />
-        <TableSection title="EDA ENVIRONMENT" rows={EDA_ROWS} />
+        <WaveformHr style={{ marginBottom: "clamp(20px, 4vw, 32px)" }} />
+
+        {/* TECH section */}
+        <h3
+          style={{
+            fontFamily: "var(--font-display)",
+            fontSize: "clamp(20px, 4vw, 32px)",
+            fontWeight: 500,
+            color: "var(--text)",
+            margin: "0 0 4px 0",
+          }}
+        >
+          Tech & Skills
+        </h3>
+        <p
+          style={{
+            fontFamily: "var(--font-mono)",
+            fontSize: "11px",
+            color: "var(--text-muted)",
+            letterSpacing: "0.06em",
+            margin: "0 0 clamp(16px, 3vw, 24px) 0",
+          }}
+        >
+          Programming and core EDA domain knowledge
+        </p>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(2, 1fr)",
+            gap: "1px",
+            background: "var(--border-subtle)",
+            border: "1px solid var(--border-subtle)",
+            marginBottom: "clamp(32px, 5vw, 48px)",
+          }}
+        >
+          {TECH.map((t) => (
+            <SkillCard key={t.label} {...t} />
+          ))}
+        </div>
+
+        {/* EDA section */}
+        <h3
+          style={{
+            fontFamily: "var(--font-display)",
+            fontSize: "clamp(20px, 4vw, 32px)",
+            fontWeight: 500,
+            color: "var(--text)",
+            margin: "0 0 4px 0",
+          }}
+        >
+          EDA Tools
+        </h3>
+        <p
+          style={{
+            fontFamily: "var(--font-mono)",
+            fontSize: "11px",
+            color: "var(--text-muted)",
+            letterSpacing: "0.06em",
+            margin: "0 0 clamp(16px, 3vw, 24px) 0",
+          }}
+        >
+          Commercial and open-source implementation tools
+        </p>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(2, 1fr)",
+            gap: "1px",
+            background: "var(--border-subtle)",
+            border: "1px solid var(--border-subtle)",
+          }}
+        >
+          {EDA.map((t) => (
+            <SkillCard key={t.label} {...t} />
+          ))}
+        </div>
       </div>
     </section>
   );

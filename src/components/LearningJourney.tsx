@@ -80,7 +80,7 @@ export function LearningJourney() {
       ref={ref}
       className="scroll-reveal"
       style={{
-        padding: "clamp(48px, 8vw, 96px) clamp(16px, 4vw, 48px)",
+        padding: "clamp(32px, 6vw, 96px) clamp(16px, 4vw, 48px)",
         background: "var(--surface-1)",
         borderTop: "1px solid var(--border-subtle)",
         borderBottom: "1px solid var(--border-subtle)",
@@ -147,7 +147,7 @@ export function LearningJourney() {
         >
           06 / FOUNDATION BUILT
         </div>
-        <WaveformHr style={{ marginBottom: "48px" }} />
+        <WaveformHr style={{ marginBottom: "clamp(24px, 4vw, 48px)" }} />
 
         {/* Main content: heading + foundation map */}
         <div
@@ -700,7 +700,7 @@ export function LearningJourney() {
         {/* Transition strip */}
         <div
           style={{
-            marginTop: "56px",
+            marginTop: "clamp(32px, 5vw, 56px)",
             textAlign: "center",
           }}
         >
@@ -732,7 +732,7 @@ export function LearningJourney() {
               letterSpacing: "0.2em",
               color: "var(--accent-secondary)",
               marginTop: "4px",
-              marginBottom: "36px",
+              marginBottom: "clamp(20px, 3vw, 36px)",
             }}
           >
             CURRENTLY BUILDING

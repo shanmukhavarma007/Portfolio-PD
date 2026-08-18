@@ -37,7 +37,7 @@ export function Contact() {
       ref={ref}
       className="scroll-reveal"
       style={{
-        padding: "clamp(48px, 8vw, 96px) clamp(16px, 4vw, 48px)",
+        padding: "clamp(32px, 6vw, 96px) clamp(16px, 4vw, 48px)",
         position: "relative",
       }}
     >
@@ -57,7 +57,7 @@ export function Contact() {
         >
           09 / LET&apos;S CONNECT
         </div>
-        <WaveformHr style={{ marginBottom: "48px" }} />
+        <WaveformHr style={{ marginBottom: "clamp(24px, 4vw, 48px)" }} />
 
         <div
           style={{
