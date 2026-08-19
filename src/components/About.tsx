@@ -86,14 +86,16 @@ export function About() {
           <h3 className="mb-6 font-mono text-xs font-semibold uppercase tracking-widest text-sky-600 dark:text-cyan-400">
             Journey So Far
           </h3>
-          <div className="space-y-6">
-            {TIMELINE.map((step) => (
-              <div key={step.year} className="flex gap-4">
+          <div>
+            {TIMELINE.map((step, i) => (
+              <div key={step.year} className={`flex gap-4${i < TIMELINE.length - 1 ? " pb-6" : ""}`}>
                 <div className="flex flex-col items-center">
                   <span className="font-mono text-xs font-bold text-slate-900 dark:text-slate-100">
                     {step.year}
                   </span>
-                  <div className="mt-1 h-full w-px bg-slate-200 dark:bg-slate-700" />
+                  {i < TIMELINE.length - 1 && (
+                    <div className="mt-1 w-px flex-1 bg-slate-200 dark:bg-slate-700" />
+                  )}
                 </div>
                 <div className="pb-2">
                   <h4 className="text-sm font-semibold text-slate-900 dark:text-slate-100">

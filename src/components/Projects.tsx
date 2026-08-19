@@ -226,7 +226,7 @@ export function Projects() {
               >
                 <div
                   className="badge badge--muted"
-                  style={{ marginBottom: "20px" }}
+                  style={{ marginBottom: "20px", alignSelf: "flex-start" }}
                 >
                   PROCESSING FLOW
                 </div>
@@ -238,7 +238,7 @@ export function Projects() {
                   }}
                 >
                   {project.flow.map((step, si) => (
-                    <div key={step} style={{ display: "flex", alignItems: "center" }}>
+                    <div key={step} style={{ display: "flex", flexDirection: "column" }}>
                       <div
                         style={{
                           display: "flex",
@@ -282,7 +282,7 @@ export function Projects() {
                             width: "1px",
                             height: "20px",
                             background: "var(--border-subtle)",
-                            marginLeft: "31px",
+                            marginLeft: "2.5px",
                           }}
                         />
                       )}

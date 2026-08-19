@@ -37,6 +37,7 @@ export default function RootLayout({
       lang="en"
       data-theme="dark"
       className={`${inter.variable} ${jetbrainsMono.variable}`}
+      suppressHydrationWarning
     >
       <head>
         {/* Geist Sans via CDN */}
