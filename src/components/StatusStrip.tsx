@@ -14,10 +14,8 @@ export function StatusStrip() {
   return (
     <div
       ref={ref}
-      className="scroll-reveal"
+      className="scroll-reveal section-divider-top section-divider-bottom"
       style={{
-        borderTop: "1px solid var(--border-subtle)",
-        borderBottom: "1px solid var(--border-subtle)",
         background: "color-mix(in srgb, var(--surface-1) 80%, transparent)",
       }}
     >

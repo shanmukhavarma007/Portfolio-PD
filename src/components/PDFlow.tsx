@@ -80,12 +80,10 @@ export function PDFlow() {
   return (
     <section
       ref={ref}
-      className="scroll-reveal section-glow"
+      className="scroll-reveal section-glow section-divider-top section-divider-bottom"
       style={{
         padding: "clamp(32px, 6vw, 96px) clamp(16px, 4vw, 48px)",
         background: "var(--surface-1)",
-        borderTop: "1px solid var(--border-subtle)",
-        borderBottom: "1px solid var(--border-subtle)",
         position: "relative",
         overflow: "hidden",
       }}

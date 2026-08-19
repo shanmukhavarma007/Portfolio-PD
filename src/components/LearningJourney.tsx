@@ -199,11 +199,9 @@ export function LearningJourney() {
     <section
       id="journey"
       ref={ref}
-      className="scroll-reveal section-container section-glow"
+      className="scroll-reveal section-container section-glow section-divider-top section-divider-bottom"
       style={{
         background: "var(--surface-1)",
-        borderTop: "1px solid var(--border-subtle)",
-        borderBottom: "1px solid var(--border-subtle)",
         position: "relative",
         overflow: "hidden",
       }}
@@ -566,7 +564,8 @@ export function LearningJourney() {
                       flexWrap: "wrap",
                       gap: "8px",
                       paddingTop: "12px",
-                      borderTop: "1px solid var(--border-subtle)",
+                      borderTop: "1px solid transparent",
+                      borderImage: "linear-gradient(90deg, transparent, var(--border-subtle) 20%, var(--border-subtle) 80%, transparent) 1",
                     }}
                   >
                     {stage.links.map((link) => (

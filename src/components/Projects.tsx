@@ -39,11 +39,9 @@ export function Projects() {
     <section
       id="work"
       ref={ref}
-      className="scroll-reveal section-container section-glow"
+      className="scroll-reveal section-container section-glow section-divider-top section-divider-bottom"
       style={{
         background: "var(--surface-1)",
-        borderTop: "1px solid var(--border-subtle)",
-        borderBottom: "1px solid var(--border-subtle)",
       }}
     >
       <div style={{ maxWidth: "1400px", margin: "0 auto", position: "relative" }}>

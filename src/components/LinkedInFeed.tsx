@@ -49,11 +49,7 @@ export function LinkedInFeed() {
   return (
     <section
       id="activity"
-      className="section-container section-glow"
-      style={{
-        borderTop: "1px solid var(--border-subtle)",
-        borderBottom: "1px solid var(--border-subtle)",
-      }}
+      className="section-container section-glow section-divider-top section-divider-bottom"
     >
       <Script
         src="https://elfsightcdn.com/platform.js"
@@ -172,7 +168,6 @@ export function LinkedInFeed() {
                 padding: "48px 0",
                 textAlign: "center",
                 borderTop: "1px solid var(--border-subtle)",
-                borderBottom: "1px solid var(--border-subtle)",
               }}
             >
               <div
