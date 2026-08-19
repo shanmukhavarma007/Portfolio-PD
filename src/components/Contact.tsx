@@ -57,7 +57,7 @@ export function Contact() {
               fontWeight: 600,
               lineHeight: 1.15,
               letterSpacing: "-0.01em",
-              color: "#0F172A",
+              color: "var(--text)",
               margin: "0 0 12px 0",
             }}
           >
@@ -68,7 +68,7 @@ export function Contact() {
               fontFamily: "var(--font-body)",
               fontSize: "clamp(14px, 2.5vw, 16px)",
               lineHeight: 1.6,
-              color: "#475569",
+              color: "var(--text-secondary)",
               margin: "0 0 clamp(24px, 4vw, 32px) 0",
               maxWidth: "480px",
               marginLeft: "auto",
@@ -89,118 +89,49 @@ export function Contact() {
               flexWrap: "wrap",
             }}
           >
-            <a
-              href="https://github.com/shanmukhavarma007"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="card"
-              style={{
-                padding: "16px 24px",
-                textDecoration: "none",
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                transition: "all 0.2s ease",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.borderColor = "#0284C7";
-                (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.borderColor = "";
-                (e.currentTarget as HTMLElement).style.transform = "";
-              }}
-            >
-              <span style={{ fontSize: "18px" }}>GitHub</span>
-              <span
+            {LINKS.map((link) => (
+              <a
+                key={link.label}
+                href={link.href}
+                download={"download" in link ? link.download : undefined}
+                aria-label={"ariaLabel" in link ? link.ariaLabel : undefined}
+                target={link.external ? "_blank" : undefined}
+                rel={link.external ? "noopener noreferrer" : undefined}
+                className="card"
                 style={{
+                  padding: "16px 24px",
+                  textDecoration: "none",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
                   fontFamily: "var(--font-mono)",
-                  fontSize: "10px",
-                  color: "#64748B",
+                  fontSize: "12px",
+                  letterSpacing: "0.06em",
+                  color: "var(--text-secondary)",
+                }}
+                onMouseEnter={(e) => {
+                  const el = e.currentTarget as HTMLElement;
+                  el.style.borderColor = "rgba(56, 189, 248, 0.7)";
+                  el.style.boxShadow = "0 0 14px rgba(56, 189, 248, 0.3)";
+                  el.style.color = "var(--text)";
+                  el.style.transform = "translateY(-2px)";
+                }}
+                onMouseLeave={(e) => {
+                  const el = e.currentTarget as HTMLElement;
+                  el.style.borderColor = "";
+                  el.style.boxShadow = "";
+                  el.style.color = "var(--text-secondary)";
+                  el.style.transform = "";
                 }}
               >
-                ↗
-              </span>
-            </a>
-            <a
-              href="https://www.linkedin.com/in/shanmukhavarma-penmetsa/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="card"
-              style={{
-                padding: "16px 24px",
-                textDecoration: "none",
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                transition: "all 0.2s ease",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.borderColor = "#0284C7";
-                (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.borderColor = "";
-                (e.currentTarget as HTMLElement).style.transform = "";
-              }}
-            >
-              <span style={{ fontSize: "18px" }}>LinkedIn</span>
-              <span
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "10px",
-                  color: "#64748B",
-                }}
-              >
-                ↗
-              </span>
-            </a>
-            <a
-              href="mailto:psvarma.e@gmail.com"
-              className="card"
-              style={{
-                padding: "16px 24px",
-                textDecoration: "none",
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                transition: "all 0.2s ease",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.borderColor = "#0284C7";
-                (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.borderColor = "";
-                (e.currentTarget as HTMLElement).style.transform = "";
-              }}
-            >
-              <span style={{ fontSize: "18px" }}>Email</span>
-            </a>
-            <a
-              href="/resume.pdf"
-              download="Shanmukha_Varma_Resume.pdf"
-              aria-label="Download Shanmukha Varma resume PDF"
-              className="card"
-              style={{
-                padding: "16px 24px",
-                textDecoration: "none",
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                transition: "all 0.2s ease",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.borderColor = "#0284C7";
-                (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.borderColor = "";
-                (e.currentTarget as HTMLElement).style.transform = "";
-              }}
-            >
-              <span style={{ fontSize: "18px" }}>Resume</span>
-            </a>
+                <span>{link.label}</span>
+                {link.external && (
+                  <span style={{ fontFamily: "var(--font-mono)", fontSize: "10px", opacity: 0.6 }}>
+                    ↗
+                  </span>
+                )}
+              </a>
+            ))}
           </div>
         </div>
       </div>

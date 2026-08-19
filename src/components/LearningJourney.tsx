@@ -199,7 +199,7 @@ export function LearningJourney() {
     <section
       id="journey"
       ref={ref}
-      className="scroll-reveal section-container"
+      className="scroll-reveal section-container section-glow"
       style={{
         background: "var(--surface-1)",
         borderTop: "1px solid var(--border-subtle)",

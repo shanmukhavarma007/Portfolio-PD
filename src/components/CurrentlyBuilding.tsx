@@ -26,7 +26,7 @@ export function CurrentlyBuilding() {
   return (
     <section
       ref={ref}
-      className="scroll-reveal section-container"
+      className="scroll-reveal section-container section-glow"
     >
       <div style={{ maxWidth: "1400px", margin: "0 auto", position: "relative" }}>
         <SectionHeader index="05" title="Currently Building" />

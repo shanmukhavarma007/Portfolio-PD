@@ -122,7 +122,7 @@ export function TechnicalMatrix() {
   return (
     <section
       ref={ref}
-      className="scroll-reveal section-container"
+      className="scroll-reveal section-container section-glow"
     >
       <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
         <SectionHeader index="03" title="Technical Matrix" />

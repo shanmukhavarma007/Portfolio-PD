@@ -49,7 +49,7 @@ export function LinkedInFeed() {
   return (
     <section
       id="activity"
-      className="section-container"
+      className="section-container section-glow"
       style={{
         borderTop: "1px solid var(--border-subtle)",
         borderBottom: "1px solid var(--border-subtle)",

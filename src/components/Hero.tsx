@@ -41,7 +41,7 @@ export function Hero() {
           transform: "translateX(-50%)",
           width: "min(700px, 90vw)",
           height: "min(700px, 90vw)",
-          background: "radial-gradient(circle, color-mix(in srgb, var(--accent) 10%, transparent) 0%, transparent 65%)",
+          background: "radial-gradient(circle, color-mix(in srgb, var(--accent) 14%, transparent) 0%, transparent 65%)",
           pointerEvents: "none",
           zIndex: 0,
         }}
@@ -220,50 +220,35 @@ export function Hero() {
           >
             <a
               href="#contact"
-              className="btn-hover-lift"
+              className="btn-hover-lift glow-btn-primary"
               style={{
                 fontFamily: "var(--font-mono)",
                 fontSize: "12px",
                 letterSpacing: "0.08em",
                 padding: "14px 28px",
-                background: "#0F172A",
                 color: "#FFF",
                 textDecoration: "none",
                 display: "inline-block",
                 textAlign: "center",
                 borderRadius: "8px",
               }}
-              onMouseEnter={(e) => {
-                (e.target as HTMLElement).style.background = "#1E293B";
-              }}
-              onMouseLeave={(e) => {
-                (e.target as HTMLElement).style.background = "#0F172A";
-              }}
             >
               GET IN TOUCH
             </a>
             <a
               href="#work"
-              className="btn-hover-lift"
+              className="btn-hover-lift glow-btn-ghost"
               style={{
                 fontFamily: "var(--font-mono)",
                 fontSize: "12px",
                 letterSpacing: "0.08em",
                 padding: "14px 28px",
-                border: "1px solid #E2E8F0",
-                color: "#475569",
+                color: "var(--text-secondary)",
                 textDecoration: "none",
                 display: "inline-block",
                 textAlign: "center",
                 borderRadius: "8px",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.borderColor = "#0284C7";
-                (e.currentTarget as HTMLElement).style.color = "#0284C7";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.borderColor = "#E2E8F0";
-                (e.currentTarget as HTMLElement).style.color = "#475569";
+                background: "transparent",
               }}
             >
               VIEW LAB REPORTS

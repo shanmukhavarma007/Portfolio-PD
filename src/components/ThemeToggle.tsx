@@ -52,17 +52,19 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
         fontSize: "11px",
         color: "var(--text-muted)",
         letterSpacing: "0.04em",
-        transition: "color 0.2s ease, border-color 0.2s ease",
+        transition: "color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease",
         lineHeight: 1,
         flexShrink: 0,
       }}
       onMouseEnter={(e) => {
         (e.currentTarget as HTMLElement).style.color = "var(--text)";
-        (e.currentTarget as HTMLElement).style.borderColor = "var(--border)";
+        (e.currentTarget as HTMLElement).style.borderColor = "var(--accent)";
+        (e.currentTarget as HTMLElement).style.boxShadow = "0 0 12px rgba(56, 189, 248, 0.25)";
       }}
       onMouseLeave={(e) => {
         (e.currentTarget as HTMLElement).style.color = "var(--text-muted)";
         (e.currentTarget as HTMLElement).style.borderColor = "var(--border-subtle)";
+        (e.currentTarget as HTMLElement).style.boxShadow = "none";
       }}
     >
       <span

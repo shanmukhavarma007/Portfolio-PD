@@ -80,7 +80,7 @@ export function Footer() {
               textDecoration: "none",
             }}
             onMouseEnter={(e) => {
-              (e.target as HTMLElement).style.color = "var(--text)";
+              (e.target as HTMLElement).style.color = "var(--accent)";
             }}
             onMouseLeave={(e) => {
               (e.target as HTMLElement).style.color = "var(--text-muted)";
@@ -101,7 +101,7 @@ export function Footer() {
               textDecoration: "none",
             }}
             onMouseEnter={(e) => {
-              (e.target as HTMLElement).style.color = "var(--text)";
+              (e.target as HTMLElement).style.color = "var(--accent)";
             }}
             onMouseLeave={(e) => {
               (e.target as HTMLElement).style.color = "var(--text-muted)";
@@ -120,7 +120,7 @@ export function Footer() {
               textDecoration: "none",
             }}
             onMouseEnter={(e) => {
-              (e.target as HTMLElement).style.color = "var(--text)";
+              (e.target as HTMLElement).style.color = "var(--accent)";
             }}
             onMouseLeave={(e) => {
               (e.target as HTMLElement).style.color = "var(--text-muted)";

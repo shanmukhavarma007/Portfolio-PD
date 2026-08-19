@@ -264,6 +264,11 @@ h1, h2, h3, h4, h5, h6 {
   border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
 }
 
+[data-theme="dark"] .badge--accent {
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.15);
+  border-color: rgba(56, 189, 248, 0.4);
+}
+
 .badge--accent-secondary {
   color: var(--accent-secondary);
   background: color-mix(in srgb, var(--accent-secondary) 10%, transparent);
@@ -309,6 +314,43 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 0 4px 16px color-mix(in srgb, var(--accent) 10%, transparent);
 }
 
+[data-theme="dark"] .card:hover {
+  border-color: rgba(56, 189, 248, 0.4);
+  box-shadow: 0 0 20px rgba(56, 189, 248, 0.12), 0 4px 24px rgba(0, 0, 0, 0.4);
+}
+
+/* ─── Dark Mode Glow — Interactive Elements Only ─── */
+
+/* Primary CTA button */
+[data-theme="dark"] .glow-btn-primary {
+  background: #0284c7;
+  color: #ffffff;
+  box-shadow: 0 0 16px rgba(2, 132, 199, 0.4);
+  transition: box-shadow 0.2s ease, transform 0.15s ease;
+}
+
+[data-theme="dark"] .glow-btn-primary:hover {
+  box-shadow: 0 0 24px rgba(56, 189, 248, 0.65);
+  transform: translateY(-1px);
+}
+
+/* Ghost / Secondary button */
+[data-theme="dark"] .glow-btn-ghost {
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  box-shadow: inset 0 0 10px rgba(56, 189, 248, 0.1);
+}
+
+[data-theme="dark"] .glow-btn-ghost:hover {
+  border-color: #38bdf8;
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.35);
+}
+
+/* Theme toggle */
+[data-theme="dark"] .glow-toggle:hover {
+  border-color: rgba(56, 189, 248, 0.8);
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.45);
+}
+
 /* Silicon Paper — Status card variants for light mode */
 [data-theme="light"] .card--mastered {
   background: #F0FDFA;
@@ -344,6 +386,11 @@ h1, h2, h3, h4, h5, h6 {
 
 .glass-nav.scrolled {
   background: color-mix(in srgb, var(--bg) 95%, transparent);
+}
+
+[data-theme="dark"] .glass-nav.scrolled {
+  border-bottom-color: rgba(56, 189, 248, 0.12);
+  box-shadow: 0 1px 20px rgba(14, 165, 233, 0.06);
 }
 
 /* ─── Cursor Glow Card ─── */

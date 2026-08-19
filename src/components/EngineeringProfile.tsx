@@ -3,43 +3,41 @@
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { SectionHeader } from "./SectionHeader";
 
-const EDUCATION = {
-  degree: "B.Tech — ECE",
-  period: "2022 – 2026",
-  institution: "Vignan's Institute of Information Technology",
-  location: "Hyderabad, India",
-};
-
-const TRAINING = {
-  role: "VLSI Physical Design Trainee",
-  company: "Sumedha IT",
-  status: "In Progress",
-};
-
-const FOCUS_AREAS = [
-  { label: "Physical Design", primary: true },
-  { label: "Static Timing Analysis" },
-  { label: "RTL Synthesis" },
-  { label: "PDN & Routing" },
-  { label: "Tcl Automation" },
+const STACK_GRID = [
+  {
+    category: "EDA Tools",
+    color: "var(--accent)",
+    items: ["Innovus", "Tempus", "Genus", "PrimeTime", "OpenLane"],
+  },
+  {
+    category: "Physical Design",
+    color: "var(--accent-secondary)",
+    items: ["Floorplan", "Placement", "CTS", "Routing", "Signoff"],
+  },
+  {
+    category: "Analysis & Verification",
+    color: "var(--success)",
+    items: ["STA", "Power Analysis", "IR Drop", "DRC", "LVS"],
+  },
+  {
+    category: "Scripting & Automation",
+    color: "var(--warning)",
+    items: ["Tcl", "Python", "AWK", "Shell / Bash"],
+  },
+  {
+    category: "Foundation",
+    color: "var(--text-muted)",
+    items: ["Digital Design", "CMOS", "RTL / Verilog", "Linux"],
+  },
 ];
 
-const SKILL_GROUPS = [
-  {
-    title: "Foundation",
-    items: ["Digital Design", "CMOS", "Linux", "Tcl"],
-    progress: 100,
-  },
-  {
-    title: "Active Development",
-    items: ["Physical Design", "STA", "EDA Flow"],
-    progress: 65,
-  },
-  {
-    title: "EDA Tools",
-    items: ["Innovus", "Tempus", "Genus", "OpenLane"],
-    progress: 45,
-  },
+const COMPETENCIES = [
+  { label: "RTL-to-GDSII Flow", value: "Full Pipeline", description: "End-to-end ASIC implementation from register-transfer level to tapeout-ready GDSII stream" },
+  { label: "Timing Closure", value: "Multi-Corner", description: "Setup / hold analysis, OCV / AOCV derating, clock树 synthesis and skew minimization" },
+  { label: "Physical Verification", value: "Signoff-Grade", description: "DRC, LVS, antenna rule checking, and density compliance across metal layers" },
+  { label: "Power Architecture", value: "PDN Design", description: "Power grid planning, IR-drop analysis, electromigration checks, and low-power domain isolation" },
+  { label: "EDA Automation", value: "Tcl / Python", description: "Custom tool flows, batch report parsing, constraint generation, and layout scripting" },
+  { label: "Synthesis & Constraints", value: "SDC-Driven", description: "Logic synthesis with Genus, SDC constraint writing, area-timing tradeoff optimization" },
 ];
 
 export function EngineeringProfile() {
@@ -49,24 +47,10 @@ export function EngineeringProfile() {
     <section
       id="engineering"
       ref={ref}
-      className="scroll-reveal section-container"
+      className="scroll-reveal section-container section-glow"
     >
       <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
-        <SectionHeader index="01" title="Engineering Profile" />
-
-        <h2
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "clamp(28px, 5vw, 48px)",
-            fontWeight: 600,
-            lineHeight: 1.15,
-            letterSpacing: "-0.01em",
-            color: "var(--text)",
-            margin: "0 0 16px 0",
-          }}
-        >
-          Engineering Profile
-        </h2>
+        <SectionHeader index="01" title="Technical Capabilities &amp; Stack Architecture" />
 
         <p
           style={{
@@ -75,96 +59,97 @@ export function EngineeringProfile() {
             lineHeight: 1.6,
             color: "var(--text-secondary)",
             margin: "0 0 clamp(24px, 4vw, 40px) 0",
-            maxWidth: "480px",
+            maxWidth: "640px",
           }}
         >
-          Education, active training, and core focus areas in VLSI physical design.
+          Complete ASIC physical design toolchain — from RTL synthesis through signoff, backed by strong EDA automation and foundational VLSI knowledge.
         </p>
 
-        {/* 2-Column Bento Grid */}
+        {/* Core Stack Grid */}
         <div
           style={{
             display: "grid",
             gridTemplateColumns: "1fr",
-            gap: "16px",
+            gap: "1px",
+            background: "var(--border-subtle)",
+            border: "1px solid var(--border-subtle)",
+            borderRadius: "12px",
+            overflow: "hidden",
+            marginBottom: "clamp(24px, 4vw, 40px)",
           }}
-          className="lg:!grid-cols-[1fr_1fr]"
+          className="sm:!grid-cols-2 lg:!grid-cols-3"
         >
-          {/* Left Column: Education & Training */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-            {/* Education Card */}
+          {STACK_GRID.map((group) => (
             <div
-              className="card"
+              key={group.category}
               style={{
-                padding: "clamp(20px, 3vw, 28px)",
+                padding: "clamp(16px, 2.5vw, 24px)",
+                background: "var(--bg)",
+                display: "flex",
+                flexDirection: "column",
+                gap: "10px",
               }}
             >
-              <div style={{ marginBottom: "clamp(16px, 2vw, 20px)" }}>
-                <span
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: "10px",
-                    letterSpacing: "0.1em",
-                    textTransform: "uppercase",
-                    color: "var(--accent)",
-                  }}
-                >
-                  Education
-                </span>
-              </div>
-
-              <div style={{ marginBottom: "12px" }}>
-                <h3
-                  style={{
-                    fontFamily: "var(--font-display)",
-                    fontSize: "clamp(18px, 3vw, 22px)",
-                    fontWeight: 600,
-                    lineHeight: 1.2,
-                    color: "var(--text)",
-                    margin: "0 0 4px 0",
-                  }}
-                >
-                  {EDUCATION.degree}
-                </h3>
-                <div
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: "12px",
-                    color: "var(--text-muted)",
-                    letterSpacing: "0.02em",
-                  }}
-                >
-                  {EDUCATION.period}
-                </div>
-              </div>
-
-              <div
-                style={{
-                  fontFamily: "var(--font-body)",
-                  fontSize: "clamp(13px, 2vw, 14px)",
-                  color: "var(--text-secondary)",
-                  lineHeight: 1.5,
-                }}
-              >
-                {EDUCATION.institution}
-              </div>
               <div
                 style={{
                   fontFamily: "var(--font-mono)",
-                  fontSize: "11px",
-                  color: "var(--text-muted)",
-                  marginTop: "4px",
+                  fontSize: "10px",
+                  letterSpacing: "0.1em",
+                  textTransform: "uppercase",
+                  color: group.color,
+                  fontWeight: 600,
                 }}
               >
-                {EDUCATION.location}
+                {group.category}
+              </div>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+                {group.items.map((item) => (
+                  <span
+                    key={item}
+                    className="badge badge--muted"
+                    style={{ fontSize: "11px" }}
+                  >
+                    {item}
+                  </span>
+                ))}
               </div>
             </div>
+          ))}
+        </div>
 
-            {/* Training Card */}
+        {/* Architecture & System Competencies */}
+        <div style={{ marginBottom: "clamp(12px, 2vw, 16px)" }}>
+          <span
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: "10px",
+              letterSpacing: "0.1em",
+              textTransform: "uppercase",
+              color: "var(--accent)",
+              fontWeight: 600,
+            }}
+          >
+            Architecture &amp; System Competencies
+          </span>
+        </div>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr",
+            gap: "12px",
+          }}
+          className="sm:!grid-cols-2 lg:!grid-cols-3"
+        >
+          {COMPETENCIES.map((comp) => (
             <div
+              key={comp.label}
               className="card"
               style={{
-                padding: "clamp(20px, 3vw, 28px)",
+                padding: "clamp(16px, 2.5vw, 20px)",
+                display: "flex",
+                flexDirection: "column",
+                gap: "8px",
               }}
             >
               <div
@@ -172,206 +157,38 @@ export function EngineeringProfile() {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "space-between",
-                  marginBottom: "clamp(16px, 2vw, 20px)",
                 }}
               >
                 <span
                   style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: "10px",
-                    letterSpacing: "0.1em",
-                    textTransform: "uppercase",
-                    color: "var(--accent)",
+                    fontFamily: "var(--font-body)",
+                    fontSize: "13px",
+                    fontWeight: 500,
+                    color: "var(--text)",
                   }}
                 >
-                  Active Training
+                  {comp.label}
                 </span>
                 <span
-                  className="badge"
-                  style={{
-                    fontSize: "9px",
-                    padding: "3px 8px",
-                    background: "var(--success)",
-                    color: "#FFF",
-                  }}
+                  className="badge badge--accent-secondary"
+                  style={{ fontSize: "9px", flexShrink: 0 }}
                 >
-                  <span
-                    style={{
-                      display: "inline-block",
-                      width: "6px",
-                      height: "6px",
-                      borderRadius: "50%",
-                      background: "#FFF",
-                      marginRight: "4px",
-                      animation: "pulse 2s ease-in-out infinite",
-                    }}
-                  />
-                  {TRAINING.status}
+                  {comp.value}
                 </span>
               </div>
-
-              <h3
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontSize: "clamp(18px, 3vw, 22px)",
-                  fontWeight: 600,
-                  lineHeight: 1.2,
-                  color: "var(--text)",
-                  margin: "0 0 4px 0",
-                }}
-              >
-                {TRAINING.role}
-              </h3>
-
-              <div
+              <p
                 style={{
                   fontFamily: "var(--font-body)",
-                  fontSize: "clamp(13px, 2vw, 14px)",
-                  color: "var(--text-secondary)",
+                  fontSize: "12px",
                   lineHeight: 1.5,
+                  color: "var(--text-muted)",
+                  margin: 0,
                 }}
               >
-                {TRAINING.company}
-              </div>
+                {comp.description}
+              </p>
             </div>
-          </div>
-
-          {/* Right Column: Focus Areas & Skills */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-            {/* Focus Areas Card */}
-            <div
-              className="card"
-              style={{
-                padding: "clamp(20px, 3vw, 28px)",
-              }}
-            >
-              <div style={{ marginBottom: "clamp(16px, 2vw, 20px)" }}>
-                <span
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: "10px",
-                    letterSpacing: "0.1em",
-                    textTransform: "uppercase",
-                    color: "var(--accent)",
-                  }}
-                >
-                  Focus & Interests
-                </span>
-              </div>
-
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-                {FOCUS_AREAS.map((area) => (
-                  <span
-                    key={area.label}
-                    className="badge"
-                    style={{
-                      fontSize: "11px",
-                      padding: "6px 12px",
-                      background: area.primary ? "var(--accent)" : "var(--surface-2)",
-                      color: area.primary ? "#FFF" : "var(--text-secondary)",
-                      border: `1px solid ${area.primary ? "var(--accent)" : "var(--border-subtle)"}`,
-                    }}
-                  >
-                    {area.label}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* Skills Progress Card */}
-            <div
-              className="card"
-              style={{
-                padding: "clamp(20px, 3vw, 28px)",
-              }}
-            >
-              <div style={{ marginBottom: "clamp(16px, 2vw, 20px)" }}>
-                <span
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: "10px",
-                    letterSpacing: "0.1em",
-                    textTransform: "uppercase",
-                    color: "var(--accent)",
-                  }}
-                >
-                  Technical Progress
-                </span>
-              </div>
-
-              {SKILL_GROUPS.map((group) => (
-                <div
-                  key={group.title}
-                  style={{
-                    marginBottom: "clamp(16px, 2vw, 20px)",
-                  }}
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      marginBottom: "8px",
-                    }}
-                  >
-                    <span
-                      style={{
-                        fontFamily: "var(--font-body)",
-                        fontSize: "13px",
-                        fontWeight: 500,
-                        color: "var(--text)",
-                      }}
-                    >
-                      {group.title}
-                    </span>
-                    <span
-                      style={{
-                        fontFamily: "var(--font-mono)",
-                        fontSize: "10px",
-                        color: "var(--text-muted)",
-                      }}
-                    >
-                      {group.progress}%
-                    </span>
-                  </div>
-
-                  {/* Progress bar */}
-                  <div
-                    style={{
-                      height: "3px",
-                      background: "var(--border-subtle)",
-                      marginBottom: "10px",
-                      overflow: "hidden",
-                      borderRadius: "2px",
-                    }}
-                  >
-                    <div
-                      style={{
-                        height: "100%",
-                        width: `${group.progress}%`,
-                        background: "var(--accent)",
-                        transition: "width 0.8s cubic-bezier(0.16, 1, 0.3, 1)",
-                        borderRadius: "2px",
-                      }}
-                    />
-                  </div>
-
-                  {/* Items as chips */}
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
-                    {group.items.map((item) => (
-                      <span
-                        key={item}
-                        className="badge badge--muted"
-                        style={{ fontSize: "10px" }}
-                      >
-                        {item}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </section>

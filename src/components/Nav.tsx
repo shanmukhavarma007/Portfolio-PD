@@ -5,10 +5,10 @@ import { ThemeToggle } from "./ThemeToggle";
 
 const NAV_ITEMS = [
   { num: "01", label: "WORK", href: "#work" },
-  { num: "02", label: "ENGINEERING", href: "#engineering" },
-  { num: "03", label: "FOUNDATION", href: "#journey" },
+  { num: "02", label: "STACK", href: "#engineering" },
+  { num: "03", label: "PIPELINE", href: "#journey" },
   { num: "04", label: "ACTIVITY", href: "#activity" },
-  { num: "05", label: "ABOUT", href: "#about" },
+  { num: "05", label: "JOURNEY", href: "#about" },
 ];
 
 const MD_BREAKPOINT = 768;
@@ -102,7 +102,7 @@ export function Nav() {
                   (e.target as HTMLElement).style.color = "var(--text-secondary)";
                 }}
               >
-                <span style={{ color: "var(--text-muted)", fontSize: "9px" }}>
+                <span style={{ color: "var(--accent)", fontSize: "9px" }}>
                   {item.num}
                 </span>
                 {item.label}
@@ -160,21 +160,16 @@ export function Nav() {
             <span style={{ width: "1px", height: "12px", background: "var(--border-subtle)" }} />
             <a
               href="#contact"
+              className="glow-btn-primary"
               style={{
                 fontFamily: "var(--font-mono)",
                 fontSize: "11px",
                 letterSpacing: "0.1em",
                 color: "#FFF",
-                background: "#0F172A",
                 padding: "6px 16px",
                 textDecoration: "none",
-                transition: "all 0.2s ease",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.background = "#1E293B";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.background = "#0F172A";
+                borderRadius: "4px",
+                transition: "box-shadow 0.2s ease, transform 0.15s ease",
               }}
             >
               GET IN TOUCH
@@ -343,16 +338,16 @@ export function Nav() {
             <a
               href="#contact"
               onClick={() => setMobileOpen(false)}
+              className="glow-btn-primary"
               style={{
                 fontFamily: "var(--font-mono)",
                 fontSize: "13px",
                 letterSpacing: "0.1em",
-                color: "var(--bg)",
-                background: "var(--accent)",
                 padding: "12px 24px",
                 textDecoration: "none",
                 display: "inline-block",
                 textAlign: "center",
+                borderRadius: "4px",
               }}
             >
               GET IN TOUCH
