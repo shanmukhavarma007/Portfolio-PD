@@ -208,12 +208,8 @@ export function ChipVisualization() {
     const observer = new ResizeObserver(() => draw());
     observer.observe(canvasRef.current!);
 
-    const onThemeChange = () => draw();
-    window.addEventListener("themechange", onThemeChange);
-
     return () => {
       observer.disconnect();
-      window.removeEventListener("themechange", onThemeChange);
     };
   }, [draw]);
 

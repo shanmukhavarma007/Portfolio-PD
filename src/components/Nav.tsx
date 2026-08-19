@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ThemeToggle } from "./ThemeToggle";
 
 const NAV_ITEMS = [
   { num: "01", label: "WORK", href: "#work" },
@@ -114,7 +113,6 @@ export function Nav() {
         {/* Right: theme + social + CTA */}
         {isDesktop && (
           <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-            <ThemeToggle />
             <a
               href="https://github.com/shanmukhavarma007"
               target="_blank"
@@ -302,7 +300,6 @@ export function Nav() {
               gap: "16px",
             }}
           >
-            <ThemeToggle />
             <div style={{ display: "flex", gap: "24px" }}>
               <a
                 href="https://github.com/shanmukhavarma007"

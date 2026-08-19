@@ -29,7 +29,7 @@
   --font-body: "Inter", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
-  /* Floorplan canvas — dark theme */
+  /* Floorplan canvas */
   --fp-die: #334155CC;
   --fp-accent-dim: #38BDF830;
   --fp-accent-border: #38BDF840;
@@ -47,61 +47,12 @@
   --fp-macro-label: #22D3EEC0;
 }
 
-[data-theme="light"] {
-  /* Silicon Paper — Industrial Engineering palette */
-  --bg: #F8FAFC;
-  --surface-1: #FFFFFF;
-  --surface-2: #F1F5F9;
-  --surface-3: #E2E8F0;
-  --surface-4: #CBD5E1;
-  --border: #E2E8F0;
-  --border-subtle: #F1F5F9;
-
-  /* Text — deep slate hierarchy */
-  --text: #0F172A;
-  --text-secondary: #475569;
-  --text-muted: #64748B;
-
-  /* Accents — engineering blues and warm teals */
-  --accent: #0284C7;
-  --accent-secondary: #0891B2;
-
-  /* Status — engineering-grade colors */
-  --success: #0D9488;
-  --warning: #D97706;
-  --error: #DC2626;
-
-  /* Floorplan canvas — light theme */
-  --fp-die: #1E293BE8;
-  --fp-accent-dim: #0284C722;
-  --fp-accent-border: #0284C750;
-  --fp-cell-row: #0284C738;
-  --fp-cell-line: #CBD5E1B0;
-  --fp-route-clock: #0891B270;
-  --fp-route-line: #0284C730;
-  --fp-htree: #0891B260;
-  --fp-timing: #0284C770;
-  --fp-mesh: #CBD5E1C0;
-  --fp-pin: #64748B70;
-  --fp-label: #475569E0;
-  --fp-macro-border: #0891B290;
-  --fp-macro-fill: #0891B220;
-  --fp-macro-label: #0891B2E8;
-}
-
 html {
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-html.theme-ready,
-html.theme-ready *,
-html.theme-ready *::before,
-html.theme-ready *::after {
-  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, outline-color 0.25s ease;
 }
 
 body {
@@ -262,9 +213,6 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--accent);
   background: color-mix(in srgb, var(--accent) 10%, transparent);
   border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
-}
-
-[data-theme="dark"] .badge--accent {
   box-shadow: 0 0 10px rgba(56, 189, 248, 0.15);
   border-color: rgba(56, 189, 248, 0.4);
 }
@@ -303,70 +251,35 @@ h1, h2, h3, h4, h5, h6 {
   transition: all 0.2s ease;
 }
 
-[data-theme="light"] .card {
-  background: #FFFFFF;
-  border-color: #E2E8F0;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
-}
-
 .card:hover {
-  border-color: var(--accent);
-  box-shadow: 0 4px 16px color-mix(in srgb, var(--accent) 10%, transparent);
-}
-
-[data-theme="dark"] .card:hover {
   border-color: rgba(56, 189, 248, 0.4);
   box-shadow: 0 0 20px rgba(56, 189, 248, 0.12), 0 4px 24px rgba(0, 0, 0, 0.4);
 }
 
-/* ─── Dark Mode Glow — Interactive Elements Only ─── */
+/* ─── Interactive Glow — Buttons & Controls Only ─── */
 
 /* Primary CTA button */
-[data-theme="dark"] .glow-btn-primary {
+.glow-btn-primary {
   background: #0284c7;
   color: #ffffff;
   box-shadow: 0 0 16px rgba(2, 132, 199, 0.4);
   transition: box-shadow 0.2s ease, transform 0.15s ease;
 }
 
-[data-theme="dark"] .glow-btn-primary:hover {
+.glow-btn-primary:hover {
   box-shadow: 0 0 24px rgba(56, 189, 248, 0.65);
   transform: translateY(-1px);
 }
 
 /* Ghost / Secondary button */
-[data-theme="dark"] .glow-btn-ghost {
+.glow-btn-ghost {
   border: 1px solid rgba(56, 189, 248, 0.4);
   box-shadow: inset 0 0 10px rgba(56, 189, 248, 0.1);
 }
 
-[data-theme="dark"] .glow-btn-ghost:hover {
+.glow-btn-ghost:hover {
   border-color: #38bdf8;
   box-shadow: 0 0 16px rgba(56, 189, 248, 0.35);
-}
-
-/* Theme toggle */
-[data-theme="dark"] .glow-toggle:hover {
-  border-color: rgba(56, 189, 248, 0.8);
-  box-shadow: 0 0 12px rgba(56, 189, 248, 0.45);
-}
-
-/* Silicon Paper — Status card variants for light mode */
-[data-theme="light"] .card--mastered {
-  background: #F0FDFA;
-  border-color: #99F6E4;
-}
-
-[data-theme="light"] .card--active {
-  background: #FFFBEB;
-  border-color: #FDE68A;
-}
-
-[data-theme="light"] .card--queued {
-  background: #F8FAFC;
-  border-color: #E2E8F0;
-  border-style: dashed;
-  opacity: 0.7;
 }
 
 /* ─── Glass Navbar ─── */
@@ -386,9 +299,6 @@ h1, h2, h3, h4, h5, h6 {
 
 .glass-nav.scrolled {
   background: color-mix(in srgb, var(--bg) 95%, transparent);
-}
-
-[data-theme="dark"] .glass-nav.scrolled {
   border-bottom-color: rgba(56, 189, 248, 0.12);
   box-shadow: 0 1px 20px rgba(14, 165, 233, 0.06);
 }
