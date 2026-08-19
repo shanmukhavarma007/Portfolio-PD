@@ -1,7 +1,7 @@
 "use client";
 
 import { useScrollReveal } from "@/hooks/useScrollReveal";
-import { WaveformHr } from "./WaveformHr";
+import { SectionHeader } from "./SectionHeader";
 
 const LINKS = [
   {
@@ -38,13 +38,7 @@ export function Contact() {
       className="scroll-reveal section-container"
     >
       <div style={{ maxWidth: "1400px", margin: "0 auto", position: "relative" }}>
-        <div
-          className="badge badge--muted"
-          style={{ marginBottom: "12px" }}
-        >
-          09 / LET&apos;S CONNECT
-        </div>
-        <WaveformHr style={{ marginBottom: "clamp(24px, 4vw, 48px)" }} />
+        <SectionHeader index="09" title="Let's Connect" />
 
         {/* Centered conversion card */}
         <div

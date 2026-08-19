@@ -1,7 +1,7 @@
 "use client";
 
 import { useScrollReveal } from "@/hooks/useScrollReveal";
-import { WaveformHr } from "./WaveformHr";
+import { SectionHeader } from "./SectionHeader";
 
 const METADATA = [
   { label: "EDUCATION", value: "B.Tech \u2014 ECE \u00b7 2026\nVignan\u2019s Institute of Information Technology" },
@@ -38,13 +38,7 @@ export function About() {
       >
         {/* Left */}
         <div>
-          <div
-            className="badge badge--muted"
-            style={{ marginBottom: "12px" }}
-          >
-            08 / ABOUT THE ENGINEER
-          </div>
-          <WaveformHr style={{ marginBottom: "clamp(16px, 3vw, 32px)" }} />
+          <SectionHeader index="08" title="About the Engineer" />
           <p
             style={{
               fontFamily: "var(--font-body)",

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
-import { WaveformHr } from "./WaveformHr";
+import { SectionHeader } from "./SectionHeader";
 
 type StageStatus = "mastered" | "active" | "queued";
 
@@ -248,14 +248,7 @@ export function LearningJourney() {
           position: "relative",
         }}
       >
-        {/* Header */}
-        <div
-          className="badge badge--muted"
-          style={{ marginBottom: "12px" }}
-        >
-          06 / ASIC PHYSICAL DESIGN PIPELINE
-        </div>
-        <WaveformHr style={{ marginBottom: "clamp(24px, 4vw, 48px)" }} />
+        <SectionHeader index="06" title="ASIC Physical Design Pipeline" />
 
         {/* Section title */}
         <h2

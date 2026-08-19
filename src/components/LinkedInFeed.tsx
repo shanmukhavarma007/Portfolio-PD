@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Script from "next/script";
-import { WaveformHr } from "./WaveformHr";
+import { SectionHeader } from "./SectionHeader";
 
 const ELFSIGHT_APP_ID = "6319c12b-b5ad-4cb5-a073-1dfecd804068";
 const LINKEDIN_URL = "https://www.linkedin.com/in/shanmukhavarma-penmetsa/";
@@ -72,13 +72,7 @@ export function LinkedInFeed() {
           className="lg:!grid-cols-[1fr_auto]"
         >
           <div>
-            <div
-              className="badge badge--muted"
-              style={{ marginBottom: "12px" }}
-            >
-              07 / PROFESSIONAL ACTIVITY
-            </div>
-            <WaveformHr style={{ marginBottom: "24px" }} />
+            <SectionHeader index="07" title="Professional Activity" />
 
             <h2
               style={{

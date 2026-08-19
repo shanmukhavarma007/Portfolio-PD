@@ -1,7 +1,7 @@
 "use client";
 
 import { useScrollReveal } from "@/hooks/useScrollReveal";
-import { WaveformHr } from "./WaveformHr";
+import { SectionHeader } from "./SectionHeader";
 
 const EDUCATION = {
   degree: "B.Tech — ECE",
@@ -52,15 +52,7 @@ export function EngineeringProfile() {
       className="scroll-reveal section-container"
     >
       <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
-        {/* Section header */}
-        <div
-          className="badge badge--muted"
-          style={{ marginBottom: "12px" }}
-        >
-          01 / ENGINEERING PROFILE
-        </div>
-
-        <WaveformHr style={{ marginBottom: "clamp(20px, 4vw, 32px)" }} />
+        <SectionHeader index="01" title="Engineering Profile" />
 
         <h2
           style={{

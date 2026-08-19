@@ -1,7 +1,7 @@
 "use client";
 
 import { useScrollReveal } from "@/hooks/useScrollReveal";
-import { WaveformHr } from "./WaveformHr";
+import { SectionHeader } from "./SectionHeader";
 
 const PROJECTS = [
   {
@@ -47,14 +47,7 @@ export function Projects() {
       }}
     >
       <div style={{ maxWidth: "1400px", margin: "0 auto", position: "relative" }}>
-        {/* Header */}
-        <div
-          className="badge badge--muted"
-          style={{ marginBottom: "12px" }}
-        >
-          04 / SELECTED WORK
-        </div>
-        <WaveformHr style={{ marginBottom: "clamp(24px, 4vw, 48px)" }} />
+        <SectionHeader index="04" title="Selected Work" />
 
         {/* Project cards */}
         {PROJECTS.map((project, i) => (

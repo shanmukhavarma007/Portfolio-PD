@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
-import { WaveformHr } from "./WaveformHr";
+import { SectionHeader } from "./SectionHeader";
 
 interface SkillItem {
   label: string;
@@ -125,14 +125,7 @@ export function TechnicalMatrix() {
       className="scroll-reveal section-container"
     >
       <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
-        <div
-          className="badge badge--muted"
-          style={{ marginBottom: "12px" }}
-        >
-          03 / TECHNICAL MATRIX
-        </div>
-
-        <WaveformHr style={{ marginBottom: "clamp(20px, 4vw, 32px)" }} />
+        <SectionHeader index="03" title="Technical Matrix" />
 
         {/* Section header */}
         <h2

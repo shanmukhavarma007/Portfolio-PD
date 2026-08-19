@@ -1,7 +1,7 @@
 "use client";
 
 import { useScrollReveal } from "@/hooks/useScrollReveal";
-import { WaveformHr } from "./WaveformHr";
+import { SectionHeader } from "./SectionHeader";
 
 const ITEMS = [
   { label: "PHYSICAL DESIGN", state: "LEARNING", color: "var(--warning)", desc: "Floorplan, placement, CTS, routing, signoff" },
@@ -29,14 +29,7 @@ export function CurrentlyBuilding() {
       className="scroll-reveal section-container"
     >
       <div style={{ maxWidth: "1400px", margin: "0 auto", position: "relative" }}>
-        <div
-          className="badge badge--muted"
-          style={{ marginBottom: "12px" }}
-        >
-          05 / CURRENTLY BUILDING
-        </div>
-
-        <WaveformHr style={{ marginBottom: "clamp(24px, 4vw, 40px)" }} />
+        <SectionHeader index="05" title="Currently Building" />
 
         {/* Cards grid */}
         <div

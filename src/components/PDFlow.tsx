@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
-import { WaveformHr } from "./WaveformHr";
+import { SectionHeader } from "./SectionHeader";
 
 interface PDStage {
   id: string;
@@ -91,14 +91,7 @@ export function PDFlow() {
       }}
     >
       <div style={{ maxWidth: "1400px", margin: "0 auto", position: "relative" }}>
-        {/* Section header */}
-        <div
-          className="badge badge--muted"
-          style={{ marginBottom: "12px" }}
-        >
-          02 / PHYSICAL DESIGN FLOW
-        </div>
-        <WaveformHr variant="waveform" style={{ marginBottom: "clamp(24px, 4vw, 48px)" }} />
+        <SectionHeader index="02" title="Physical Design Flow" />
 
         {/* Flow visualization — horizontal on desktop */}
         <div
