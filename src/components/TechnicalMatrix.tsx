@@ -44,13 +44,13 @@ const SKILLS: Record<string, SkillItem[]> = {
 };
 
 const STATUS_STYLES: Record<string, { color: string; badgeVariant: string }> = {
-  EXPERT: { color: "#0D9488", badgeVariant: "accent-secondary" },
-  PROFICIENT: { color: "#0284C7", badgeVariant: "accent" },
-  ADVANCED: { color: "#0284C7", badgeVariant: "accent" },
-  INTERMEDIATE: { color: "#0891B2", badgeVariant: "accent-secondary" },
-  "USUALLY USE": { color: "#0891B2", badgeVariant: "accent-secondary" },
-  FAMILIAR: { color: "#94A3B8", badgeVariant: "muted" },
-  EXPLORING: { color: "#94A3B8", badgeVariant: "muted" },
+  STRONG: { color: "var(--success)", badgeVariant: "success" },
+  "ACTIVE TRAINING": { color: "var(--accent)", badgeVariant: "accent" },
+  TRAINING: { color: "var(--accent)", badgeVariant: "accent" },
+  "USUALLY USE": { color: "var(--accent-secondary)", badgeVariant: "accent-secondary" },
+  INTERMEDIATE: { color: "var(--accent-secondary)", badgeVariant: "accent-secondary" },
+  FAMILIAR: { color: "var(--warning)", badgeVariant: "warning" },
+  EXPLORING: { color: "var(--text-muted)", badgeVariant: "muted" },
 };
 
 function SkillCard({ label, status, dots, context }: SkillItem) {
@@ -60,12 +60,25 @@ function SkillCard({ label, status, dots, context }: SkillItem) {
     <div
       className="card"
       style={{
+        position: "relative",
         padding: "clamp(16px, 2.5vw, 24px)",
         display: "flex",
         flexDirection: "column",
         gap: "8px",
       }}
     >
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          height: "2px",
+          background: style.color,
+          opacity: 0.6,
+          borderRadius: "16px 16px 0 0",
+        }}
+      />
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "8px" }}>
         <span
           style={{
