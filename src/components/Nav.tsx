@@ -64,9 +64,7 @@ export function Nav() {
             flexShrink: 0,
           }}
         >
-          <span style={{ color: "var(--accent)", fontWeight: 600 }}>SHANMUKHA</span>
-          <span style={{ color: "var(--text-muted)" }}>/</span>
-          <span style={{ color: "var(--text-muted)" }}>PENMETSA</span>
+          <span style={{ color: "var(--accent)", fontWeight: 600 }}>SHANMUKHA VARMA</span>
         </div>
 
         {/* Center: numbered nav (desktop only) */}

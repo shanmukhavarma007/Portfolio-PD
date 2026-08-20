@@ -523,6 +523,104 @@ h1, h2, h3, h4, h5, h6 {
   animation: pdReadoutIn 0.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
+/* ─── PD HUD Card ─── */
+
+.pd-hud {
+  background: rgba(0, 255, 255, 0.05);
+  position: relative;
+}
+
+/* Scanline / fine-grid overlay */
+.pd-hud::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(0, 229, 255, 0.04) 0px,
+      rgba(0, 229, 255, 0.04) 1px,
+      transparent 1px,
+      transparent 3px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(0, 229, 255, 0.02) 0px,
+      rgba(0, 229, 255, 0.02) 1px,
+      transparent 1px,
+      transparent 28px
+    );
+  opacity: 0.8;
+}
+
+/* Corner bracket accents — shared base */
+.pd-hud-bracket {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Top-left bracket */
+.pd-hud-bracket--tl {
+  top: 0;
+  left: 0;
+  border-top: 2px solid #00E5FF;
+  border-left: 2px solid #00E5FF;
+}
+
+/* Top-right bracket */
+.pd-hud-bracket--tr {
+  top: 0;
+  right: 0;
+  border-top: 2px solid #00E5FF;
+  border-right: 2px solid #00E5FF;
+}
+
+/* Bottom-left bracket */
+.pd-hud-bracket--bl {
+  bottom: 0;
+  left: 0;
+  border-bottom: 2px solid #00E5FF;
+  border-left: 2px solid #00E5FF;
+}
+
+/* Bottom-right bracket */
+.pd-hud-bracket--br {
+  bottom: 0;
+  right: 0;
+  border-bottom: 2px solid #00E5FF;
+  border-right: 2px solid #00E5FF;
+}
+
+/* Terminal chip / micro-switch pills */
+.pd-hud-chip {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: #22D3EE;
+  padding: 4px 14px;
+  border: 1px dotted rgba(0, 229, 255, 0.45);
+  border-radius: 2px;
+  background: rgba(0, 229, 255, 0.06);
+  cursor: default;
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease,
+    color 0.2s ease;
+}
+
+.pd-hud-chip:hover {
+  background: rgba(0, 229, 255, 0.14);
+  box-shadow: 0 0 8px rgba(0, 255, 255, 0.35), inset 0 0 8px rgba(0, 255, 255, 0.08);
+  color: #00E5FF;
+  border-color: #00E5FF;
+}
+
 /* ─── Foundation Map Node ─── */
 
 .fd-card-enter {

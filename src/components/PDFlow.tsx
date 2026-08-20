@@ -282,11 +282,11 @@ export function PDFlow() {
           )}
         </div>
 
-        {/* Detail readout — borderless glassmorphism with cyan bracket */}
+        {/* Detail readout — Cyberpunk Terminal HUD */}
         <div
           style={{
             marginTop: "24px",
-            minHeight: "140px",
+            minHeight: "160px",
             position: "relative",
             zIndex: 2,
           }}
@@ -294,72 +294,79 @@ export function PDFlow() {
           {activeData ? (
             <div
               key={contentKey}
-              className="pd-readout-animate"
-              style={{
-                borderLeft: "2px solid #00E5FF",
-                paddingLeft: "24px",
-                paddingTop: "20px",
-                paddingBottom: "20px",
-                backdropFilter: "blur(12px)",
-                WebkitBackdropFilter: "blur(12px)",
-                background: "rgba(6, 20, 30, 0.40)",
-                borderRadius: "0 8px 8px 0",
-              }}
+              className="pd-readout-animate pd-hud"
+              style={{ position: "relative" }}
             >
-              {/* Stage title */}
-              <div
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "14px",
-                  fontWeight: 700,
-                  color: "#00E5FF",
-                  letterSpacing: "0.08em",
-                  marginBottom: "10px",
-                  textTransform: "uppercase",
-                }}
-              >
-                STAGE // {activeData.stageNum}: {activeData.label}
-              </div>
+              {/* Corner bracket accents */}
+              <span className="pd-hud-bracket pd-hud-bracket--tl" />
+              <span className="pd-hud-bracket pd-hud-bracket--tr" />
+              <span className="pd-hud-bracket pd-hud-bracket--bl" />
+              <span className="pd-hud-bracket pd-hud-bracket--br" />
 
-              {/* Description */}
-              <p
-                style={{
-                  fontFamily: "var(--font-body)",
-                  fontSize: "14px",
-                  lineHeight: 1.7,
-                  color: "#CBD5E1",
-                  margin: "0 0 16px 0",
-                }}
-              >
-                {activeData.description}
-              </p>
+              {/* Content */}
+              <div style={{ position: "relative", zIndex: 1, padding: "clamp(20px, 3vw, 32px)" }}>
 
-              {/* Concept chips */}
-              <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
-                {activeData.concepts.map((c) => (
-                  <span
-                    key={c}
-                    style={{
-                      fontFamily: "var(--font-mono)",
-                      fontSize: "10px",
-                      letterSpacing: "0.08em",
-                      color: "#22D3EE",
-                      padding: "4px 14px",
-                      border: "1px solid rgba(0, 229, 255, 0.25)",
-                      borderRadius: "9999px",
-                      transition: "background 0.2s ease",
-                      cursor: "default",
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.background = "rgba(0, 229, 255, 0.12)";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.background = "transparent";
-                    }}
-                  >
-                    {c}
-                  </span>
-                ))}
+                {/* Status badge header */}
+                <div
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "10px",
+                    letterSpacing: "0.12em",
+                    color: "rgba(0, 229, 255, 0.6)",
+                    marginBottom: "14px",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  STATUS: ACTIVE // {activeData.stageNum}_STAGE
+                </div>
+
+                {/* Stage title */}
+                <div
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "16px",
+                    fontWeight: 700,
+                    color: "#00E5FF",
+                    letterSpacing: "0.1em",
+                    marginBottom: "14px",
+                    textTransform: "uppercase",
+                    textShadow: "0 0 10px rgba(0, 229, 255, 0.4)",
+                  }}
+                >
+                  {activeData.label}
+                </div>
+
+                {/* Description */}
+                <p
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "13px",
+                    lineHeight: 1.8,
+                    color: "#94A3B8",
+                    margin: "0 0 20px 0",
+                    maxWidth: "680px",
+                  }}
+                >
+                  {activeData.description}
+                </p>
+
+                {/* Concept chips — terminal micro-switches */}
+                <div
+                  style={{
+                    display: "flex",
+                    gap: "8px",
+                    flexWrap: "wrap",
+                  }}
+                >
+                  {activeData.concepts.map((c) => (
+                    <span
+                      key={c}
+                      className="pd-hud-chip"
+                    >
+                      {c}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
           ) : (
