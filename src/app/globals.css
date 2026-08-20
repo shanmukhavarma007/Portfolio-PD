@@ -473,17 +473,54 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .pd-node:hover .pd-node-dot {
-  background: var(--accent);
-  box-shadow: 0 0 8px color-mix(in srgb, var(--accent) 40%, transparent);
+  background: #00E5FF;
+  box-shadow: 0 0 12px #00E5FF;
 }
 
 .pd-node:hover .pd-connector {
-  stroke: var(--accent);
+  stroke: #00E5FF;
   stroke-opacity: 0.6;
 }
 
 .pd-connector {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ─── PD Laser Trace ─── */
+
+@keyframes pdLaserDrop {
+  0% {
+    opacity: 0;
+    height: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    height: 80px;
+  }
+}
+
+.pd-laser-trace {
+  animation: pdLaserDrop 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* ─── PD Readout Transition ─── */
+
+@keyframes pdReadoutIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.pd-readout-animate {
+  animation: pdReadoutIn 0.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 /* ─── Foundation Map Node ─── */

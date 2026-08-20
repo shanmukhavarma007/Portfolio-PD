@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useCallback } from "react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { SectionHeader } from "./SectionHeader";
 
@@ -8,6 +8,7 @@ interface PDStage {
   id: string;
   label: string;
   shortLabel: string;
+  stageNum: string;
   description: string;
   concepts: string[];
 }
@@ -17,90 +18,122 @@ const PD_STAGES: PDStage[] = [
     id: "rtl",
     label: "RTL",
     shortLabel: "RTL",
-    description: "Register-Transfer Level design and verification of digital logic.",
-    concepts: ["VERILOG", "SYSTEMVERILOG", "TESTBENCH"],
+    stageNum: "01",
+    description: "Register-Transfer Level design capture and lint verification.",
+    concepts: ["LINT", "CDC", "SIM"],
   },
   {
     id: "synth",
     label: "SYNTHESIS",
     shortLabel: "SYN",
-    description: "Logic synthesis converts RTL to gate-level netlist using standard cell libraries.",
-    concepts: ["GTECH", "CONSTRAINTS", "OPTIMIZATION"],
+    stageNum: "02",
+    description: "Logic synthesis converting RTL into a gate-level netlist.",
+    concepts: ["GTL", "MAPPING", "OPT"],
   },
   {
     id: "floorplan",
     label: "FLOORPLAN",
     shortLabel: "FP",
-    description: "Establishing die area, macro placement and power distribution network.",
-    concepts: ["DIE AREA", "POWER GRID", "MACROS"],
+    stageNum: "03",
+    description: "Die size definition, I/O placement, and power grid structuring.",
+    concepts: ["PADS", "POWER GRID", "MACROS"],
   },
   {
     id: "placement",
     label: "PLACEMENT",
     shortLabel: "PLACE",
-    description: "Optimizing standard-cell locations while balancing timing, congestion and utilization.",
-    concepts: ["UTILIZATION", "CONGESTION", "TIMING", "CELL DENSITY"],
+    stageNum: "04",
+    description: "Standard cell placement with congestion and timing optimization.",
+    concepts: ["GLOBAL", "DETAIL", "LEGALIZATION"],
   },
   {
     id: "cts",
     label: "CTS",
     shortLabel: "CTS",
-    description: "Clock Tree Synthesis builds balanced clock distribution to minimize skew.",
-    concepts: ["SKEW", "LATENCY", "CTS CELLS", "BALANCE"],
+    stageNum: "05",
+    description: "Clock Tree Synthesis ensuring minimal skew and latency.",
+    concepts: ["SKEW", "LATENCY", "BUFFERS"],
   },
   {
     id: "routing",
     label: "ROUTING",
     shortLabel: "ROUTE",
-    description: "Global and detailed routing connecting all signals through metal layers.",
-    concepts: ["VIA", "Metal Layers", "DRC", "ANTENNA"],
+    stageNum: "06",
+    description: "Detailed signal routing connecting cells without DRC violations.",
+    concepts: ["GLOBAL", "TRACK", "DETAIL"],
   },
   {
     id: "sta",
     label: "STA",
     shortLabel: "STA",
-    description: "Static Timing Analysis verifies setup and hold constraints across all paths.",
-    concepts: ["SETUP", "HOLD", "SLACK", "WNS"],
+    stageNum: "07",
+    description: "Static Timing Analysis validating setup and hold constraints.",
+    concepts: ["SETUP", "HOLD", "SLACK"],
   },
   {
     id: "signoff",
     label: "SIGNOFF",
     shortLabel: "SIGN",
-    description: "Final verification including DRC, LVS, IR drop and electromigration checks.",
+    stageNum: "08",
+    description: "Final physical verification before tape-out fabrication.",
     concepts: ["DRC", "LVS", "IR DROP", "EM"],
   },
 ];
 
 export function PDFlow() {
   const [activeStage, setActiveStage] = useState<string | null>(null);
-  const ref = useScrollReveal();
+  const [laserLeft, setLaserLeft] = useState<number | null>(null);
+  const [contentKey, setContentKey] = useState<string>("empty");
+  const nodeRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
+  const containerRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useScrollReveal();
 
   const activeData = PD_STAGES.find((s) => s.id === activeStage);
 
+  const handleNodeEnter = useCallback(
+    (stageId: string) => {
+      const btn = nodeRefs.current.get(stageId);
+      const container = containerRef.current;
+      if (btn && container) {
+        const btnRect = btn.getBoundingClientRect();
+        const containerRect = container.getBoundingClientRect();
+        const centerX = btnRect.left - containerRect.left + btnRect.width / 2;
+        setLaserLeft(centerX);
+      }
+      if (stageId !== activeStage) {
+        setContentKey(stageId);
+      }
+      setActiveStage(stageId);
+    },
+    [activeStage],
+  );
+
+  const handleNodeLeave = useCallback(() => {
+    setActiveStage(null);
+    setLaserLeft(null);
+    setContentKey("empty");
+  }, []);
+
   return (
     <section
-      ref={ref}
+      ref={sectionRef}
       className="scroll-reveal section-glow section-divider-top section-divider-bottom"
       style={{
         padding: "clamp(32px, 6vw, 96px) clamp(16px, 4vw, 48px)",
-        background: "var(--surface-1)",
+        background: "#060b13",
         position: "relative",
         overflow: "hidden",
       }}
     >
-      <div style={{ maxWidth: "1400px", margin: "0 auto", position: "relative" }}>
+      <div
+        ref={containerRef}
+        style={{ maxWidth: "1400px", margin: "0 auto", position: "relative" }}
+      >
         <SectionHeader index="02" title="Physical Design Flow" />
 
-        {/* Flow visualization — horizontal on desktop */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr",
-            gap: "0",
-          }}
-          className="md:!grid-cols-1"
-        >
-          {/* Horizontal flow (desktop) */}
+        {/* Flow nodes + laser trace container */}
+        <div style={{ position: "relative" }}>
+          {/* Horizontal flow */}
           <div
             style={{
               display: "flex",
@@ -108,6 +141,8 @@ export function PDFlow() {
               gap: "0",
               overflowX: "auto",
               paddingBottom: "16px",
+              position: "relative",
+              zIndex: 2,
             }}
             className="max-md:!flex-col max-md:!gap-0"
           >
@@ -127,11 +162,11 @@ export function PDFlow() {
                 >
                   {/* Node */}
                   <button
-                    onClick={() =>
-                      setActiveStage(isActive ? null : stage.id)
-                    }
-                    onMouseEnter={() => setActiveStage(stage.id)}
-                    onMouseLeave={() => setActiveStage(null)}
+                    ref={(el) => {
+                      if (el) nodeRefs.current.set(stage.id, el);
+                    }}
+                    onMouseEnter={() => handleNodeEnter(stage.id)}
+                    onMouseLeave={handleNodeLeave}
                     style={{
                       display: "flex",
                       flexDirection: "column",
@@ -148,33 +183,27 @@ export function PDFlow() {
                   >
                     {/* Dot */}
                     <div
-                      className="pd-node-dot"
                       style={{
                         width: "10px",
                         height: "10px",
                         borderRadius: "50%",
-                        background: isActive
-                          ? "var(--accent)"
-                          : "var(--surface-4)",
-                        border: isActive
-                          ? "none"
-                          : "1px solid var(--border)",
+                        background: isActive ? "#00E5FF" : "var(--surface-4)",
+                        border: isActive ? "none" : "1px solid var(--border)",
                         transition: "all 0.3s ease",
                         boxShadow: isActive
-                          ? "0 0 12px color-mix(in srgb, var(--accent) 30%, transparent)"
+                          ? "0 0 12px #00E5FF"
                           : "none",
                         flexShrink: 0,
                       }}
                     />
 
-                    {/* Label */}
+                    {/* Short label */}
                     <span
-                      className="pd-node-label"
                       style={{
                         fontFamily: "var(--font-mono)",
                         fontSize: "10px",
                         letterSpacing: "0.1em",
-                        color: isActive ? "var(--text)" : "var(--text-muted)",
+                        color: isActive ? "#00E5FF" : "var(--text-muted)",
                         textTransform: "uppercase",
                         transition: "color 0.2s ease",
                         whiteSpace: "nowrap",
@@ -207,7 +236,7 @@ export function PDFlow() {
                         width: "32px",
                         height: "1px",
                         background: isActive
-                          ? "var(--accent)"
+                          ? "#00E5FF"
                           : "var(--border-subtle)",
                         transition: "background 0.3s ease",
                         flexShrink: 0,
@@ -232,81 +261,118 @@ export function PDFlow() {
               );
             })}
           </div>
+
+          {/* Laser trace line */}
+          {activeStage && laserLeft !== null && (
+            <div
+              className="pd-laser-trace"
+              key={`laser-${activeStage}`}
+              style={{
+                position: "absolute",
+                top: "52px",
+                left: `${laserLeft}px`,
+                width: "1px",
+                height: "80px",
+                background: "linear-gradient(to bottom, #00E5FF, transparent)",
+                zIndex: 1,
+                pointerEvents: "none",
+                transform: "translateX(-0.5px)",
+              }}
+            />
+          )}
         </div>
 
-        {/* Detail panel */}
+        {/* Detail readout — borderless glassmorphism with cyan bracket */}
         <div
           style={{
-            marginTop: "32px",
-            minHeight: "120px",
-            padding: activeData ? "24px" : "0",
-            background: activeData ? "var(--surface-2)" : "transparent",
-            border: activeData ? "1px solid var(--border-subtle)" : "1px solid transparent",
-            transition: "all 0.3s ease",
+            marginTop: "24px",
+            minHeight: "140px",
+            position: "relative",
+            zIndex: 2,
           }}
         >
           {activeData ? (
             <div
+              key={contentKey}
+              className="pd-readout-animate"
               style={{
-                display: "grid",
-                gridTemplateColumns: "1fr",
-                gap: "20px",
+                borderLeft: "2px solid #00E5FF",
+                paddingLeft: "24px",
+                paddingTop: "20px",
+                paddingBottom: "20px",
+                backdropFilter: "blur(12px)",
+                WebkitBackdropFilter: "blur(12px)",
+                background: "rgba(6, 20, 30, 0.40)",
+                borderRadius: "0 8px 8px 0",
               }}
-              className="md:!grid-cols-[1fr_2fr]"
             >
-              <div>
-                <div
-                  style={{
-                    fontFamily: "var(--font-display)",
-                    fontSize: "20px",
-                    fontWeight: 600,
-                    color: "var(--text)",
-                    marginBottom: "4px",
-                  }}
-                >
-                  {activeData.label}
-                </div>
+              {/* Stage title */}
+              <div
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "14px",
+                  fontWeight: 700,
+                  color: "#00E5FF",
+                  letterSpacing: "0.08em",
+                  marginBottom: "10px",
+                  textTransform: "uppercase",
+                }}
+              >
+                STAGE // {activeData.stageNum}: {activeData.label}
               </div>
-              <div>
-                <p
-                  style={{
-                    fontFamily: "var(--font-body)",
-                    fontSize: "14px",
-                    lineHeight: 1.7,
-                    color: "var(--text-secondary)",
-                    margin: "0 0 16px 0",
-                  }}
-                >
-                  {activeData.description}
-                </p>
-                <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
-                  {activeData.concepts.map((c) => (
-                    <span
-                      key={c}
-                      style={{
-                        fontFamily: "var(--font-mono)",
-                        fontSize: "9px",
-                        letterSpacing: "0.08em",
-                        color: "var(--accent-secondary)",
-                        background: "color-mix(in srgb, var(--accent-secondary) 8%, transparent)",
-                        padding: "4px 10px",
-                        border: "1px solid color-mix(in srgb, var(--accent-secondary) 15%, transparent)",
-                      }}
-                    >
-                      {c}
-                    </span>
-                  ))}
-                </div>
+
+              {/* Description */}
+              <p
+                style={{
+                  fontFamily: "var(--font-body)",
+                  fontSize: "14px",
+                  lineHeight: 1.7,
+                  color: "#CBD5E1",
+                  margin: "0 0 16px 0",
+                }}
+              >
+                {activeData.description}
+              </p>
+
+              {/* Concept chips */}
+              <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+                {activeData.concepts.map((c) => (
+                  <span
+                    key={c}
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "10px",
+                      letterSpacing: "0.08em",
+                      color: "#22D3EE",
+                      padding: "4px 14px",
+                      border: "1px solid rgba(0, 229, 255, 0.25)",
+                      borderRadius: "9999px",
+                      transition: "background 0.2s ease",
+                      cursor: "default",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = "rgba(0, 229, 255, 0.12)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = "transparent";
+                    }}
+                  >
+                    {c}
+                  </span>
+                ))}
               </div>
             </div>
           ) : (
             <div
+              key="empty"
+              className="pd-readout-animate"
               style={{
                 fontFamily: "var(--font-mono)",
                 fontSize: "11px",
                 color: "var(--text-muted)",
                 letterSpacing: "0.05em",
-                padding: "24px",
+                padding: "20px 0 20px 24px",
+                borderLeft: "2px solid rgba(0, 229, 255, 0.15)",
               }}
             >
               Hover a stage to explore →
