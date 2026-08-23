@@ -54,6 +54,15 @@ const PRINCIPLES = [
   },
 ];
 
+const INTERESTS = [
+  "Open-Source EDA Tools",
+  "Technical Writing",
+  "CMOS Layout Art",
+  "FPGA Experiments",
+  "VLSI Community Forums",
+  "Linux Ricing",
+];
+
 export function About() {
   const ref = useScrollReveal();
 
@@ -63,17 +72,17 @@ export function About() {
       ref={ref}
       className="scroll-reveal mx-auto max-w-6xl px-4 py-16 section-glow"
     >
-      <SectionHeader index="08" title="Engineering Journey &amp; Approach" />
+      <SectionHeader id="08" title="Engineering Journey & Approach" />
 
       {/* Narrative */}
       <div className="mt-8 mb-12 max-w-3xl">
-        <p className="text-base leading-relaxed text-slate-700 sm:text-lg dark:text-slate-300">
+        <p className="text-base leading-relaxed text-slate-300 sm:text-lg">
           I&apos;m a VLSI Physical Design engineer driven by the challenge of translating abstract RTL into
           silicon-realizable layouts. My path started with digital electronics coursework and evolved
           into intensive hands-on training across the full ASIC implementation flow — from synthesis
           constraints through signoff verification.
         </p>
-        <p className="mt-4 text-base leading-relaxed text-slate-700 sm:text-lg dark:text-slate-300">
+        <p className="mt-4 text-base leading-relaxed text-slate-300 sm:text-lg">
           What drives me is the intersection of electrical engineering rigor and software automation.
           Writing a Tcl script that automates a three-hour manual process, or tracing a timing path
           through a clock tree to find the critical bottleneck — these are the problems I enjoy solving.
@@ -83,25 +92,23 @@ export function About() {
       <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
         {/* Left: Timeline */}
         <div className="lg:col-span-5">
-          <h3 className="mb-6 font-mono text-xs font-semibold uppercase tracking-widest text-sky-600 dark:text-cyan-400">
+          <h3 className="mb-6 font-mono text-xs font-semibold uppercase tracking-widest text-cyan-400">
             Journey So Far
           </h3>
           <div>
             {TIMELINE.map((step, i) => (
               <div key={step.year} className={`flex gap-4${i < TIMELINE.length - 1 ? " pb-6" : ""}`}>
                 <div className="flex flex-col items-center">
-                  <span className="font-mono text-xs font-bold text-slate-900 dark:text-slate-100">
+                  <span className="font-mono text-xs font-bold text-cyan-300">
                     {step.year}
                   </span>
                   {i < TIMELINE.length - 1 && (
-                    <div className="mt-1 w-px flex-1 bg-slate-200 dark:bg-slate-700" />
+                    <div className="mt-1 w-px flex-1 bg-gradient-to-b from-cyan-500/40 to-slate-800" />
                   )}
                 </div>
                 <div className="pb-2">
-                  <h4 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-                    {step.title}
-                  </h4>
-                  <p className="mt-1 text-xs leading-relaxed text-slate-600 dark:text-slate-400">
+                  <h4 className="text-sm font-bold text-white">{step.title}</h4>
+                  <p className="mt-1 text-xs leading-relaxed text-slate-400">
                     {step.detail}
                   </p>
                 </div>
@@ -112,19 +119,17 @@ export function About() {
 
         {/* Right: Working Principles */}
         <div className="lg:col-span-7">
-          <h3 className="mb-6 font-mono text-xs font-semibold uppercase tracking-widest text-sky-600 dark:text-cyan-400">
+          <h3 className="mb-6 font-mono text-xs font-semibold uppercase tracking-widest text-cyan-400">
             Working Principles
           </h3>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {PRINCIPLES.map((p) => (
               <div
                 key={p.title}
-                className="rounded-xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900/60"
+                className="rounded-xl border border-slate-800 bg-slate-900/60 p-5 backdrop-blur-md transition-all duration-300 hover:border-cyan-500/50 hover:shadow-[0_0_24px_rgba(6,182,212,0.15)]"
               >
-                <h4 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-                  {p.title}
-                </h4>
-                <p className="mt-2 text-xs leading-relaxed text-slate-600 dark:text-slate-400">
+                <h4 className="text-sm font-bold text-white">{p.title}</h4>
+                <p className="mt-2 text-xs leading-relaxed text-slate-400">
                   {p.description}
                 </p>
               </div>
@@ -132,22 +137,15 @@ export function About() {
           </div>
 
           {/* Beyond the Code */}
-          <div className="mt-8 rounded-xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900/60">
-            <h3 className="mb-3 font-mono text-xs font-semibold uppercase tracking-widest text-sky-600 dark:text-cyan-400">
+          <div className="mt-8 rounded-xl border border-slate-800 bg-slate-900/60 p-5 backdrop-blur-md">
+            <h3 className="mb-3 font-mono text-xs font-semibold uppercase tracking-widest text-cyan-400">
               Beyond the Code
             </h3>
             <div className="flex flex-wrap gap-2">
-              {[
-                "Open-Source EDA Tools",
-                "Technical Writing",
-                "CMOS Layout Art",
-                "FPGA Experiments",
-                "VLSI Community Forums",
-                "Linux Ricing",
-              ].map((interest) => (
+              {INTERESTS.map((interest) => (
                 <span
                   key={interest}
-                  className="rounded-md border border-slate-200 bg-slate-100/80 px-2.5 py-1 font-mono text-xs text-slate-700 transition-colors hover:border-slate-300 dark:border-slate-700/80 dark:bg-slate-800/60 dark:text-slate-300 dark:hover:border-slate-600"
+                  className="rounded-md border border-slate-700 bg-slate-800 px-2.5 py-1 font-mono text-xs text-slate-200 transition-colors hover:border-cyan-500/50 hover:text-cyan-300"
                 >
                   {interest}
                 </span>

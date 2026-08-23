@@ -1,6 +1,6 @@
 "use client";
 
-import { ChipVisualization } from "./ChipVisualization";
+import { FloorplanVisual } from "./FloorplanVisual";
 
 export function Hero() {
   return (
@@ -61,100 +61,18 @@ export function Hero() {
         }}
         className="lg:!grid-cols-[7fr_5fr]"
       >
-        {/* Chip visualization */}
+        {/* ASIC floorplan visualization */}
         <div
           style={{
             position: "relative",
             width: "100%",
-            aspectRatio: "1 / 0.85",
-            maxHeight: "min(400px, 55vh)",
+            aspectRatio: "540 / 380",
+            maxHeight: "min(420px, 55vh)",
             order: -1,
           }}
           className="lg:!order-none"
         >
-          <ChipVisualization />
-          <svg
-            viewBox="0 0 500 425"
-            style={{
-              position: "absolute",
-              inset: 0,
-              width: "100%",
-              height: "100%",
-              pointerEvents: "none",
-            }}
-            preserveAspectRatio="xMidYMid meet"
-          >
-            <path
-              d="M120,180 L120,350"
-              stroke="var(--accent)"
-              strokeWidth="1"
-              opacity="0.25"
-              className="trace-draw"
-              style={{ "--trace-len": "170" } as React.CSSProperties}
-            />
-            <path
-              d="M200,180 L200,350"
-              stroke="var(--accent)"
-              strokeWidth="0.8"
-              opacity="0.2"
-              className="trace-draw"
-              style={{ "--trace-len": "170", animationDelay: "0.6s" } as React.CSSProperties}
-            />
-            <path
-              d="M280,180 L280,350"
-              stroke="var(--accent-secondary)"
-              strokeWidth="1"
-              opacity="0.2"
-              className="trace-draw"
-              style={{ "--trace-len": "170", animationDelay: "0.8s" } as React.CSSProperties}
-            />
-            <path
-              d="M360,180 L360,350"
-              stroke="var(--accent)"
-              strokeWidth="0.6"
-              opacity="0.15"
-              className="trace-draw"
-              style={{ "--trace-len": "170", animationDelay: "1s" } as React.CSSProperties}
-            />
-            <path
-              d="M80,220 L420,220"
-              stroke="var(--border)"
-              strokeWidth="0.5"
-              opacity="0.2"
-              className="trace-draw"
-              style={{ "--trace-len": "340", animationDelay: "1.2s" } as React.CSSProperties}
-            />
-            <path
-              d="M80,280 L420,280"
-              stroke="var(--border)"
-              strokeWidth="0.5"
-              opacity="0.15"
-              className="trace-draw"
-              style={{ "--trace-len": "340", animationDelay: "1.4s" } as React.CSSProperties}
-            />
-            <path
-              d="M80,320 L420,320"
-              stroke="var(--accent-secondary)"
-              strokeWidth="0.5"
-              opacity="0.15"
-              className="trace-draw"
-              style={{ "--trace-len": "340", animationDelay: "1.6s" } as React.CSSProperties}
-            />
-          </svg>
-          <div
-            style={{
-              position: "absolute",
-              bottom: "12px",
-              right: "16px",
-              fontFamily: "var(--font-mono)",
-              fontSize: "9px",
-              letterSpacing: "0.1em",
-              color: "var(--text-muted)",
-              textTransform: "uppercase",
-            }}
-          >
-            FLOORPLAN REPRESENTATION
-          </div>
+          <FloorplanVisual />
         </div>
 
         {/* Hero text content */}

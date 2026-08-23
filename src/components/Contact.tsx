@@ -19,13 +19,6 @@ const LINKS = [
     href: "mailto:psvarma.e@gmail.com",
     external: false,
   },
-  {
-    label: "DOWNLOAD RESUME",
-    href: "/resume.pdf",
-    download: "Shanmukha_Varma_Resume.pdf",
-    ariaLabel: "Download Shanmukha Varma resume PDF",
-    external: false,
-  },
 ];
 
 export function Contact() {
@@ -38,11 +31,11 @@ export function Contact() {
       className="scroll-reveal section-container"
     >
       <div style={{ maxWidth: "1400px", margin: "0 auto", position: "relative" }}>
-        <SectionHeader index="09" title="Let's Connect" />
+        <SectionHeader id="09" title="Let's Connect" />
 
         {/* Centered conversion card */}
         <div
-          className="card"
+          className="rounded-xl border border-slate-800 bg-slate-900/60 backdrop-blur-md transition-all duration-300 hover:border-cyan-500/50 hover:shadow-[0_0_24px_rgba(6,182,212,0.15)]"
           style={{
             maxWidth: "640px",
             margin: "0 auto",
@@ -51,24 +44,21 @@ export function Contact() {
           }}
         >
           <h2
+            className="font-bold leading-tight tracking-tight text-white"
             style={{
               fontFamily: "var(--font-display)",
               fontSize: "clamp(24px, 4vw, 36px)",
-              fontWeight: 600,
-              lineHeight: 1.15,
-              letterSpacing: "-0.01em",
-              color: "var(--text)",
               margin: "0 0 12px 0",
             }}
           >
             Let&apos;s build together
           </h2>
           <p
+            className="text-slate-300"
             style={{
               fontFamily: "var(--font-body)",
               fontSize: "clamp(14px, 2.5vw, 16px)",
               lineHeight: 1.6,
-              color: "var(--text-secondary)",
               margin: "0 0 clamp(24px, 4vw, 32px) 0",
               maxWidth: "480px",
               marginLeft: "auto",
@@ -80,58 +70,30 @@ export function Contact() {
             your team.
           </p>
 
-          {/* Social links */}
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              gap: "16px",
-              flexWrap: "wrap",
-            }}
-          >
+          {/* Full-width glowing CTA buttons */}
+          <div className="flex flex-col gap-3">
             {LINKS.map((link) => (
               <a
                 key={link.label}
                 href={link.href}
-                download={"download" in link ? link.download : undefined}
-                aria-label={"ariaLabel" in link ? link.ariaLabel : undefined}
                 target={link.external ? "_blank" : undefined}
                 rel={link.external ? "noopener noreferrer" : undefined}
-                className="card"
-                style={{
-                  padding: "16px 24px",
-                  textDecoration: "none",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "8px",
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "12px",
-                  letterSpacing: "0.06em",
-                  color: "var(--text-secondary)",
-                }}
-                onMouseEnter={(e) => {
-                  const el = e.currentTarget as HTMLElement;
-                  el.style.borderColor = "rgba(56, 189, 248, 0.7)";
-                  el.style.boxShadow = "0 0 14px rgba(56, 189, 248, 0.3)";
-                  el.style.color = "var(--text)";
-                  el.style.transform = "translateY(-2px)";
-                }}
-                onMouseLeave={(e) => {
-                  const el = e.currentTarget as HTMLElement;
-                  el.style.borderColor = "";
-                  el.style.boxShadow = "";
-                  el.style.color = "var(--text-secondary)";
-                  el.style.transform = "";
-                }}
+                className="flex w-full items-center justify-center gap-2 rounded-lg border border-cyan-500/40 bg-cyan-500/10 px-6 py-3.5 font-mono text-xs font-semibold tracking-widest text-cyan-300 transition-all duration-200 hover:-translate-y-0.5 hover:border-cyan-400/70 hover:bg-cyan-500/20 hover:shadow-[0_0_20px_rgba(6,182,212,0.3)]"
               >
-                <span>{link.label}</span>
+                {link.label}
                 {link.external && (
-                  <span style={{ fontFamily: "var(--font-mono)", fontSize: "10px", opacity: 0.6 }}>
-                    ↗
-                  </span>
+                  <span className="text-[10px] opacity-70">↗</span>
                 )}
               </a>
             ))}
+            <a
+              href="/resume.pdf"
+              download="Shanmukha_Varma_Resume.pdf"
+              aria-label="Download Shanmukha Varma resume PDF"
+              className="flex w-full items-center justify-center gap-2 rounded-lg border border-emerald-500/40 bg-emerald-500/10 px-6 py-3.5 font-mono text-xs font-semibold tracking-widest text-emerald-300 transition-all duration-200 hover:-translate-y-0.5 hover:border-emerald-400/70 hover:bg-emerald-500/20 hover:shadow-[0_0_20px_rgba(16,185,129,0.3)]"
+            >
+              DOWNLOAD RESUME ↓
+            </a>
           </div>
         </div>
       </div>

@@ -68,7 +68,7 @@ export function LinkedInFeed() {
           className="lg:!grid-cols-[1fr_auto]"
         >
           <div>
-            <SectionHeader index="07" title="Professional Activity" />
+            <SectionHeader id="07" title="Professional Activity" />
 
             <h2
               style={{

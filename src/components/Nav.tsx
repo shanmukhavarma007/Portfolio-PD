@@ -3,11 +3,11 @@
 import { useState, useEffect } from "react";
 
 const NAV_ITEMS = [
-  { num: "01", label: "WORK", href: "#work" },
-  { num: "02", label: "STACK", href: "#engineering" },
-  { num: "03", label: "PIPELINE", href: "#journey" },
+  { num: "01", label: "PROJECTS", href: "#projects" },
+  { num: "02", label: "STACK", href: "#stack" },
+  { num: "03", label: "PIPELINE", href: "#pipeline" },
   { num: "04", label: "ACTIVITY", href: "#activity" },
-  { num: "05", label: "JOURNEY", href: "#about" },
+  { num: "05", label: "JOURNEY", href: "#journey" },
 ];
 
 const MD_BREAKPOINT = 768;
@@ -153,7 +153,7 @@ export function Nav() {
                   flexShrink: 0,
                 }}
               />
-              PRACTICE ON VLSI HUB ↗
+              VLSI HUB ↗
             </a>
             <a
               href="https://github.com/shanmukhavarma007"
@@ -374,7 +374,7 @@ export function Nav() {
                   flexShrink: 0,
                 }}
               />
-              PRACTICE ON VLSI HUB ↗
+              VLSI HUB ↗
             </a>
             <div style={{ display: "flex", gap: "24px" }}>
               <a

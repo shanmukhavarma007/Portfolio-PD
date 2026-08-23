@@ -31,8 +31,8 @@ const pipelineStages: FlowStage[] = [
     tags: ["DIGITAL DESIGN", "CMOS", "LINUX", "VERILOG", "TCL"],
     links: [
       { label: "RTL LABS REPO", url: "https://github.com/shanmukhavarma007" },
-      { label: "TIMING BASICS", url: "#journey" },
-      { label: "TCL AUTOMATIONS", url: "https://github.com/shanmukhavarma007" },
+      { label: "TCL AUTOMATIONS", url: "https://github.com/shanmukhavarma007/tcl-scripts" },
+      { label: "PRACTICE ON VLSI HUB", url: "https://vlsi-hub-iota.vercel.app/" },
     ],
   },
   {
@@ -107,92 +107,50 @@ const pipelineStages: FlowStage[] = [
   },
 ];
 
-/* Waveform segment generator - creates clock-like rising/falling edges */
-function generateWaveformPath(
-  startX: number,
-  endX: number,
-  y: number,
-  isActive: boolean,
-  segmentWidth: number = 40,
-  highHeight: number = 12
-): string {
-  const segments: string[] = [];
-  let x = startX;
-  const midY = y;
-  const highY = y - highHeight;
-
-  while (x < endX) {
-    const remaining = endX - x;
-    const width = Math.min(segmentWidth, remaining);
-
-    if (isActive) {
-      segments.push(`M${x},${midY}`);
-      segments.push(`L${x + 4},${highY}`);
-      segments.push(`L${x + width / 2 - 4},${highY}`);
-      segments.push(`L${x + width / 2},${midY}`);
-      segments.push(`L${x + width / 2 + 4},${midY + highHeight}`);
-      segments.push(`L${x + width - 4},${midY + highHeight}`);
-      segments.push(`L${x + width},${midY}`);
-    } else {
-      segments.push(`M${x},${midY + 4}`);
-      segments.push(`L${x + width},${midY + 4}`);
-    }
-
-    x += width;
+function StatusNode({ status }: { status: StageStatus }) {
+  if (status === "mastered") {
+    return (
+      <span
+        className="flex h-4 w-4 items-center justify-center rounded-full border border-emerald-400 bg-emerald-500 font-mono text-[9px] font-bold text-white"
+        style={{ boxShadow: "0 0 12px rgba(16, 185, 129, 0.6)" }}
+      >
+        ✓
+      </span>
+    );
   }
-
-  return segments.join(" ");
+  if (status === "active") {
+    return (
+      <span
+        className="status-dot-pulse h-3.5 w-3.5 rounded-full border-2 border-amber-400 bg-transparent"
+        style={{ color: "#F59E0B" }}
+      />
+    );
+  }
+  return (
+    <span className="h-3 w-3 rounded-full border-2 border-slate-600 bg-slate-900" />
+  );
 }
 
 export function LearningJourney() {
   const [expandedStage, setExpandedStage] = useState<string | null>(null);
   const ref = useScrollReveal();
 
-  const getStageStyles = (status: StageStatus) => {
-    switch (status) {
-      case "mastered":
-        return {
-          border: "2px solid var(--success)",
-          background: "color-mix(in srgb, var(--success) 6%, transparent)",
-          shadow: "0 0 20px color-mix(in srgb, var(--success) 15%, transparent)",
-          numberColor: "var(--success)",
-          titleColor: "var(--text)",
-          opacity: 1,
-          statusBg: "var(--success)",
-          statusColor: "#FFF",
-          tagBg: "var(--surface-2)",
-          tagColor: "var(--text-secondary)",
-          tagBorder: "var(--border)",
-        };
-      case "active":
-        return {
-          border: "2px solid var(--warning)",
-          background: "color-mix(in srgb, var(--warning) 8%, transparent)",
-          shadow: "0 0 20px color-mix(in srgb, var(--warning) 20%, transparent)",
-          numberColor: "var(--warning)",
-          titleColor: "var(--text)",
-          opacity: 1,
-          statusBg: "var(--warning)",
-          statusColor: "#FFF",
-          tagBg: "var(--surface-2)",
-          tagColor: "var(--text-secondary)",
-          tagBorder: "var(--border)",
-        };
-      case "queued":
-        return {
-          border: "1px dashed var(--border)",
-          background: "var(--surface-2)",
-          shadow: "none",
-          numberColor: "var(--text-muted)",
-          titleColor: "var(--text-secondary)",
-          opacity: 0.7,
-          statusBg: "var(--surface-3)",
-          statusColor: "var(--text-muted)",
-          tagBg: "var(--surface-3)",
-          tagColor: "var(--text-muted)",
-          tagBorder: "var(--border-subtle)",
-        };
-    }
+  const statusMeta: Record<
+    StageStatus,
+    { label: string; chipClass: string }
+  > = {
+    mastered: {
+      label: "MASTERED",
+      chipClass: "border-emerald-500/50 bg-emerald-500/10 text-emerald-400",
+    },
+    active: {
+      label: "ACTIVE FOCUS",
+      chipClass: "border-amber-500/50 bg-amber-500/10 text-amber-400",
+    },
+    queued: {
+      label: "QUEUED",
+      chipClass: "border-slate-700 bg-slate-800/60 text-slate-400",
+    },
   };
 
   return (
@@ -206,54 +164,15 @@ export function LearningJourney() {
         overflow: "hidden",
       }}
     >
-      {/* IC floorplan-style background pattern */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          pointerEvents: "none",
-          opacity: 0.06,
-        }}
-        aria-hidden="true"
-      >
-        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <pattern id="fp-grid" x="0" y="0" width="120" height="120" patternUnits="userSpaceOnUse">
-              <rect x="4" y="4" width="112" height="112" fill="none" stroke="var(--border)" strokeWidth="0.5" />
-              <rect x="8" y="8" width="48" height="32" fill="none" stroke="var(--border)" strokeWidth="0.3" />
-              <rect x="60" y="8" width="52" height="20" fill="none" stroke="var(--border)" strokeWidth="0.3" />
-              <rect x="60" y="28" width="24" height="12" fill="none" stroke="var(--accent)" strokeWidth="0.3" opacity="0.5" />
-              <rect x="8" y="44" width="32" height="28" fill="none" stroke="var(--border)" strokeWidth="0.3" />
-              <rect x="44" y="44" width="36" height="20" fill="none" stroke="var(--border)" strokeWidth="0.3" />
-              <rect x="84" y="44" width="28" height="28" fill="none" stroke="var(--border)" strokeWidth="0.3" />
-              <rect x="8" y="76" width="68" height="36" fill="none" stroke="var(--border)" strokeWidth="0.3" />
-              <rect x="80" y="76" width="32" height="36" fill="none" stroke="var(--accent-secondary)" strokeWidth="0.3" opacity="0.4" />
-              <line x1="56" y1="8" x2="56" y2="112" stroke="var(--accent)" strokeWidth="0.2" opacity="0.3" />
-              <line x1="8" y1="42" x2="112" y2="42" stroke="var(--border)" strokeWidth="0.2" opacity="0.3" />
-              <line x1="8" y1="74" x2="112" y2="74" stroke="var(--border)" strokeWidth="0.2" opacity="0.2" />
-              <line x1="40" y1="8" x2="40" y2="112" stroke="var(--border)" strokeWidth="0.15" opacity="0.2" />
-              <line x1="80" y1="8" x2="80" y2="112" stroke="var(--border)" strokeWidth="0.15" opacity="0.2" />
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#fp-grid)" />
-        </svg>
-      </div>
-
-      <div
-        style={{
-          maxWidth: "1400px",
-          margin: "0 auto",
-          position: "relative",
-        }}
-      >
-        <SectionHeader index="06" title="ASIC Physical Design Pipeline" />
+      <div style={{ maxWidth: "1400px", margin: "0 auto", position: "relative" }}>
+        <SectionHeader id="06" title="ASIC Physical Design Pipeline" />
 
         {/* Section title */}
         <h2
           style={{
             fontFamily: "var(--font-display)",
             fontSize: "clamp(24px, 4vw, 40px)",
-            fontWeight: 600,
+            fontWeight: 700,
             lineHeight: 1.15,
             letterSpacing: "-0.01em",
             color: "var(--text)",
@@ -275,338 +194,124 @@ export function LearningJourney() {
           moving through the complete ASIC physical design flow.
         </p>
 
-        {/* Digital Waveform Track + Pin Nodes */}
-        <div
-          style={{
-            position: "relative",
-            marginBottom: "clamp(24px, 4vw, 40px)",
-            overflow: "visible",
-          }}
-        >
-          <svg
-            viewBox="0 0 1200 60"
-            style={{
-              width: "100%",
-              height: "60px",
-              overflow: "visible",
-            }}
-            preserveAspectRatio="xMidYMid meet"
-          >
-            {/* Active waveform for stages 01-02 */}
-            <path
-              d={generateWaveformPath(50, 350, 40, true, 50, 14)}
-              fill="none"
-              stroke="var(--success)"
-              strokeWidth="2"
-              opacity="0.8"
-              style={{ filter: "drop-shadow(0 0 4px color-mix(in srgb, var(--success) 50%, transparent))" }}
-            />
+        {/* Silicon timeline */}
+        <div className="relative max-w-3xl">
+          {/* Vertical gradient rail */}
+          <div
+            aria-hidden="true"
+            className="absolute bottom-6 left-[11px] top-3 w-[2px] rounded-full bg-gradient-to-b from-cyan-400 via-cyan-500/40 to-emerald-400 opacity-70"
+          />
 
-            {/* Inactive waveform for stages 03-08 */}
-            <path
-              d={generateWaveformPath(350, 1150, 40, false, 50, 14)}
-              fill="none"
-              stroke="var(--border)"
-              strokeWidth="1.5"
-              strokeDasharray="6 4"
-              opacity="0.5"
-            />
-
-            {/* Pin nodes */}
-            {pipelineStages.map((stage, i) => {
-              const x = 50 + i * 150;
-              const y = 40;
-              const isActive = stage.status === "mastered" || stage.status === "active";
+          <div className="flex flex-col gap-5">
+            {pipelineStages.map((stage) => {
+              const meta = statusMeta[stage.status];
+              const isExpanded = expandedStage === stage.id;
 
               return (
-                <g key={stage.id}>
-                  <circle
-                    cx={x}
-                    cy={y}
-                    r="8"
-                    fill={isActive ? (stage.status === "mastered" ? "var(--success)" : "var(--warning)") : "var(--surface-3)"}
-                    stroke={isActive ? (stage.status === "mastered" ? "var(--success)" : "var(--warning)") : "var(--border)"}
-                    strokeWidth={isActive ? "2" : "1"}
-                    opacity={stage.status === "queued" ? 0.5 : 1}
-                    style={stage.status === "active" ? {
-                      filter: "drop-shadow(0 0 6px color-mix(in srgb, var(--warning) 50%, transparent))",
-                    } : stage.status === "mastered" ? {
-                      filter: "drop-shadow(0 0 4px color-mix(in srgb, var(--success) 50%, transparent))",
-                    } : {}}
-                  />
-                  <text
-                    x={x}
-                    y={y + 22}
-                    textAnchor="middle"
-                    fill={isActive ? (stage.status === "mastered" ? "var(--success)" : "var(--warning)") : "var(--text-muted)"}
-                    fontSize="7"
-                    fontFamily="var(--font-mono)"
-                    letterSpacing="0.05em"
-                    opacity={stage.status === "queued" ? 0.5 : 1}
-                  >
-                    {stage.padId}
-                  </text>
-                </g>
-              );
-            })}
-          </svg>
-        </div>
+                <div key={stage.id} className="relative pl-10">
+                  {/* Milestone node on the rail */}
+                  <span className="absolute left-[3px] top-6 z-10 flex items-center justify-center">
+                    <StatusNode status={stage.status} />
+                  </span>
 
-        {/* Stage Cards Grid - 4 columns on desktop */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-            gap: "16px",
-          }}
-        >
-          {pipelineStages.map((stage) => {
-            const styles = getStageStyles(stage.status);
-            const isExpanded = expandedStage === stage.id;
-
-            return (
-              <div
-                key={stage.id}
-                className="card"
-                style={{
-                  border: styles.border,
-                  background: styles.background,
-                  boxShadow: styles.shadow,
-                  padding: "clamp(16px, 2.5vw, 20px)",
-                  cursor: "pointer",
-                  transition: "all 0.3s ease",
-                  opacity: styles.opacity,
-                  position: "relative",
-                  overflow: "hidden",
-                }}
-                onClick={() => setExpandedStage(isExpanded ? null : stage.id)}
-              >
-                {/* Lock icon for queued stages */}
-                {stage.status === "queued" && (
                   <div
-                    style={{
-                      position: "absolute",
-                      top: "12px",
-                      right: "12px",
-                      fontSize: "12px",
-                      opacity: 0.5,
-                    }}
+                    className={`card cursor-pointer p-5 ${
+                      stage.status === "queued" ? "opacity-80" : ""
+                    }`}
+                    onClick={() =>
+                      setExpandedStage(isExpanded ? null : stage.id)
+                    }
                   >
-                    🔒
-                  </div>
-                )}
-
-                {/* Status badge */}
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                    marginBottom: "12px",
-                  }}
-                >
-                  {stage.status === "mastered" && (
-                    <div
-                      style={{
-                        width: "20px",
-                        height: "20px",
-                        borderRadius: "50%",
-                        background: "var(--success)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        boxShadow: "0 0 12px color-mix(in srgb, var(--success) 40%, transparent)",
-                      }}
-                    >
+                    {/* Header row */}
+                    <div className="mb-3 flex items-center justify-between gap-3">
                       <span
-                        style={{
-                          fontFamily: "var(--font-mono)",
-                          fontSize: "10px",
-                          color: "#FFF",
-                          fontWeight: 700,
-                        }}
+                        className={`font-mono text-[10px] tracking-[0.15em] ${
+                          stage.status === "queued"
+                            ? "text-slate-500"
+                            : "text-cyan-400"
+                        }`}
                       >
-                        ✓
+                        {`${stage.stageNumber} // ${stage.padId}`}
+                      </span>
+                      <span
+                        className={`shrink-0 rounded-md border px-2 py-0.5 font-mono text-[9px] tracking-widest ${meta.chipClass}`}
+                      >
+                        {meta.label}
                       </span>
                     </div>
-                  )}
-                  {stage.status === "active" && (
-                    <div
-                      style={{
-                        width: "20px",
-                        height: "20px",
-                        borderRadius: "50%",
-                        background: "color-mix(in srgb, var(--warning) 30%, transparent)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        animation: "pulse 2s ease-in-out infinite",
-                      }}
-                    >
-                      <div
-                        style={{
-                          width: "6px",
-                          height: "6px",
-                          borderRadius: "50%",
-                          background: "var(--warning)",
-                        }}
-                      />
+
+                    <h3 className="mb-2 font-mono text-base font-bold tracking-wide text-white">
+                      {stage.title}
+                    </h3>
+                    <p className="mb-3 text-[13px] leading-relaxed text-slate-300">
+                      {stage.description}
+                    </p>
+
+                    {stage.prerequisite && (
+                      <div className="mb-2 font-mono text-[9px] tracking-wider text-slate-500">
+                        PREREQUISITE: {stage.prerequisite}
+                      </div>
+                    )}
+
+                    {stage.artifacts && (
+                      <div className="mb-3 font-mono text-[9px] tracking-wider text-slate-500">
+                        ARTIFACTS: {stage.artifacts.join(", ")}
+                      </div>
+                    )}
+
+                    {/* Tags */}
+                    <div className="flex flex-wrap gap-1.5">
+                      {stage.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="rounded-md border border-slate-700 bg-slate-800 px-2 py-0.5 font-mono text-xs text-slate-200"
+                        >
+                          {tag}
+                        </span>
+                      ))}
                     </div>
-                  )}
-                  <span
-                    className="badge"
-                    style={{
-                      background: styles.statusBg,
-                      color: styles.statusColor,
-                      fontSize: "8px",
-                    }}
-                  >
-                    {stage.status === "mastered" ? "MASTERED" : stage.status === "active" ? "ACTIVE FOCUS" : "QUEUED"}
-                  </span>
-                </div>
 
-                {/* Stage pin and title */}
-                <div
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: "10px",
-                    color: styles.numberColor,
-                    letterSpacing: "0.1em",
-                    marginBottom: "4px",
-                  }}
-                >
-                  {stage.stageNumber} {stage.padId}
-                </div>
-                <h3
-                  style={{
-                    fontFamily: "var(--font-display)",
-                    fontSize: "clamp(16px, 2.5vw, 18px)",
-                    fontWeight: 600,
-                    lineHeight: 1.2,
-                    color: styles.titleColor,
-                    margin: "0 0 8px 0",
-                  }}
-                >
-                  {stage.title}
-                </h3>
-                <p
-                  style={{
-                    fontFamily: "var(--font-body)",
-                    fontSize: "12px",
-                    color: "var(--text-secondary)",
-                    margin: "0 0 12px 0",
-                    lineHeight: 1.5,
-                  }}
-                >
-                  {stage.description}
-                </p>
-
-                {/* Prerequisite */}
-                {stage.prerequisite && (
-                  <div
-                    style={{
-                      fontFamily: "var(--font-mono)",
-                      fontSize: "9px",
-                      color: "var(--text-muted)",
-                      letterSpacing: "0.05em",
-                      marginBottom: "12px",
-                    }}
-                  >
-                    PREREQUISITE: {stage.prerequisite}
-                  </div>
-                )}
-
-                {/* Artifacts */}
-                {stage.artifacts && (
-                  <div
-                    style={{
-                      fontFamily: "var(--font-mono)",
-                      fontSize: "9px",
-                      color: "var(--text-muted)",
-                      letterSpacing: "0.05em",
-                      marginBottom: "12px",
-                    }}
-                  >
-                    ARTIFACTS: {stage.artifacts.join(", ")}
-                  </div>
-                )}
-
-                {/* Tags */}
-                <div
-                  style={{
-                    display: "flex",
-                    flexWrap: "wrap",
-                    gap: "6px",
-                    marginBottom: stage.links ? "12px" : 0,
-                  }}
-                >
-                  {stage.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="badge"
-                      style={{
-                        fontSize: "7px",
-                        background: styles.tagBg,
-                        color: styles.tagColor,
-                        border: `1px solid ${styles.tagBorder}`,
-                      }}
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-
-                {/* Links */}
-                {stage.links && (
-                  <div
-                    style={{
-                      display: "flex",
-                      flexWrap: "wrap",
-                      gap: "8px",
-                      paddingTop: "12px",
-                      borderTop: "1px solid transparent",
-                      borderImage: "linear-gradient(90deg, transparent, var(--border-subtle) 20%, var(--border-subtle) 80%, transparent) 1",
-                    }}
-                  >
-                    {stage.links.map((link) => (
-                      <a
-                        key={link.label}
-                        href={link.url}
-                        target={link.url.startsWith("http") ? "_blank" : undefined}
-                        rel={link.url.startsWith("http") ? "noopener noreferrer" : undefined}
-                        className="badge badge--accent-secondary"
-                        style={{
-                          fontSize: "8px",
-                          textDecoration: "none",
-                          cursor: "pointer",
-                          transition: "all 0.2s ease",
-                        }}
+                    {(isExpanded || stage.links) && stage.links && (
+                      <div
+                        className="mt-4 flex flex-wrap gap-2 border-t border-slate-800 pt-3"
                         onClick={(e) => e.stopPropagation()}
                       >
-                        {link.label} ↗
-                      </a>
-                    ))}
-                  </div>
-                )}
+                        {stage.links.map((link) => (
+                          <a
+                            key={link.label}
+                            href={link.url}
+                            target={
+                              link.url.startsWith("http") ? "_blank" : undefined
+                            }
+                            rel={
+                              link.url.startsWith("http")
+                                ? "noopener noreferrer"
+                                : undefined
+                            }
+                            className="rounded-md border border-cyan-500/40 bg-cyan-500/10 px-2.5 py-1 font-mono text-[10px] tracking-wider text-cyan-300 transition-colors duration-200 hover:border-cyan-400/70 hover:bg-cyan-500/20"
+                          >
+                            {link.label} ↗
+                          </a>
+                        ))}
+                      </div>
+                    )}
 
-                {/* Expand indicator */}
-                <div
-                  style={{
-                    position: "absolute",
-                    bottom: "12px",
-                    right: "12px",
-                    fontFamily: "var(--font-mono)",
-                    fontSize: "10px",
-                    color: "var(--text-muted)",
-                    transition: "transform 0.2s ease",
-                    transform: isExpanded ? "rotate(180deg)" : "rotate(0deg)",
-                  }}
-                >
-                  ▼
+                    {/* Expand indicator */}
+                    <span
+                      className="absolute bottom-4 right-4 font-mono text-[10px] text-slate-500 transition-transform duration-200"
+                      style={{
+                        transform: isExpanded
+                          ? "rotate(180deg)"
+                          : "rotate(0deg)",
+                      }}
+                    >
+                      ▼
+                    </span>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>

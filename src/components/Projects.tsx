@@ -1,30 +1,10 @@
 "use client";
 
-import { useState } from "react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { SectionHeader } from "./SectionHeader";
 
 const VLSI_HUB_URL = "https://vlsi-hub-iota.vercel.app/";
 const TCL_SCRIPTS_URL = "https://github.com/shanmukhavarma007/tcl-scripts";
-
-const SLACK_SNIPPET = `# Extract worst setup slack from PrimeTime / Tempus report
-set fh [open report_timing.rpt r]
-set data [read $fh]
-close $fh
-
-set worst_slack 999999.0
-foreach line [split $data "\\n"] {
-    # regex-based violation pattern matching
-    if {[regexp {slack\\s+\\(VIOLATED\\)\\s+(-?[0-9.]+)} $line -> slack]} {
-        puts "VIOLATED PATH SLACK: $slack ns"
-        if {$slack < $worst_slack} {
-            set worst_slack $slack ;# critical path isolation
-        }
-    }
-}
-
-puts "WORST SETUP SLACK: $worst_slack ns"
-`;
 
 type TermLine =
   | { kind: "sep" }
@@ -45,13 +25,13 @@ type Project = {
   tags: string[];
   liveUrl: string | null;
   primaryCta: { label: string; href: string };
+  secondaryCta?: { label: string; href: string };
   previewTitle: string;
   modules?: PracticeModule[];
   termLines?: TermLine[];
   statusLabel: string;
   pulseStatus?: boolean;
   footerAction: { label: string; href: string };
-  snippet?: string;
 };
 
 const PROJECTS: Project[] = [
@@ -72,27 +52,28 @@ const PROJECTS: Project[] = [
     ],
     liveUrl: VLSI_HUB_URL,
     primaryCta: { label: "LAUNCH VLSI HUB ↗", href: VLSI_HUB_URL },
+    secondaryCta: { label: "EXPLORE MODULES", href: VLSI_HUB_URL },
     previewTitle: "vlsi-hub-session // interactive-practice",
     modules: [
       {
         num: "[01]",
         name: "CMOS Basics",
-        detail: "NMOS/PMOS Transfer Curves & Inverter Sizing",
+        detail: "Transfer Curves & Sizing",
       },
       {
         num: "[02]",
-        name: "Digital Electronics",
-        detail: "Setup/Hold Violations, FSMs & K-Maps",
+        name: "Digital Logic",
+        detail: "Setup/Hold Violations & FSMs",
       },
       {
         num: "[03]",
-        name: "Linux CLI for EDA",
-        detail: "grep, awk, sed, process management",
+        name: "Linux for EDA",
+        detail: "grep, awk, sed, Process Management",
       },
       {
         num: "[04]",
         name: "Tcl for PD",
-        detail: "String regex, file I/O, report formatting",
+        detail: "Regex, File I/O, Report Parsing",
       },
     ],
     statusLabel: "READY TO PRACTICE",
@@ -115,6 +96,7 @@ const PROJECTS: Project[] = [
     ],
     liveUrl: null,
     primaryCta: { label: "VIEW ON GITHUB", href: TCL_SCRIPTS_URL },
+    secondaryCta: { label: "SOURCE CODE", href: TCL_SCRIPTS_URL },
     previewTitle: "sta_parser.tcl -v --report worst_slack.rpt",
     termLines: [
       {
@@ -163,7 +145,6 @@ const PROJECTS: Project[] = [
     ],
     statusLabel: "PARSE COMPLETE (0.014s)",
     footerAction: { label: "View Repo on GitHub ↗", href: TCL_SCRIPTS_URL },
-    snippet: SLACK_SNIPPET,
   },
 ];
 
@@ -192,11 +173,10 @@ function TerminalWindow({
 
 export function Projects() {
   const ref = useScrollReveal();
-  const [breakdownOpen, setBreakdownOpen] = useState(false);
 
   return (
     <section
-      id="work"
+      id="projects"
       ref={ref}
       className="scroll-reveal section-container section-glow section-divider-top section-divider-bottom"
       style={{
@@ -204,7 +184,7 @@ export function Projects() {
       }}
     >
       <div style={{ maxWidth: "1400px", margin: "0 auto", position: "relative" }}>
-        <SectionHeader index="04" title="Selected Work" />
+        <SectionHeader id="04" title="Selected Work" />
 
         <div className="mt-8 flex flex-col gap-10">
           {PROJECTS.map((project) => (
@@ -227,8 +207,9 @@ export function Projects() {
                     </span>
                   </div>
 
-                  <h3 className="mb-4 font-semibold leading-tight tracking-tight text-white"
-                    style={{ fontFamily: "var(--font-display)", fontSize: "clamp(22px, 2.6vw, 30px)" }}
+                  <h3
+                    className="mb-4 text-xl font-bold leading-tight tracking-tight text-white sm:text-2xl"
+                    style={{ fontFamily: "var(--font-display)" }}
                   >
                     {project.title}
                   </h3>
@@ -263,31 +244,17 @@ export function Projects() {
                     >
                       {project.primaryCta.label}
                     </a>
-                    {project.snippet && (
-                      <button
-                        type="button"
-                        onClick={() => setBreakdownOpen(!breakdownOpen)}
-                        className={`inline-flex items-center gap-2 rounded-lg border px-5 py-2.5 font-mono text-xs tracking-widest transition-all duration-200 hover:-translate-y-0.5 ${
-                          breakdownOpen
-                            ? "border-cyan-400/50 bg-cyan-500/15 text-cyan-300"
-                            : "border-slate-700 bg-slate-800/60 text-slate-300 hover:border-slate-600 hover:text-white"
-                        }`}
+                    {project.secondaryCta && (
+                      <a
+                        href={project.secondaryCta.href}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-2 rounded-lg border border-slate-700 bg-slate-800/60 px-5 py-2.5 font-mono text-xs tracking-widest text-slate-300 transition-all duration-200 hover:-translate-y-0.5 hover:border-slate-600 hover:text-white"
                       >
-                        {breakdownOpen ? "HIDE CODE BREAKDOWN" : "CODE BREAKDOWN"}
-                      </button>
+                        {project.secondaryCta.label}
+                      </a>
                     )}
                   </div>
-
-                  {/* Inline terminal snippet (code breakdown) */}
-                  {project.snippet && breakdownOpen && (
-                    <div className="mt-6">
-                      <TerminalWindow title="parse_slack.tcl — sample logic">
-                        <pre className="overflow-x-auto p-4 font-mono text-[11px] leading-relaxed text-slate-300">
-                          {project.snippet}
-                        </pre>
-                      </TerminalWindow>
-                    </div>
-                  )}
                 </div>
 
                 {/* Right: terminal-style interactive preview */}

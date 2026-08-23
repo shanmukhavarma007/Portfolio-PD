@@ -1,122 +1,118 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
+import { useState } from "react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { SectionHeader } from "./SectionHeader";
 
 interface PDStage {
   id: string;
   label: string;
-  shortLabel: string;
   stageNum: string;
   description: string;
   concepts: string[];
+  metrics: string[];
 }
 
 const PD_STAGES: PDStage[] = [
   {
     id: "rtl",
     label: "RTL",
-    shortLabel: "RTL",
     stageNum: "01",
     description: "Register-Transfer Level design capture and lint verification.",
     concepts: ["LINT", "CDC", "SIM"],
+    metrics: ["LINT CLEAN", "CDC 0 ISSUES", "SIM COVERED"],
   },
   {
     id: "synth",
     label: "SYNTHESIS",
-    shortLabel: "SYN",
     stageNum: "02",
     description: "Logic synthesis converting RTL into a gate-level netlist.",
     concepts: ["GTL", "MAPPING", "OPT"],
+    metrics: ["WNS \u2265 0 NS", "TNS 0", "AREA OPT"],
   },
   {
     id: "floorplan",
     label: "FLOORPLAN",
-    shortLabel: "FP",
     stageNum: "03",
     description: "Die size definition, I/O placement, and power grid structuring.",
     concepts: ["PADS", "POWER GRID", "MACROS"],
+    metrics: ["UTIL 65\u201370%", "MACROS FIXED", "PG RINGS"],
   },
   {
     id: "placement",
     label: "PLACEMENT",
-    shortLabel: "PLACE",
     stageNum: "04",
     description: "Standard cell placement with congestion and timing optimization.",
     concepts: ["GLOBAL", "DETAIL", "LEGALIZATION"],
+    metrics: ["CONGESTION < 1%", "LEGALIZED 100%", "TIMING DRIVEN"],
   },
   {
     id: "cts",
     label: "CTS",
-    shortLabel: "CTS",
     stageNum: "05",
     description: "Clock Tree Synthesis ensuring minimal skew and latency.",
     concepts: ["SKEW", "LATENCY", "BUFFERS"],
+    metrics: ["SKEW \u2264 30 PS", "LATENCY MIN", "BALANCED BUF"],
   },
   {
     id: "routing",
     label: "ROUTING",
-    shortLabel: "ROUTE",
     stageNum: "06",
     description: "Detailed signal routing connecting cells without DRC violations.",
     concepts: ["GLOBAL", "TRACK", "DETAIL"],
+    metrics: ["DRC 0", "TRACKED", "ANTENNA OK"],
   },
   {
     id: "sta",
     label: "STA",
-    shortLabel: "STA",
     stageNum: "07",
     description: "Static Timing Analysis validating setup and hold constraints.",
     concepts: ["SETUP", "HOLD", "SLACK"],
+    metrics: ["SETUP MET", "HOLD CLEAN", "SLACK +VE"],
   },
   {
     id: "signoff",
     label: "SIGNOFF",
-    shortLabel: "SIGN",
     stageNum: "08",
     description: "Final physical verification before tape-out fabrication.",
     concepts: ["DRC", "LVS", "IR DROP", "EM"],
+    metrics: ["DRC/LVS CLEAN", "EM/IR PASS", "GDSII OUT"],
   },
 ];
 
+function Chevron() {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 16 16"
+      fill="none"
+      aria-hidden="true"
+      className="mx-1 shrink-0 self-center"
+      style={{ color: "#06B6D4" }}
+    >
+      <polyline
+        points="5,2 11,8 5,14"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        opacity="0.7"
+      />
+    </svg>
+  );
+}
+
 export function PDFlow() {
   const [activeStage, setActiveStage] = useState<string | null>(null);
-  const [laserLeft, setLaserLeft] = useState<number | null>(null);
-  const [contentKey, setContentKey] = useState<string>("empty");
-  const nodeRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
-  const containerRef = useRef<HTMLDivElement>(null);
-  const sectionRef = useScrollReveal();
+  const ref = useScrollReveal();
 
   const activeData = PD_STAGES.find((s) => s.id === activeStage);
 
-  const handleNodeEnter = useCallback(
-    (stageId: string) => {
-      const btn = nodeRefs.current.get(stageId);
-      const container = containerRef.current;
-      if (btn && container) {
-        const btnRect = btn.getBoundingClientRect();
-        const containerRect = container.getBoundingClientRect();
-        const centerX = btnRect.left - containerRect.left + btnRect.width / 2;
-        setLaserLeft(centerX);
-      }
-      if (stageId !== activeStage) {
-        setContentKey(stageId);
-      }
-      setActiveStage(stageId);
-    },
-    [activeStage],
-  );
-
-  const handleNodeLeave = useCallback(() => {
-    setActiveStage(null);
-    setLaserLeft(null);
-    setContentKey("empty");
-  }, []);
-
   return (
     <section
-      ref={sectionRef}
+      id="pipeline"
+      ref={ref}
       className="scroll-reveal section-glow section-divider-top section-divider-bottom"
       style={{
         padding: "clamp(32px, 6vw, 96px) clamp(16px, 4vw, 48px)",
@@ -125,194 +121,81 @@ export function PDFlow() {
         overflow: "hidden",
       }}
     >
-      <div
-        ref={containerRef}
-        style={{ maxWidth: "1400px", margin: "0 auto", position: "relative" }}
-      >
-        <SectionHeader index="02" title="Physical Design Flow" />
+      <div style={{ maxWidth: "1400px", margin: "0 auto", position: "relative" }}>
+        <SectionHeader id="02" title="Physical Design Flow" />
 
-        {/* Flow nodes + laser trace container */}
-        <div style={{ position: "relative" }}>
-          {/* Horizontal flow */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "flex-start",
-              gap: "0",
-              overflowX: "auto",
-              paddingBottom: "16px",
-              position: "relative",
-              zIndex: 2,
-            }}
-            className="max-md:!flex-col max-md:!gap-0"
-          >
-            {PD_STAGES.map((stage, i) => {
-              const isActive = activeStage === stage.id;
-              const isLast = i === PD_STAGES.length - 1;
-
-              return (
-                <div
-                  key={stage.id}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    flexShrink: 0,
-                  }}
-                  className="max-md:!w-full max-md:!flex-col max-md:!items-stretch"
+        {/* Stage cards + chevron connectors */}
+        <div className="flex items-stretch overflow-x-auto pb-3">
+          {PD_STAGES.map((stage, i) => {
+            const isActive = activeStage === stage.id;
+            return (
+              <div key={stage.id} className="flex shrink-0">
+                <button
+                  type="button"
+                  onMouseEnter={() => setActiveStage(stage.id)}
+                  onFocus={() => setActiveStage(stage.id)}
+                  onClick={() =>
+                    setActiveStage(isActive ? null : stage.id)
+                  }
+                  className={`flex min-w-[150px] max-w-[190px] flex-col gap-2 rounded-xl border p-4 text-left backdrop-blur-md transition-all duration-300 ${
+                    isActive
+                      ? "border-cyan-400/70 bg-slate-900/80 shadow-[0_0_24px_rgba(6,182,212,0.25)]"
+                      : "border-slate-800 bg-slate-900/60 hover:border-cyan-500/50 hover:shadow-[0_0_24px_rgba(6,182,212,0.15)]"
+                  }`}
                 >
-                  {/* Node */}
-                  <button
-                    ref={(el) => {
-                      if (el) nodeRefs.current.set(stage.id, el);
-                    }}
-                    onMouseEnter={() => handleNodeEnter(stage.id)}
-                    onMouseLeave={handleNodeLeave}
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      gap: "10px",
-                      padding: "12px 8px",
-                      background: "none",
-                      border: "none",
-                      cursor: "pointer",
-                      minWidth: "80px",
-                      transition: "all 0.2s ease",
-                    }}
-                    className="max-md:!w-full max-md:!items-start max-md:!flex-row max-md:!gap-4 max-md:!px-0 max-md:!py-3"
+                  <span
+                    className={`font-mono text-[9px] tracking-[0.2em] ${
+                      isActive ? "text-cyan-300" : "text-slate-500"
+                    }`}
                   >
-                    {/* Dot */}
-                    <div
-                      style={{
-                        width: "10px",
-                        height: "10px",
-                        borderRadius: "50%",
-                        background: isActive ? "#00E5FF" : "var(--surface-4)",
-                        border: isActive ? "none" : "1px solid var(--border)",
-                        transition: "all 0.3s ease",
-                        boxShadow: isActive
-                          ? "0 0 12px #00E5FF"
-                          : "none",
-                        flexShrink: 0,
-                      }}
-                    />
-
-                    {/* Short label */}
-                    <span
-                      style={{
-                        fontFamily: "var(--font-mono)",
-                        fontSize: "10px",
-                        letterSpacing: "0.1em",
-                        color: isActive ? "#00E5FF" : "var(--text-muted)",
-                        textTransform: "uppercase",
-                        transition: "color 0.2s ease",
-                        whiteSpace: "nowrap",
-                      }}
-                    >
-                      {stage.shortLabel}
-                    </span>
-
-                    {/* Full label (desktop only) */}
-                    <span
-                      className="hidden md:block"
-                      style={{
-                        fontFamily: "var(--font-mono)",
-                        fontSize: "8px",
-                        letterSpacing: "0.06em",
-                        color: "var(--text-muted)",
-                        textTransform: "uppercase",
-                        marginTop: "-4px",
-                      }}
-                    >
-                      {stage.label}
-                    </span>
-                  </button>
-
-                  {/* Connector line */}
-                  {!isLast && (
-                    <div
-                      className="max-md:!hidden"
-                      style={{
-                        width: "32px",
-                        height: "1px",
-                        background: isActive
-                          ? "#00E5FF"
-                          : "var(--border-subtle)",
-                        transition: "background 0.3s ease",
-                        flexShrink: 0,
-                        marginTop: "20px",
-                      }}
-                    />
-                  )}
-                  {/* Vertical connector (mobile) */}
-                  {!isLast && (
-                    <div
-                      className="md:!hidden"
-                      style={{
-                        width: "1px",
-                        height: "16px",
-                        background: "var(--border-subtle)",
-                        marginLeft: "4px",
-                        flexShrink: 0,
-                      }}
-                    />
-                  )}
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Laser trace line */}
-          {activeStage && laserLeft !== null && (
-            <div
-              className="pd-laser-trace"
-              key={`laser-${activeStage}`}
-              style={{
-                position: "absolute",
-                top: "52px",
-                left: `${laserLeft}px`,
-                width: "1px",
-                height: "80px",
-                background: "linear-gradient(to bottom, #00E5FF, transparent)",
-                zIndex: 1,
-                pointerEvents: "none",
-                transform: "translateX(-0.5px)",
-              }}
-            />
-          )}
+                    STAGE_{stage.stageNum}
+                  </span>
+                  <span className="font-mono text-sm font-bold tracking-wider text-white">
+                    {stage.label}
+                  </span>
+                  <span className="flex flex-wrap gap-1">
+                    {stage.metrics.map((metric) => (
+                      <span
+                        key={metric}
+                        className="rounded border border-slate-700 bg-slate-800/70 px-1.5 py-0.5 font-mono text-[8px] tracking-wide text-emerald-300"
+                      >
+                        {metric}
+                      </span>
+                    ))}
+                  </span>
+                </button>
+                {i < PD_STAGES.length - 1 && <Chevron />}
+              </div>
+            );
+          })}
         </div>
 
-        {/* Detail readout — Cyberpunk Terminal HUD */}
-        <div
-          style={{
-            marginTop: "24px",
-            minHeight: "160px",
-            position: "relative",
-            zIndex: 2,
-          }}
-        >
+        {/* Detail readout — EDA terminal HUD */}
+        <div style={{ marginTop: "24px", minHeight: "150px" }}>
           {activeData ? (
             <div
-              key={contentKey}
+              key={activeData.id}
               className="pd-readout-animate pd-hud"
               style={{ position: "relative" }}
             >
-              {/* Corner bracket accents */}
               <span className="pd-hud-bracket pd-hud-bracket--tl" />
               <span className="pd-hud-bracket pd-hud-bracket--tr" />
               <span className="pd-hud-bracket pd-hud-bracket--bl" />
               <span className="pd-hud-bracket pd-hud-bracket--br" />
 
-              {/* Content */}
-              <div style={{ position: "relative", zIndex: 1, padding: "clamp(20px, 3vw, 32px)" }}>
-
-                {/* Status badge header */}
+              <div
+                style={{
+                  position: "relative",
+                  zIndex: 1,
+                  padding: "clamp(20px, 3vw, 32px)",
+                }}
+              >
                 <div
                   style={{
                     fontFamily: "var(--font-mono)",
                     fontSize: "10px",
                     letterSpacing: "0.12em",
-                    color: "rgba(0, 229, 255, 0.6)",
+                    color: "var(--accent-secondary)",
                     marginBottom: "14px",
                     textTransform: "uppercase",
                   }}
@@ -320,29 +203,27 @@ export function PDFlow() {
                   STATUS: ACTIVE // {activeData.stageNum}_STAGE
                 </div>
 
-                {/* Stage title */}
                 <div
                   style={{
                     fontFamily: "var(--font-mono)",
                     fontSize: "16px",
                     fontWeight: 700,
-                    color: "#00E5FF",
+                    color: "var(--accent)",
                     letterSpacing: "0.1em",
                     marginBottom: "14px",
                     textTransform: "uppercase",
-                    textShadow: "0 0 10px rgba(0, 229, 255, 0.4)",
+                    textShadow: "0 0 10px rgba(6, 182, 212, 0.4)",
                   }}
                 >
                   {activeData.label}
                 </div>
 
-                {/* Description */}
                 <p
                   style={{
-                    fontFamily: "var(--font-mono)",
+                    fontFamily: "var(--font-body)",
                     fontSize: "13px",
                     lineHeight: 1.8,
-                    color: "#94A3B8",
+                    color: "var(--text-secondary)",
                     margin: "0 0 20px 0",
                     maxWidth: "680px",
                   }}
@@ -350,19 +231,9 @@ export function PDFlow() {
                   {activeData.description}
                 </p>
 
-                {/* Concept chips — terminal micro-switches */}
-                <div
-                  style={{
-                    display: "flex",
-                    gap: "8px",
-                    flexWrap: "wrap",
-                  }}
-                >
+                <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
                   {activeData.concepts.map((c) => (
-                    <span
-                      key={c}
-                      className="pd-hud-chip"
-                    >
+                    <span key={c} className="pd-hud-chip">
                       {c}
                     </span>
                   ))}
@@ -371,7 +242,6 @@ export function PDFlow() {
             </div>
           ) : (
             <div
-              key="empty"
               className="pd-readout-animate"
               style={{
                 fontFamily: "var(--font-mono)",
@@ -379,7 +249,7 @@ export function PDFlow() {
                 color: "var(--text-muted)",
                 letterSpacing: "0.05em",
                 padding: "20px 0 20px 24px",
-                borderLeft: "2px solid rgba(0, 229, 255, 0.15)",
+                borderLeft: "2px solid rgba(6, 182, 212, 0.25)",
               }}
             >
               Hover a stage to explore →

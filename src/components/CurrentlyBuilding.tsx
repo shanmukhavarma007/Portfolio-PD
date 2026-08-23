@@ -55,7 +55,7 @@ export function CurrentlyBuilding() {
       className="scroll-reveal section-container section-glow"
     >
       <div style={{ maxWidth: "1400px", margin: "0 auto", position: "relative" }}>
-        <SectionHeader index="05" title="Currently Building" />
+        <SectionHeader id="05" title="Currently Building" />
 
         {/* Cards grid */}
         <div

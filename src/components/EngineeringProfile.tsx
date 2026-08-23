@@ -77,7 +77,7 @@ export function EngineeringProfile() {
       className="scroll-reveal section-container section-glow"
     >
       <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
-        <SectionHeader index="01" title="Technical Capabilities &amp; Stack Architecture" />
+        <SectionHeader id="01" title="Technical Capabilities &amp; Stack Architecture" />
 
         <p
           style={{

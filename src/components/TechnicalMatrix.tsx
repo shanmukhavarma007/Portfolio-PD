@@ -98,10 +98,11 @@ function SkillCard({ label, status, dots, context, link }: SkillItem) {
         >
           {label}
         </span>
-        <span
-          className={`badge badge--${style.badgeVariant || "muted"}`}
-          style={{ flexShrink: 0 }}
-        >
+        <span className="inline-flex shrink-0 items-center gap-1.5 rounded-md border border-slate-700 bg-slate-800 px-2 py-0.5 font-mono text-xs text-slate-200">
+          <span
+            className="h-1.5 w-1.5 rounded-full"
+            style={{ background: style.color, boxShadow: `0 0 6px ${style.color}` }}
+          />
           {status}
         </span>
       </div>
@@ -158,11 +159,12 @@ export function TechnicalMatrix() {
 
   return (
     <section
+      id="stack"
       ref={ref}
       className="scroll-reveal section-container section-glow"
     >
       <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
-        <SectionHeader index="03" title="Technical Matrix" />
+        <SectionHeader id="03" title="Technical Matrix" />
 
         {/* Section header */}
         <h2

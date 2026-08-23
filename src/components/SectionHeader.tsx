@@ -1,15 +1,15 @@
 interface SectionHeaderProps {
-  index: string;
+  id: string;
   title: string;
 }
 
-export function SectionHeader({ index, title }: SectionHeaderProps) {
+export function SectionHeader({ id, title }: SectionHeaderProps) {
   return (
-    <div className="flex items-center gap-3 mb-3">
-      <span className="font-mono text-xs font-bold uppercase tracking-widest text-sky-600 dark:text-cyan-400">
-        {`${index} // ${title}`} ────
+    <div className="flex items-center gap-3 mb-8">
+      <span className="font-mono text-cyan-400 text-sm font-semibold tracking-wider">
+        {`${id} // ${title}`}
       </span>
-      <div className="h-[1px] flex-1 bg-slate-200 dark:bg-slate-800" />
+      <div className="h-[1px] flex-1 bg-gradient-to-r from-cyan-500/40 via-slate-800 to-transparent" />
     </div>
   );
 }
