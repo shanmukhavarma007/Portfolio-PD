@@ -108,9 +108,52 @@ export function Nav() {
           </div>
         )}
 
-        {/* Right: theme + social + CTA */}
+        {/* Right: VLSI Hub + theme + social + CTA */}
         {isDesktop && (
           <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+            <a
+              href="https://vlsi-hub-iota.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="nav-link"
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: "11px",
+                letterSpacing: "0.08em",
+                color: "var(--accent)",
+                textDecoration: "none",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "6px",
+                padding: "5px 12px",
+                borderRadius: "4px",
+                border: "1px solid color-mix(in srgb, var(--accent) 40%, transparent)",
+                background: "color-mix(in srgb, var(--accent) 8%, transparent)",
+                boxShadow: "0 0 10px color-mix(in srgb, var(--accent) 25%, transparent)",
+                transition: "box-shadow 0.2s ease, color 0.2s ease",
+                whiteSpace: "nowrap",
+              }}
+              onMouseEnter={(e) => {
+                const el = e.currentTarget as HTMLElement;
+                el.style.boxShadow = "0 0 16px color-mix(in srgb, var(--accent) 45%, transparent)";
+              }}
+              onMouseLeave={(e) => {
+                const el = e.currentTarget as HTMLElement;
+                el.style.boxShadow = "0 0 10px color-mix(in srgb, var(--accent) 25%, transparent)";
+              }}
+            >
+              <span
+                style={{
+                  width: "6px",
+                  height: "6px",
+                  borderRadius: "50%",
+                  background: "var(--accent)",
+                  boxShadow: "0 0 6px var(--accent)",
+                  flexShrink: 0,
+                }}
+              />
+              VLSI HUB ↗
+            </a>
             <a
               href="https://github.com/shanmukhavarma007"
               target="_blank"
@@ -298,6 +341,39 @@ export function Nav() {
               gap: "16px",
             }}
           >
+            <a
+              href="https://vlsi-hub-iota.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setMobileOpen(false)}
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: "13px",
+                letterSpacing: "0.08em",
+                color: "var(--accent)",
+                textDecoration: "none",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "8px",
+                padding: "10px 18px",
+                borderRadius: "4px",
+                border: "1px solid color-mix(in srgb, var(--accent) 40%, transparent)",
+                background: "color-mix(in srgb, var(--accent) 8%, transparent)",
+                boxShadow: "0 0 12px color-mix(in srgb, var(--accent) 30%, transparent)",
+              }}
+            >
+              <span
+                style={{
+                  width: "6px",
+                  height: "6px",
+                  borderRadius: "50%",
+                  background: "var(--accent)",
+                  boxShadow: "0 0 6px var(--accent)",
+                  flexShrink: 0,
+                }}
+              />
+              VLSI HUB ↗
+            </a>
             <div style={{ display: "flex", gap: "24px" }}>
               <a
                 href="https://github.com/shanmukhavarma007"

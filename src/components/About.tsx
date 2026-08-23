@@ -68,7 +68,7 @@ export function About() {
       {/* Narrative */}
       <div className="mt-8 mb-12 max-w-3xl">
         <p className="text-base leading-relaxed text-slate-700 sm:text-lg dark:text-slate-300">
-          I'm a VLSI Physical Design engineer driven by the challenge of translating abstract RTL into
+          I&apos;m a VLSI Physical Design engineer driven by the challenge of translating abstract RTL into
           silicon-realizable layouts. My path started with digital electronics coursework and evolved
           into intensive hands-on training across the full ASIC implementation flow — from synthesis
           constraints through signoff verification.

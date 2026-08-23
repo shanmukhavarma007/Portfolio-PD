@@ -1,25 +1,91 @@
 "use client";
 
+import { useState } from "react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { SectionHeader } from "./SectionHeader";
 
-const PROJECTS = [
+const VLSI_HUB_URL = "https://vlsi-hub-iota.vercel.app/";
+const TCL_SCRIPTS_URL = "https://github.com/shanmukhavarma007/tcl-scripts";
+const GITHUB_URL = "https://github.com/shanmukhavarma007";
+
+const SLACK_SNIPPET = `# Extract worst setup slack from PrimeTime / Tempus report
+set fh [open report_timing.rpt r]
+set data [read $fh]
+close $fh
+
+set worst_slack 999999.0
+foreach line [split $data "\\n"] {
+    # regex-based violation pattern matching
+    if {[regexp {slack\\s+\\(VIOLATED\\)\\s+(-?[0-9.]+)} $line -> slack]} {
+        puts "VIOLATED PATH SLACK: $slack ns"
+        if {$slack < $worst_slack} {
+            set worst_slack $slack ;# critical path isolation
+        }
+    }
+}
+
+puts "WORST SETUP SLACK: $worst_slack ns"
+`;
+
+type Project = {
+  num: string;
+  title: string;
+  category: string;
+  description?: string;
+  problem?: string;
+  solution?: string;
+  technology?: string;
+  features?: string[];
+  capabilities?: string[];
+  capabilitiesLabel?: string;
+  flow: string[];
+  snippet?: string;
+  github: string;
+  liveDemo: string | null;
+};
+
+const PROJECTS: Project[] = [
   {
     num: "01",
-    title: "TCL Timing Report Parser",
-    category: "TCL / AUTOMATION",
+    title: "VLSI Hub — Interactive Physical Design & ASIC Knowledge Engine",
+    category: "FLAGSHIP / WEB APPLICATION",
     description:
-      "A practical report-processing project focused on extracting timing information from STA-style reports. Parses setup/hold violations, slack values, and path details into structured engineering summaries.",
-    problem: "Manual timing report analysis is time-consuming and error-prone for large designs with thousands of paths.",
-    solution: "Automated parser extracts key metrics, categorizes violations, and generates actionable summaries for engineering review.",
-    technology: "TCL",
+      "A specialized web application built for VLSI engineers featuring interactive RTL-to-GDSII flow references, static timing analysis (STA) cheatsheets, floorplan calculators, and EDA automation snippets.",
     capabilities: [
-      "FILE I/O",
-      "REGEXP",
-      "LISTS",
-      "PROCEDURES",
-      "STRING PROCESSING",
+      "Next.js",
+      "TypeScript",
+      "Physical Design Flow",
+      "STA Reference",
+      "EDA Tools",
     ],
+    flow: [
+      "INTERACTIVE RTL→GDSII REFERENCES",
+      "STA CHEATSHEETS",
+      "FLOORPLAN CALCULATORS",
+      "EDA AUTOMATION SNIPPETS",
+    ],
+    github: GITHUB_URL,
+    liveDemo: VLSI_HUB_URL,
+  },
+  {
+    num: "02",
+    title: "Tcl Timing Report Parser & EDA Scripting Suite",
+    category: "TCL / EDA AUTOMATION",
+    features: [
+      "Automated STA report parsing",
+      "Worst setup/hold slack extraction",
+      "Critical path isolation",
+      "Regex-based violation pattern matching",
+      "Summary report generation for PrimeTime / Tempus logs",
+    ],
+    capabilities: [
+      "Tcl",
+      "EDA Automation",
+      "Static Timing Analysis",
+      "Regex",
+      "PrimeTime / Tempus",
+    ],
+    capabilitiesLabel: "TECH STACK",
     flow: [
       "RAW STA REPORT",
       "PARSER",
@@ -27,13 +93,15 @@ const PROJECTS = [
       "VIOLATION ANALYSIS",
       "ENGINEERING SUMMARY",
     ],
-    github: "https://github.com/shanmukhavarma007",
+    snippet: SLACK_SNIPPET,
+    github: TCL_SCRIPTS_URL,
     liveDemo: null,
   },
 ];
 
 export function Projects() {
   const ref = useScrollReveal();
+  const [openSnippet, setOpenSnippet] = useState<string | null>(null);
 
   return (
     <section
@@ -94,76 +162,151 @@ export function Projects() {
                   {project.category}
                 </div>
 
-                {/* Problem/Solution */}
-                <div style={{ marginBottom: "16px" }}>
-                  <div
-                    className="badge badge--muted"
-                    style={{ marginBottom: "6px", fontSize: "8px" }}
-                  >
-                    PROBLEM
-                  </div>
+                {/* Description */}
+                {project.description && (
                   <p
                     style={{
                       fontFamily: "var(--font-body)",
                       fontSize: "14px",
                       lineHeight: 1.6,
                       color: "#475569",
-                      margin: 0,
+                      margin: "0 0 16px 0",
                     }}
                   >
-                    {project.problem}
+                    {project.description}
                   </p>
-                </div>
+                )}
 
-                <div style={{ marginBottom: "16px" }}>
-                  <div
-                    className="badge badge--muted"
-                    style={{ marginBottom: "6px", fontSize: "8px" }}
-                  >
-                    SOLUTION
+                {/* Problem/Solution */}
+                {project.problem && (
+                  <div style={{ marginBottom: "16px" }}>
+                    <div
+                      className="badge badge--muted"
+                      style={{ marginBottom: "6px", fontSize: "8px" }}
+                    >
+                      PROBLEM
+                    </div>
+                    <p
+                      style={{
+                        fontFamily: "var(--font-body)",
+                        fontSize: "14px",
+                        lineHeight: 1.6,
+                        color: "#475569",
+                        margin: 0,
+                      }}
+                    >
+                      {project.problem}
+                    </p>
                   </div>
-                  <p
-                    style={{
-                      fontFamily: "var(--font-body)",
-                      fontSize: "14px",
-                      lineHeight: 1.6,
-                      color: "#475569",
-                      margin: 0,
-                    }}
-                  >
-                    {project.solution}
-                  </p>
-                </div>
+                )}
+
+                {project.solution && (
+                  <div style={{ marginBottom: "16px" }}>
+                    <div
+                      className="badge badge--muted"
+                      style={{ marginBottom: "6px", fontSize: "8px" }}
+                    >
+                      SOLUTION
+                    </div>
+                    <p
+                      style={{
+                        fontFamily: "var(--font-body)",
+                        fontSize: "14px",
+                        lineHeight: 1.6,
+                        color: "#475569",
+                        margin: 0,
+                      }}
+                    >
+                      {project.solution}
+                    </p>
+                  </div>
+                )}
 
                 {/* Technology */}
-                <div style={{ marginBottom: "16px" }}>
-                  <div
-                    className="badge badge--muted"
-                    style={{ marginBottom: "8px", fontSize: "8px" }}
-                  >
-                    TECHNOLOGY
+                {project.technology && (
+                  <div style={{ marginBottom: "16px" }}>
+                    <div
+                      className="badge badge--muted"
+                      style={{ marginBottom: "8px", fontSize: "8px" }}
+                    >
+                      TECHNOLOGY
+                    </div>
+                    <span className="badge badge--accent">
+                      {project.technology}
+                    </span>
                   </div>
-                  <span className="badge badge--accent">
-                    {project.technology}
-                  </span>
-                </div>
+                )}
 
-                {/* Capabilities */}
-                <div style={{ marginBottom: "24px" }}>
-                  <div
-                    className="badge badge--muted"
-                    style={{ marginBottom: "8px", fontSize: "8px" }}
-                  >
-                    CAPABILITIES
+                {project.features && (
+                  <div style={{ marginBottom: "16px" }}>
+                    <div
+                      className="badge badge--muted"
+                      style={{ marginBottom: "8px", fontSize: "8px" }}
+                    >
+                      CORE FEATURES
+                    </div>
+                    <ul
+                      style={{
+                        listStyle: "none",
+                        margin: 0,
+                        padding: 0,
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "6px",
+                      }}
+                    >
+                      {project.features.map((feature) => (
+                        <li
+                          key={feature}
+                          style={{
+                            display: "flex",
+                            alignItems: "baseline",
+                            gap: "8px",
+                          }}
+                        >
+                          <span
+                            style={{
+                              width: "5px",
+                              height: "5px",
+                              borderRadius: "50%",
+                              background: "var(--accent)",
+                              flexShrink: 0,
+                            }}
+                          />
+                          <span
+                            style={{
+                              fontFamily: "var(--font-body)",
+                              fontSize: "13px",
+                              lineHeight: 1.55,
+                              color: "#475569",
+                            }}
+                          >
+                            {feature}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                  <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
-                    {project.capabilities.map((c) => (
-                      <span key={c} className="badge badge--muted">
-                        {c}
-                      </span>
-                    ))}
+                )}
+
+                {/* Capabilities / Tech stack */}
+                {project.capabilities && (
+                  <div style={{ marginBottom: "24px" }}>
+                    <div
+                      className="badge badge--muted"
+                      style={{ marginBottom: "8px", fontSize: "8px" }}
+                    >
+                      {project.capabilitiesLabel ?? "CAPABILITIES"}
+                    </div>
+                    <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
+                      {project.capabilities.map((c) => (
+                        <span key={c} className="badge badge--muted">
+                          {c}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                </div>
+                )}
 
                 {/* Action buttons */}
                 <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
@@ -193,23 +336,125 @@ export function Projects() {
                         cursor: "pointer",
                       }}
                     >
-                      VIEW CODE ↗
+                      VIEW ON GITHUB
                     </a>
                   )}
-                  <a
-                    href={project.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-hover-lift badge badge--muted"
-                    style={{
-                      padding: "10px 20px",
-                      textDecoration: "none",
-                      cursor: "pointer",
-                    }}
-                  >
-                    GITHUB ↗
-                  </a>
+                  {project.liveDemo ? (
+                    <a
+                      href={project.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-hover-lift badge badge--muted"
+                      style={{
+                        padding: "10px 20px",
+                        textDecoration: "none",
+                        cursor: "pointer",
+                      }}
+                    >
+                      REPOSITORY ↗
+                    </a>
+                  ) : (
+                    project.snippet && (
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setOpenSnippet(
+                            openSnippet === project.num ? null : project.num
+                          )
+                        }
+                        className="btn-hover-lift badge badge--muted"
+                        style={{
+                          padding: "10px 20px",
+                          textDecoration: "none",
+                          cursor: "pointer",
+                          fontFamily: "var(--font-mono)",
+                        }}
+                      >
+                        {openSnippet === project.num
+                          ? "HIDE CODE BREAKDOWN"
+                          : "CODE BREAKDOWN"}
+                      </button>
+                    )
+                  )}
                 </div>
+
+                {/* Inline terminal snippet */}
+                {!project.liveDemo &&
+                  openSnippet === project.num &&
+                  project.snippet && (
+                    <div
+                      style={{
+                        marginTop: "16px",
+                        borderRadius: "8px",
+                        border: "1px solid var(--border-subtle)",
+                        background: "var(--bg)",
+                        overflow: "hidden",
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "6px",
+                          padding: "10px 14px",
+                          borderBottom: "1px solid var(--border-subtle)",
+                          background: "var(--surface-2)",
+                        }}
+                      >
+                        <span
+                          style={{
+                            width: "8px",
+                            height: "8px",
+                            borderRadius: "50%",
+                            background: "var(--error)",
+                            opacity: 0.7,
+                          }}
+                        />
+                        <span
+                          style={{
+                            width: "8px",
+                            height: "8px",
+                            borderRadius: "50%",
+                            background: "var(--warning)",
+                            opacity: 0.7,
+                          }}
+                        />
+                        <span
+                          style={{
+                            width: "8px",
+                            height: "8px",
+                            borderRadius: "50%",
+                            background: "var(--success)",
+                            opacity: 0.7,
+                          }}
+                        />
+                        <span
+                          style={{
+                            marginLeft: "8px",
+                            fontFamily: "var(--font-mono)",
+                            fontSize: "10px",
+                            letterSpacing: "0.08em",
+                            color: "var(--text-muted)",
+                          }}
+                        >
+                          parse_slack.tcl — TCL SNIPPET
+                        </span>
+                      </div>
+                      <pre
+                        style={{
+                          margin: 0,
+                          padding: "16px",
+                          fontFamily: "var(--font-mono)",
+                          fontSize: "11px",
+                          lineHeight: 1.7,
+                          color: "var(--text-secondary)",
+                          overflowX: "auto",
+                        }}
+                      >
+                        {project.snippet}
+                      </pre>
+                    </div>
+                  )}
               </div>
 
               {/* Right: framed schematic/waveform window */}

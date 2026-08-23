@@ -177,6 +177,35 @@ export function Hero() {
             VLSI Physical Design Engineer
           </div>
 
+          {/* Live app pill */}
+          <div style={{ marginBottom: "16px" }}>
+            <a
+              href="https://vlsi-hub-iota.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-hover-lift badge badge--accent-secondary"
+              style={{
+                textDecoration: "none",
+                cursor: "pointer",
+                fontSize: "10px",
+                padding: "5px 12px",
+                boxShadow: "0 0 12px color-mix(in srgb, var(--accent-secondary) 30%, transparent)",
+              }}
+            >
+              <span
+                className="status-dot-pulse"
+                style={{
+                  width: "6px",
+                  height: "6px",
+                  borderRadius: "50%",
+                  background: "var(--accent-secondary)",
+                  color: "var(--accent-secondary)",
+                }}
+              />
+              ⚡ Live App: VLSI Hub
+            </a>
+          </div>
+
           {/* Name */}
           <h1
             style={{
@@ -236,7 +265,9 @@ export function Hero() {
               GET IN TOUCH
             </a>
             <a
-              href="#work"
+              href="https://github.com/shanmukhavarma007/tcl-scripts"
+              target="_blank"
+              rel="noopener noreferrer"
               className="btn-hover-lift glow-btn-ghost"
               style={{
                 fontFamily: "var(--font-mono)",
@@ -251,7 +282,7 @@ export function Hero() {
                 background: "transparent",
               }}
             >
-              VIEW LAB REPORTS
+              VIEW TCL SCRIPTS ↗
             </a>
           </div>
         </div>

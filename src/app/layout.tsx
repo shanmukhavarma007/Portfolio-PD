@@ -39,13 +39,6 @@ export default function RootLayout({
       className={`${inter.variable} ${jetbrainsMono.variable}`}
       suppressHydrationWarning
     >
-      <head>
-        {/* Geist Sans via CDN */}
-        <link
-          rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/style.css"
-        />
-      </head>
       <body>
         {children}
       </body>

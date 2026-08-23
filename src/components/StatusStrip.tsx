@@ -2,9 +2,21 @@
 
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 
-const METRICS = [
+type Metric = {
+  label: string;
+  value: string;
+  accent: boolean;
+  href?: string;
+};
+
+const METRICS: Metric[] = [
   { label: "Foundations Mastered", value: "100%", accent: true },
-  { label: "Lab Repos", value: "3+", accent: false },
+  {
+    label: "Tools Built / Lab Repos",
+    value: "4+ · incl. VLSI Hub",
+    accent: false,
+    href: "https://github.com/shanmukhavarma007/tcl-scripts",
+  },
   { label: "Target Domain", value: "ASIC / Physical Design", accent: false },
 ];
 
@@ -60,12 +72,24 @@ export function StatusStrip() {
             >
               {item.label}
             </span>
-            <span
-              className={`badge ${item.accent ? "badge--accent" : "badge--muted"}`}
-              style={{ fontSize: "10px", padding: "2px 8px" }}
-            >
-              {item.value}
-            </span>
+            {item.href ? (
+              <a
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`badge ${item.accent ? "badge--accent" : "badge--muted"}`}
+                style={{ fontSize: "10px", padding: "2px 8px", textDecoration: "none" }}
+              >
+                {item.value} ↗
+              </a>
+            ) : (
+              <span
+                className={`badge ${item.accent ? "badge--accent" : "badge--muted"}`}
+                style={{ fontSize: "10px", padding: "2px 8px" }}
+              >
+                {item.value}
+              </span>
+            )}
           </div>
         ))}
       </div>

@@ -6,13 +6,13 @@ import { SectionHeader } from "./SectionHeader";
 const ITEMS = [
   { label: "PHYSICAL DESIGN", state: "LEARNING", color: "var(--warning)", desc: "Floorplan, placement, CTS, routing, signoff" },
   { label: "STA", state: "PRACTICING", color: "var(--warning)", desc: "Timing analysis, constraint writing, AOCV" },
-  { label: "TCL AUTOMATION", state: "PROJECT-BASED", color: "var(--accent)", desc: "Layout scripting, EDA automation, tool flows" },
+  { label: "TCL AUTOMATION", state: "PROJECT-BASED", color: "var(--accent)", desc: "Layout scripting, EDA automation, tool flows", href: "https://github.com/shanmukhavarma007/tcl-scripts" },
   { label: "LINUX", state: "HANDS-ON", color: "var(--success)", desc: "Shell scripting, environment setup, flow automation" },
   { label: "RTL / VERILOG", state: "LEARNING", color: "var(--warning)", desc: "RTL concepts, synthesis basics" },
   { label: "CMOS", state: "EXPLORING", color: "var(--accent-secondary)", desc: "Transistor-level design, fabrication" },
 ];
 
-function handleCardMouseMove(e: React.MouseEvent<HTMLDivElement>) {
+function handleCardMouseMove(e: React.MouseEvent<HTMLElement>) {
   const rect = e.currentTarget.getBoundingClientRect();
   const x = ((e.clientX - rect.left) / rect.width) * 100;
   const y = ((e.clientY - rect.top) / rect.height) * 100;
@@ -40,88 +40,122 @@ export function CurrentlyBuilding() {
           }}
           className="sm:!grid-cols-2 lg:!grid-cols-3"
         >
-          {ITEMS.map((item) => (
-            <div
-              key={item.label}
-              className="card cursor-glow-card"
-              style={{
-                padding: "clamp(16px, 2.5vw, 24px)",
-                display: "flex",
-                flexDirection: "column",
-                gap: "12px",
-                position: "relative",
-                overflow: "hidden",
-              }}
-              onMouseMove={handleCardMouseMove}
-            >
-              {/* Color accent strip */}
-              <div
-                style={{
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  height: "2px",
-                  background: item.color,
-                  opacity: 0.6,
-                }}
-              />
-
-              {/* Status badge */}
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          {ITEMS.map((item) => {
+            const cardContent = (
+              <>
+                {/* Color accent strip */}
                 <div
                   style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    height: "2px",
+                    background: item.color,
+                    opacity: 0.6,
+                  }}
+                />
+
+                {/* Status badge */}
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                    }}
+                  >
+                    <span
+                      className="status-dot-pulse"
+                      style={{
+                        width: "6px",
+                        height: "6px",
+                        borderRadius: "50%",
+                        background: item.color,
+                        color: item.color,
+                      }}
+                    />
+                    <span
+                      className="badge"
+                      style={{ color: item.color, padding: 0, border: "none", background: "transparent" }}
+                    >
+                      {item.state}
+                    </span>
+                  </div>
+                  {item.href && (
+                    <span
+                      style={{
+                        fontFamily: "var(--font-mono)",
+                        fontSize: "11px",
+                        color: item.color,
+                        opacity: 0.8,
+                      }}
+                    >
+                      ↗
+                    </span>
+                  )}
+                </div>
+
+                {/* Label */}
+                <div
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    fontSize: "clamp(18px, 3.5vw, 22px)",
+                    fontWeight: 600,
+                    color: "var(--text)",
+                    letterSpacing: "0.01em",
+                    lineHeight: 1.2,
                   }}
                 >
-                  <span
-                    className="status-dot-pulse"
-                    style={{
-                      width: "6px",
-                      height: "6px",
-                      borderRadius: "50%",
-                      background: item.color,
-                      color: item.color,
-                    }}
-                  />
-                  <span
-                    className="badge"
-                    style={{ color: item.color, padding: 0, border: "none", background: "transparent" }}
-                  >
-                    {item.state}
-                  </span>
+                  {item.label}
                 </div>
-              </div>
 
-              {/* Label */}
-              <div
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontSize: "clamp(18px, 3.5vw, 22px)",
-                  fontWeight: 600,
-                  color: "var(--text)",
-                  letterSpacing: "0.01em",
-                  lineHeight: 1.2,
-                }}
-              >
-                {item.label}
-              </div>
+                {/* Description */}
+                <div
+                  style={{
+                    fontFamily: "var(--font-body)",
+                    fontSize: "clamp(12px, 2.5vw, 14px)",
+                    color: "var(--text-muted)",
+                    lineHeight: 1.5,
+                  }}
+                >
+                  {item.desc}
+                </div>
+              </>
+            );
 
-              {/* Description */}
-              <div
-                style={{
-                  fontFamily: "var(--font-body)",
-                  fontSize: "clamp(12px, 2.5vw, 14px)",
-                  color: "var(--text-muted)",
-                  lineHeight: 1.5,
-                }}
+            const cardStyle: React.CSSProperties = {
+              padding: "clamp(16px, 2.5vw, 24px)",
+              display: "flex",
+              flexDirection: "column",
+              gap: "12px",
+              position: "relative",
+              overflow: "hidden",
+            };
+
+            return item.href ? (
+              <a
+                key={item.label}
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="card cursor-glow-card"
+                style={cardStyle}
+                onMouseMove={handleCardMouseMove}
               >
-                {item.desc}
+                {cardContent}
+              </a>
+            ) : (
+              <div
+                key={item.label}
+                className="card cursor-glow-card"
+                style={cardStyle}
+                onMouseMove={handleCardMouseMove}
+              >
+                {cardContent}
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

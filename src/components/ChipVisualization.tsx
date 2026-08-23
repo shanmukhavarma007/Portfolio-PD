@@ -27,7 +27,6 @@ export function ChipVisualization() {
 
     // Read theme-aware floorplan colors (opacity baked into each variable)
     const fpDie = cssVar(canvas, "--fp-die", "#2A303899");
-    const fpAccentDim = cssVar(canvas, "--fp-accent-dim", "#3D8BFD1F");
     const fpAccentBorder = cssVar(canvas, "--fp-accent-border", "#3D8BFD1A");
     const fpCellRow = cssVar(canvas, "--fp-cell-row", "#3D8BFD14");
     const fpCellLine = cssVar(canvas, "--fp-cell-line", "#2A30384D");

@@ -1,19 +1,25 @@
 "use client";
 
-import { useId, useEffect, useState } from "react";
+import { useId, useSyncExternalStore } from "react";
 
 type Variant = "waveform" | "pcb" | "ruler";
 
+const reducedMotionQuery =
+  typeof window !== "undefined"
+    ? window.matchMedia("(prefers-reduced-motion: reduce)")
+    : null;
+
+function subscribeReducedMotion(onChange: () => void) {
+  reducedMotionQuery?.addEventListener("change", onChange);
+  return () => reducedMotionQuery?.removeEventListener("change", onChange);
+}
+
 function usePrefersReducedMotion() {
-  const [prefersReduced, setPrefersReduced] = useState(false);
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setPrefersReduced(mq.matches);
-    const handler = (e: MediaQueryListEvent) => setPrefersReduced(e.matches);
-    mq.addEventListener("change", handler);
-    return () => mq.removeEventListener("change", handler);
-  }, []);
-  return prefersReduced;
+  return useSyncExternalStore(
+    subscribeReducedMotion,
+    () => reducedMotionQuery?.matches ?? false,
+    () => false
+  );
 }
 
 export function WaveformHr({
