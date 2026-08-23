@@ -177,7 +177,7 @@ export function Hero() {
             VLSI Physical Design Engineer
           </div>
 
-          {/* Live app pill */}
+          {/* Interactive platform badge */}
           <div style={{ marginBottom: "16px" }}>
             <a
               href="https://vlsi-hub-iota.vercel.app/"
@@ -192,17 +192,7 @@ export function Hero() {
                 boxShadow: "0 0 12px color-mix(in srgb, var(--accent-secondary) 30%, transparent)",
               }}
             >
-              <span
-                className="status-dot-pulse"
-                style={{
-                  width: "6px",
-                  height: "6px",
-                  borderRadius: "50%",
-                  background: "var(--accent-secondary)",
-                  color: "var(--accent-secondary)",
-                }}
-              />
-              ⚡ Live App: VLSI Hub
+              🚀 Built VLSI Hub: Practice CMOS, Digital, Linux &amp; Tcl Live ↗
             </a>
           </div>
 

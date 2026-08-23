@@ -143,16 +143,17 @@ export function Nav() {
               }}
             >
               <span
+                className="status-dot-pulse"
                 style={{
                   width: "6px",
                   height: "6px",
                   borderRadius: "50%",
-                  background: "var(--accent)",
-                  boxShadow: "0 0 6px var(--accent)",
+                  background: "var(--success)",
+                  color: "var(--success)",
                   flexShrink: 0,
                 }}
               />
-              VLSI HUB ↗
+              PRACTICE ON VLSI HUB ↗
             </a>
             <a
               href="https://github.com/shanmukhavarma007"
@@ -363,16 +364,17 @@ export function Nav() {
               }}
             >
               <span
+                className="status-dot-pulse"
                 style={{
                   width: "6px",
                   height: "6px",
                   borderRadius: "50%",
-                  background: "var(--accent)",
-                  boxShadow: "0 0 6px var(--accent)",
+                  background: "var(--success)",
+                  color: "var(--success)",
                   flexShrink: 0,
                 }}
               />
-              VLSI HUB ↗
+              PRACTICE ON VLSI HUB ↗
             </a>
             <div style={{ display: "flex", gap: "24px" }}>
               <a

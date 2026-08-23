@@ -4,11 +4,19 @@ import { useState } from "react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { SectionHeader } from "./SectionHeader";
 
+const VLSI_HUB_URL = "https://vlsi-hub-iota.vercel.app/";
+
+const VLSI_HUB_LINK = {
+  label: "PRACTICE ON VLSI HUB ↗",
+  href: VLSI_HUB_URL,
+};
+
 interface SkillItem {
   label: string;
   status: string;
   dots: number;
   context: string;
+  link?: { label: string; href: string };
 }
 
 const TABS = [
@@ -20,9 +28,9 @@ const TABS = [
 
 const SKILLS: Record<string, SkillItem[]> = {
   fundamentals: [
-    { label: "Digital Design", status: "STRONG", dots: 5, context: "Logic, Boolean Algebra, Sequential" },
+    { label: "Digital Design", status: "STRONG", dots: 5, context: "Logic, Boolean Algebra, Sequential", link: VLSI_HUB_LINK },
     { label: "CMOS Fundamentals", status: "STRONG", dots: 5, context: "MOSFET, Inverter, Digital CMOS" },
-    { label: "Linux / Shell", status: "STRONG", dots: 5, context: "CLI, Filesystem, Processes" },
+    { label: "Linux / Shell", status: "STRONG", dots: 5, context: "CLI, Filesystem, Processes", link: VLSI_HUB_LINK },
     { label: "RTL / Verilog", status: "FAMILIAR", dots: 2, context: "RTL Modeling, Basic Verilog" },
   ],
   eda: [
@@ -32,7 +40,7 @@ const SKILLS: Record<string, SkillItem[]> = {
     { label: "OpenLane", status: "EXPLORING", dots: 2, context: "Open-source RTL-to-GDSII" },
   ],
   automation: [
-    { label: "Tcl", status: "STRONG", dots: 5, context: "EDA scripting, Layout automation" },
+    { label: "Tcl", status: "STRONG", dots: 5, context: "EDA scripting, Layout automation", link: VLSI_HUB_LINK },
     { label: "Python / AWK", status: "INTERMEDIATE", dots: 3, context: "Data processing, Report parsing" },
   ],
   pd: [
@@ -53,7 +61,7 @@ const STATUS_STYLES: Record<string, { color: string; badgeVariant: string }> = {
   EXPLORING: { color: "var(--text-muted)", badgeVariant: "muted" },
 };
 
-function SkillCard({ label, status, dots, context }: SkillItem) {
+function SkillCard({ label, status, dots, context, link }: SkillItem) {
   const style = STATUS_STYLES[status] || STATUS_STYLES.FAMILIAR;
 
   return (
@@ -122,6 +130,22 @@ function SkillCard({ label, status, dots, context }: SkillItem) {
           />
         ))}
       </div>
+      {link && (
+        <a
+          href={link.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="badge badge--accent-secondary"
+          style={{
+            textDecoration: "none",
+            cursor: "pointer",
+            alignSelf: "flex-start",
+            marginTop: "2px",
+          }}
+        >
+          {link.label}
+        </a>
+      )}
     </div>
   );
 }

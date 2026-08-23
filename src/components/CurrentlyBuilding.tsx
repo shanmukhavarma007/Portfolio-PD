@@ -3,12 +3,38 @@
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { SectionHeader } from "./SectionHeader";
 
+const VLSI_HUB_URL = "https://vlsi-hub-iota.vercel.app/";
+const TCL_SCRIPTS_URL = "https://github.com/shanmukhavarma007/tcl-scripts";
+
+type ItemLink = { label: string; href: string };
+
 const ITEMS = [
   { label: "PHYSICAL DESIGN", state: "LEARNING", color: "var(--warning)", desc: "Floorplan, placement, CTS, routing, signoff" },
   { label: "STA", state: "PRACTICING", color: "var(--warning)", desc: "Timing analysis, constraint writing, AOCV" },
-  { label: "TCL AUTOMATION", state: "PROJECT-BASED", color: "var(--accent)", desc: "Layout scripting, EDA automation, tool flows", href: "https://github.com/shanmukhavarma007/tcl-scripts" },
-  { label: "LINUX", state: "HANDS-ON", color: "var(--success)", desc: "Shell scripting, environment setup, flow automation" },
-  { label: "RTL / VERILOG", state: "LEARNING", color: "var(--warning)", desc: "RTL concepts, synthesis basics" },
+  {
+    label: "TCL AUTOMATION",
+    state: "PROJECT-BASED",
+    color: "var(--accent)",
+    desc: "Layout scripting, EDA automation, tool flows",
+    links: [
+      { label: "TCL SCRIPTS REPO ↗", href: TCL_SCRIPTS_URL },
+      { label: "PRACTICE ON VLSI HUB ↗", href: VLSI_HUB_URL },
+    ] as ItemLink[],
+  },
+  {
+    label: "LINUX",
+    state: "HANDS-ON",
+    color: "var(--success)",
+    desc: "Shell scripting, environment setup, flow automation",
+    links: [{ label: "PRACTICE ON VLSI HUB ↗", href: VLSI_HUB_URL }] as ItemLink[],
+  },
+  {
+    label: "RTL / VERILOG",
+    state: "LEARNING",
+    color: "var(--warning)",
+    desc: "RTL concepts, synthesis basics",
+    links: [{ label: "PRACTICE ON VLSI HUB ↗", href: VLSI_HUB_URL }] as ItemLink[],
+  },
   { label: "CMOS", state: "EXPLORING", color: "var(--accent-secondary)", desc: "Transistor-level design, fabrication" },
 ];
 
@@ -41,6 +67,15 @@ export function CurrentlyBuilding() {
           className="sm:!grid-cols-2 lg:!grid-cols-3"
         >
           {ITEMS.map((item) => {
+            const cardStyle: React.CSSProperties = {
+              padding: "clamp(16px, 2.5vw, 24px)",
+              display: "flex",
+              flexDirection: "column",
+              gap: "12px",
+              position: "relative",
+              overflow: "hidden",
+            };
+
             const cardContent = (
               <>
                 {/* Color accent strip */}
@@ -82,7 +117,7 @@ export function CurrentlyBuilding() {
                       {item.state}
                     </span>
                   </div>
-                  {item.href && (
+                  {item.links && item.links.length > 0 && (
                     <span
                       style={{
                         fontFamily: "var(--font-mono)",
@@ -121,31 +156,36 @@ export function CurrentlyBuilding() {
                 >
                   {item.desc}
                 </div>
+
+                {/* Live platform links */}
+                {item.links && item.links.length > 0 && (
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "8px",
+                      flexWrap: "wrap",
+                      marginTop: "auto",
+                      paddingTop: "4px",
+                    }}
+                  >
+                    {item.links.map((link) => (
+                      <a
+                        key={link.label}
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="badge badge--accent-secondary"
+                        style={{ textDecoration: "none", cursor: "pointer" }}
+                      >
+                        {link.label}
+                      </a>
+                    ))}
+                  </div>
+                )}
               </>
             );
 
-            const cardStyle: React.CSSProperties = {
-              padding: "clamp(16px, 2.5vw, 24px)",
-              display: "flex",
-              flexDirection: "column",
-              gap: "12px",
-              position: "relative",
-              overflow: "hidden",
-            };
-
-            return item.href ? (
-              <a
-                key={item.label}
-                href={item.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="card cursor-glow-card"
-                style={cardStyle}
-                onMouseMove={handleCardMouseMove}
-              >
-                {cardContent}
-              </a>
-            ) : (
+            return (
               <div
                 key={item.label}
                 className="card cursor-glow-card"
