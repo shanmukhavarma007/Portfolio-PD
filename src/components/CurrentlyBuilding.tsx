@@ -9,8 +9,7 @@ const TCL_SCRIPTS_URL = "https://github.com/shanmukhavarma007/tcl-scripts";
 type ItemLink = { label: string; href: string };
 
 const ITEMS = [
-  { label: "PHYSICAL DESIGN", state: "LEARNING", color: "var(--warning)", desc: "Floorplan, placement, CTS, routing, signoff" },
-  { label: "STA", state: "PRACTICING", color: "var(--warning)", desc: "Timing analysis, constraint writing, AOCV" },
+  { label: "PHYSICAL DESIGN", state: "LEARNING", color: "var(--warning)", desc: "Floorplan, placement, CTS, routing, verification" },
   {
     label: "TCL AUTOMATION",
     state: "PROJECT-BASED",

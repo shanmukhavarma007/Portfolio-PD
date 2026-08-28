@@ -35,7 +35,6 @@ const SKILLS: Record<string, SkillItem[]> = {
   ],
   eda: [
     { label: "Cadence Innovus", status: "TRAINING", dots: 4, context: "Place & Route implementation" },
-    { label: "Cadence Tempus", status: "TRAINING", dots: 4, context: "Static Timing Analysis" },
     { label: "Cadence Genus", status: "TRAINING", dots: 4, context: "Logic Synthesis" },
     { label: "OpenLane", status: "EXPLORING", dots: 2, context: "Open-source RTL-to-GDSII" },
   ],

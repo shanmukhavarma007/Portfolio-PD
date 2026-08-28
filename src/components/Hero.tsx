@@ -142,7 +142,7 @@ export function Hero() {
               maxWidth: "520px",
             }}
           >
-            Building hands-on expertise in VLSI Physical Design, STA and Tcl
+            Building hands-on expertise in VLSI Physical Design and Tcl
             automation. Currently undergoing intensive training and building
             toward a career in silicon engineering.
           </p>

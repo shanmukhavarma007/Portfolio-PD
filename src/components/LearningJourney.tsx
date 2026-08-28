@@ -43,7 +43,7 @@ const pipelineStages: FlowStage[] = [
     status: "active",
     description: "Translating RTL descriptions to gate-level netlists with timing constraints (SDC), area tradeoffs, and cell mapping.",
     artifacts: ["Synthesized Netlists", "SDC Constraints", "Area/Timing Reports"],
-    tags: ["GENUS / YOSYS", "SDC", "NETLIST", "GATE MAPPING", "STA BASICS"],
+    tags: ["GENUS / YOSYS", "SDC", "NETLIST", "GATE MAPPING", "TIMING BASICS"],
   },
   {
     id: "floorplanning",
@@ -101,9 +101,9 @@ const pipelineStages: FlowStage[] = [
     stageNumber: "STAGE_08",
     title: "Signoff & Tapeout",
     status: "queued",
-    description: "Comprehensive timing closure (STA), DRC/LVS physical verification, and GDSII/OASIS stream generation.",
+    description: "Comprehensive timing closure (setup/hold slack analysis within Innovus), DRC/LVS physical verification, and GDSII/OASIS stream generation.",
     prerequisite: "Stage 07 (Routing)",
-    tags: ["PRIMETIME", "CALIBRE DRC", "LVS", "GDSII EXPORT"],
+    tags: ["CALIBRE DRC", "LVS", "GDSII EXPORT", "TIMING CLOSURE"],
   },
 ];
 

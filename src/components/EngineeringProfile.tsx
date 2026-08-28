@@ -7,7 +7,7 @@ const STACK_GRID = [
   {
     category: "EDA Tools",
     color: "#06B6D4",
-    items: ["Innovus", "Tempus", "Genus", "PrimeTime", "OpenLane"],
+    items: ["Innovus", "Genus", "OpenLane"],
   },
   {
     category: "Physical Design",
@@ -17,7 +17,7 @@ const STACK_GRID = [
   {
     category: "Analysis & Verification",
     color: "#10B981",
-    items: ["STA", "Power Analysis", "IR Drop", "DRC", "LVS"],
+    items: ["Timing Analysis", "Power Analysis", "IR Drop", "DRC", "LVS"],
   },
   {
     category: "Scripting & Automation",
@@ -89,7 +89,7 @@ export function EngineeringProfile() {
             maxWidth: "640px",
           }}
         >
-          Complete ASIC physical design toolchain — from RTL synthesis through signoff, backed by strong EDA automation and foundational VLSI knowledge.
+          Complete ASIC physical design toolchain — from RTL synthesis through final verification, backed by strong EDA automation and foundational VLSI knowledge.
         </p>
 
         {/* ─── Stack Grid — PCB-trace HUD panels ─── */}

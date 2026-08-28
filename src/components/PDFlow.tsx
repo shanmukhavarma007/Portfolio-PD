@@ -64,11 +64,11 @@ const PD_STAGES: PDStage[] = [
   },
   {
     id: "sta",
-    label: "STA",
+    label: "TIMING ANALYSIS",
     stageNum: "07",
-    description: "Static Timing Analysis validating setup and hold constraints.",
-    concepts: ["SETUP", "HOLD", "SLACK"],
-    metrics: ["SETUP MET", "HOLD CLEAN", "SLACK +VE"],
+    description: "Setup/hold slack analysis within Innovus, SDC constraint validation, and clock tree timing verification.",
+    concepts: ["SETUP", "HOLD", "SLACK", "SDC", "CTS TIMING"],
+    metrics: ["SETUP MET", "HOLD CLEAN", "SLACK +VE", "SDC VALIDATED"],
   },
   {
     id: "signoff",

@@ -19,7 +19,7 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "Shanmukha Varma Penmetsa — VLSI Physical Design",
   description:
-    "VLSI Physical Design Engineer building hands-on expertise in Physical Design, STA and Tcl automation. Currently undergoing intensive training.",
+    "VLSI Physical Design Engineer building hands-on expertise in Physical Design and Tcl automation. Currently undergoing intensive training.",
 };
 
 export const viewport: Viewport = {

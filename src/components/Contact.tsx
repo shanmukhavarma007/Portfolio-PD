@@ -65,7 +65,7 @@ export function Contact() {
               marginRight: "auto",
             }}
           >
-            Open to opportunities in VLSI Physical Design, STA, and EDA
+            Open to opportunities in VLSI Physical Design and EDA
             automation. Let&apos;s connect and discuss how I can contribute to
             your team.
           </p>

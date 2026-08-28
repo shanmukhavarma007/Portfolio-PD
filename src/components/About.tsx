@@ -22,7 +22,7 @@ const TIMELINE = [
   {
     year: "Jun 2026",
     title: "Intensive PD Training — Sumedha IT",
-    detail: "Commenced dedicated physical design training covering the end-to-end RTL-to-GDSII ASIC flow: logic synthesis, floorplanning, power planning, placement, CTS, routing, and STA using industry EDA tools.",
+    detail: "Commenced dedicated physical design training covering the end-to-end RTL-to-GDSII ASIC flow: logic synthesis, floorplanning, power planning, placement, CTS, routing, and timing analysis using industry EDA tools.",
   },
   {
     year: "Present",
@@ -80,7 +80,7 @@ export function About() {
           I&apos;m a VLSI Physical Design engineer driven by the challenge of translating abstract RTL into
           silicon-realizable layouts. My path started with digital electronics coursework and evolved
           into intensive hands-on training across the full ASIC implementation flow — from synthesis
-          constraints through signoff verification.
+          constraints through final verification.
         </p>
         <p className="mt-4 text-base leading-relaxed text-slate-300 sm:text-lg">
           What drives me is the intersection of electrical engineering rigor and software automation.
