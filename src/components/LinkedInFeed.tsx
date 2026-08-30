@@ -68,7 +68,7 @@ export function LinkedInFeed() {
           className="lg:!grid-cols-[1fr_auto]"
         >
           <div>
-            <SectionHeader id="07" title="Professional Activity" />
+            <SectionHeader badge="07 // ACTIVITY" title="Professional Activity" />
 
             <h2
               style={{
@@ -133,13 +133,8 @@ export function LinkedInFeed() {
           </div>
         </div>
 
-        {/* Elfsight widget container */}
-        <div
-          style={{
-            width: "100%",
-            overflow: "hidden",
-          }}
-        >
+        {/* Elfsight widget container — themed wrapper + dark-mode fallback */}
+        <div className="rounded-xl border border-[var(--border)] bg-[var(--surface-1)] w-full max-w-full overflow-hidden p-4 sm:p-5">
           {/* Loading state */}
           {!loaded && !failed && (
             <div
@@ -225,9 +220,9 @@ export function LinkedInFeed() {
             </div>
           )}
 
-          {/* Elfsight widget */}
+          {/* Elfsight widget (dark-mode inversion fallback for light embeds) */}
           <div
-            className={`elfsight-app-${ELFSIGHT_APP_ID}`}
+            className={`elfsight-app-${ELFSIGHT_APP_ID} linkedin-dark-embed`}
             data-elfsight-app-lazy
             style={{
               width: "100%",
@@ -239,6 +234,26 @@ export function LinkedInFeed() {
           />
         </div>
       </div>
+
+      {/* Dark-mode fallback CSS for the Elfsight embed */}
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+            .linkedin-dark-embed,
+            .linkedin-dark-embed * {
+              filter: invert(0.9) hue-rotate(180deg) !important;
+            }
+            .linkedin-dark-embed img,
+            .linkedin-dark-embed svg,
+            .linkedin-dark-embed video {
+              filter: invert(1) hue-rotate(180deg) !important;
+            }
+            .linkedin-dark-embed {
+              background: transparent !important;
+            }
+          `,
+        }}
+      />
     </section>
   );
 }

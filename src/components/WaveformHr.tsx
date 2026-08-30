@@ -2,7 +2,7 @@
 
 import { useId, useSyncExternalStore } from "react";
 
-type Variant = "waveform" | "pcb" | "ruler";
+type Variant = "waveform" | "pcb" | "ruler" | "timing";
 
 const reducedMotionQuery =
   typeof window !== "undefined"
@@ -31,11 +31,19 @@ export function WaveformHr({
 }) {
   const id = useId().replace(/:/g, "_");
   const reduced = usePrefersReducedMotion();
+  const tall = variant === "timing";
   return (
-    <div className="waveform-hr" style={style} aria-hidden="true">
+    <div
+      className={`waveform-hr w-full overflow-hidden${tall ? " waveform-hr--tall" : ""}`}
+      style={style}
+      aria-hidden="true"
+    >
       {variant === "waveform" && <WaveformVariant id={id} animate={!reduced} />}
       {variant === "pcb" && <PcbTraceVariant id={id} />}
       {variant === "ruler" && <RulerVariant />}
+      {variant === "timing" && (
+        <TimingDiagramVariant id={id} animate={!reduced} />
+      )}
     </div>
   );
 }
@@ -128,9 +136,98 @@ function WaveformVariant({ id, animate }: { id: string; animate: boolean }) {
   );
 }
 
+/**
+ * Digital clock pulse / setup & hold timing diagram.
+ * Pure SVG + CSS keyframes: the clock & data edges sweep with a traveling
+ * highlight, and the setup/hold violation window pulses. Requires no JS.
+ */
+function TimingDiagramVariant({ id, animate }: { id: string; animate: boolean }) {
+  const clkId = `clk-${id}`;
+  const dataId = `dt-${id}`;
+  const sweepId = `sw-${id}`;
+
+  // CLK: 4 complete square-wave cycles across 1200px (period 300px)
+  const clkPath =
+    "M0,40 L120,40 L120,20 L240,20 L240,40 L330,40 L330,20 L450,20 L450,40 L540,40 L540,20 L660,20 L660,40 L750,40 L750,20 L870,20 L870,40 L960,40 L960,20 L1080,20 L1080,40 L1200,40";
+  // DATA: sampled high across the middle half, toggling around clock edges
+  const dataPath =
+    "M0,96 L150,96 L150,80 L420,80 L420,96 L600,96 L600,112 L840,112 L840,96 L1050,96 L1050,112 L1200,112";
+
+  return (
+    <svg viewBox="0 0 1200 120" preserveAspectRatio="none" fill="none" aria-hidden="true">
+      <defs>
+        <linearGradient id={clkId} x1="0" y1="0" x2="1200" y2="0" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stopColor="var(--accent)" stopOpacity="0" />
+          <stop offset="25%" stopColor="var(--accent)" stopOpacity="0.6" />
+          <stop offset="50%" stopColor="var(--accent)" stopOpacity="0.7" />
+          <stop offset="75%" stopColor="var(--accent)" stopOpacity="0.6" />
+          <stop offset="100%" stopColor="var(--accent)" stopOpacity="0" />
+        </linearGradient>
+        <linearGradient id={dataId} x1="0" y1="0" x2="1200" y2="0" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stopColor="var(--accent-secondary)" stopOpacity="0" />
+          <stop offset="25%" stopColor="var(--accent-secondary)" stopOpacity="0.55" />
+          <stop offset="50%" stopColor="var(--accent-secondary)" stopOpacity="0.6" />
+          <stop offset="75%" stopColor="var(--accent-secondary)" stopOpacity="0.55" />
+          <stop offset="100%" stopColor="var(--accent-secondary)" stopOpacity="0" />
+        </linearGradient>
+        {/* Traveling bright sweep highlight for measuring-edge scan */}
+        <linearGradient id={sweepId} x1="0" y1="0" x2="260" y2="0" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stopColor="#06b6d4" stopOpacity="0" />
+          <stop offset="40%" stopColor="#06b6d4" stopOpacity="0" />
+          <stop offset="50%" stopColor="#06b6d4" stopOpacity="0.8" />
+          <stop offset="60%" stopColor="#06b6d4" stopOpacity="0" />
+          <stop offset="100%" stopColor="#06b6d4" stopOpacity="0" />
+          {animate && (
+            <>
+              <animate attributeName="x1" values="-260;1400" dur="4s" repeatCount="indefinite" />
+              <animate attributeName="x2" values="0;1660" dur="4s" repeatCount="indefinite" />
+            </>
+          )}
+        </linearGradient>
+      </defs>
+
+      {/* Lane guidelines */}
+      <line x1="0" y1="30" x2="1200" y2="30" stroke="var(--border)" strokeOpacity="0.25" strokeWidth="0.5" />
+      <line x1="0" y1="60" x2="1200" y2="60" stroke="var(--border)" strokeOpacity="0.25" strokeWidth="0.5" />
+      <line x1="0" y1="90" x2="1200" y2="90" stroke="var(--border)" strokeOpacity="0.25" strokeWidth="0.5" />
+
+      {/* Time tick marks */}
+      {Array.from({ length: 13 }, (_, i) => i * 100).map((x) => (
+        <line key={x} x1={x} y1="6" x2={x} y2="12" stroke="var(--accent)" strokeOpacity="0.4" strokeWidth="0.6" />
+      ))}
+
+      {/* Lane labels */}
+      <text x="8" y="12" fontFamily="var(--font-mono)" fontSize="8" letterSpacing="1" fill="var(--accent)" opacity="0.8">
+        {"CLK"}
+      </text>
+      <text x="8" y="68" fontFamily="var(--font-mono)" fontSize="8" letterSpacing="1" fill="var(--accent-secondary)" opacity="0.8">
+        {"DATA"}
+      </text>
+
+      {/* Setup / hold violation window */}
+      <line x1="560" y1="48" x2="560" y2="78" stroke="#f59e0b" strokeOpacity="0.6" strokeWidth="1" strokeDasharray="3 3" className="td-marker" />
+      <line x1="660" y1="48" x2="660" y2="78" stroke="#f59e0b" strokeOpacity="0.6" strokeWidth="1" strokeDasharray="3 3" className="td-marker" style={{ animationDelay: "-0.25s" }} />
+      <rect x="560" y="52" width="100" height="26" fill="#f59e0b" opacity="0.06" className="td-window" />
+      <text x="585" y="116" fontFamily="var(--font-mono)" fontSize="7.5" letterSpacing="0.5" fill="#f59e0b" opacity="0.85">
+        {"setup"}
+      </text>
+      <text x="668" y="116" fontFamily="var(--font-mono)" fontSize="7.5" letterSpacing="0.5" fill="#f59e0b" opacity="0.85">
+        {"hold"}
+      </text>
+
+      {/* CLK + DATA signal paths (base, dim) */}
+      <path d={clkPath} stroke={`url(#${clkId})`} strokeWidth="1" />
+      <path d={dataPath} stroke={`url(#${dataId})`} strokeWidth="1" />
+
+      {/* Traveling measurement sweep highlight */}
+      <path d={clkPath} stroke={`url(#${sweepId})`} strokeWidth="2.2" strokeLinecap="round" />
+      <path d={dataPath} stroke={`url(#${sweepId})`} strokeWidth="1.6" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 /** PCB trace style: single trace with 90° jogs and via dots at bends */
-function PcbTraceVariant({ id }: { id: string }) {
-  const gradId = `pg-${id}`;
+function PcbTraceVariant({ id }: { id: string }) {  const gradId = `pg-${id}`;
 
   return (
     <svg viewBox="0 0 1200 28" preserveAspectRatio="none" fill="none">

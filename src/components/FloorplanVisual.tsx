@@ -37,11 +37,45 @@ const CORNER_TICKS: [number, number][] = [
   [522, 362],
 ];
 
+/* Tooltip primitive — hidden group revealed on .fp-block:hover via CSS */
+function FpTip({
+  x,
+  y,
+  title,
+  lines,
+}: {
+  x: number;
+  y: number;
+  title: string;
+  lines: string[];
+}) {
+  return (
+    <g className="fp-tip" transform={`translate(${x} ${y})`}>
+      <rect x="-78" y="0" width="156" height={18 + lines.length * 13} rx="4" fill="#06131f" stroke="#06b6d4" strokeOpacity="0.5" strokeWidth="0.75" />
+      <text x="-68" y="13" fontFamily="var(--font-mono)" fontSize="8.5" fontWeight="700" letterSpacing="1" className="fill-cyan-400">
+        {title}
+      </text>
+      {lines.map((line, i) => (
+        <text
+          key={line}
+          x="-68"
+          y={27 + i * 13}
+          fontFamily="var(--font-mono)"
+          fontSize="8.5"
+          className="fill-slate-300"
+        >
+          {line}
+        </text>
+      ))}
+    </g>
+  );
+}
+
 export function FloorplanVisual() {
   return (
     <svg
       viewBox="0 0 540 380"
-      className="h-auto w-full"
+      className="w-full h-auto max-w-[340px] sm:max-w-md lg:max-w-full mx-auto"
       preserveAspectRatio="xMidYMid meet"
       role="img"
       aria-label="ASIC floorplan visualization with macro blocks, power mesh and animated netlist routing"
@@ -115,10 +149,32 @@ export function FloorplanVisual() {
         ))}
       </g>
 
-      {/* ── Macro blocks ── */}
+      {/* ── Interactive overlay regions (transparent hit targets, drawn beneath macros so blocks win hover) ── */}
+      {/* I/O ring */}
+      <g className="fp-block">
+        <rect x="16" y="16" width="508" height="348" rx="6" fill="transparent" className="fp-region" />
+        <FpTip x={270} y={30} title="IO RING" lines={["Signal + power pads", "Top/Bottom: 34 pads", "Left/Right: 22 pads"]} />
+      </g>
+
+      {/* Power grid */}
+      <g className="fp-block">
+        <rect x="68" y="160" width="404" height="120" rx="2" fill="transparent" className="fp-region" />
+        <FpTip x={270} y={160} title="POWER GRID" lines={["VDD / VSS mesh", "M4 vertical strap", "M5 horizontal strap"]} />
+      </g>
+
+      {/* Standard-cell core area */}
+      <g className="fp-block">
+        <rect x="40" y="112" width="460" height="90" rx="2" fill="transparent" className="fp-region" />
+        <text x="42" y="123" fontFamily="var(--font-mono)" fontSize="9" letterSpacing="1" className="fill-cyan-400">
+          {"STD_CELL_CORE (UTIL: 68.4%)"}
+        </text>
+        <FpTip x={270} y={120} title="CORE AREA" lines={["Std-cell rows", "Placement util 68.4%", "Double-row ABAB"]} />
+      </g>
+
+      {/* ── Macro blocks (interactive tooltips) ── */}
       {/* SRAM_0 — top-left corner macro with memory-bank sub-stripes */}
-      <g>
-        <rect x="44" y="44" width="110" height="64" rx="3" fill="#0b1329" className="stroke-cyan-500/40" />
+      <g className="fp-block">
+        <rect x="44" y="44" width="110" height="64" rx="3" fill="#0b1329" className="stroke-cyan-500/40 fp-shape" />
         <g stroke="#142036" strokeWidth="1">
           {[52, 60, 68, 76, 84, 92, 100, 108, 116, 124, 132, 140].map((x) => (
             <line key={`s0-${x}`} x1={x} y1="68" x2={x} y2="102" />
@@ -127,11 +183,12 @@ export function FloorplanVisual() {
         <text x="99" y="61" textAnchor="middle" fontFamily="var(--font-mono)" fontSize="9" fontWeight="700" letterSpacing="1" className="fill-cyan-400">
           {"SRAM_0"}
         </text>
+        <FpTip x={99} y={120} title="MACRO [SRAM]" lines={["512KB SRAM block", "Mem-bank sub-array", "Analytical energy"]} />
       </g>
 
       {/* SRAM_1 — adjacent to SRAM_0 */}
-      <g>
-        <rect x="162" y="44" width="86" height="64" rx="3" fill="#0b1329" className="stroke-cyan-500/40" />
+      <g className="fp-block">
+        <rect x="162" y="44" width="86" height="64" rx="3" fill="#0b1329" className="stroke-cyan-500/40 fp-shape" />
         <g stroke="#142036" strokeWidth="1">
           {[170, 177, 184, 191, 198, 205, 212, 219, 226, 233, 240].map((x) => (
             <line key={`s1-${x}`} x1={x} y1="68" x2={x} y2="102" />
@@ -140,10 +197,11 @@ export function FloorplanVisual() {
         <text x="205" y="61" textAnchor="middle" fontFamily="var(--font-mono)" fontSize="9" fontWeight="700" letterSpacing="1" className="fill-cyan-400">
           {"SRAM_1"}
         </text>
+        <FpTip x={205} y={120} title="MACRO [SRAM]" lines={["384KB SRAM block", "Column-mux bank", "Low-Vt optimized"]} />
       </g>
 
       {/* PLL_TOP — isolated analog macro with guard ring */}
-      <g>
+      <g className="fp-block">
         <rect
           x="424"
           y="40"
@@ -154,16 +212,18 @@ export function FloorplanVisual() {
           stroke="#10b981"
           strokeOpacity="0.5"
           strokeDasharray="5 3"
+          className="fp-shape"
         />
         <rect x="431" y="47" width="82" height="58" rx="3" fill="#0b1329" className="stroke-cyan-500/40" />
         <text x="472" y="79" textAnchor="middle" fontFamily="var(--font-mono)" fontSize="9" letterSpacing="1" className="fill-slate-300">
           {"PLL_TOP"}
         </text>
+        <FpTip x={472} y={130} title="MACRO [ANALOG]" lines={["Isolated PLL", "Guard-ring shield", "Noise isolation"]} />
       </g>
 
       {/* ALU_CORE / DSP_ENGINE — center-bottom macros */}
-      <g>
-        <rect x="110" y="215" width="150" height="100" rx="3" fill="#0b1329" className="stroke-cyan-500/40" />
+      <g className="fp-block">
+        <rect x="110" y="215" width="150" height="100" rx="3" fill="#0b1329" className="stroke-cyan-500/40 fp-shape" />
         <g stroke="#142036" strokeWidth="1">
           <line x1="122" y1="245" x2="248" y2="245" />
           <line x1="122" y1="275" x2="248" y2="275" />
@@ -171,9 +231,10 @@ export function FloorplanVisual() {
         <text x="185" y="269" textAnchor="middle" fontFamily="var(--font-mono)" fontSize="11" fontWeight="700" letterSpacing="1" className="fill-cyan-400">
           {"ALU_CORE"}
         </text>
+        <FpTip x={185} y={325} title="CORE [DIGITAL]" lines={["Arithmetic unit", "Datapath macros", "3-row std cells"]} />
       </g>
-      <g>
-        <rect x="272" y="215" width="152" height="100" rx="3" fill="#0b1329" className="stroke-cyan-500/40" />
+      <g className="fp-block">
+        <rect x="272" y="215" width="152" height="100" rx="3" fill="#0b1329" className="stroke-cyan-500/40 fp-shape" />
         <g stroke="#142036" strokeWidth="1">
           <line x1="284" y1="245" x2="412" y2="245" />
           <line x1="284" y1="275" x2="412" y2="275" />
@@ -181,12 +242,8 @@ export function FloorplanVisual() {
         <text x="348" y="269" textAnchor="middle" fontFamily="var(--font-mono)" fontSize="11" fontWeight="700" letterSpacing="1" className="fill-cyan-400">
           {"DSP_ENGINE"}
         </text>
+        <FpTip x={348} y={325} title="CORE [DIGITAL]" lines={["Signal processing", "Accumulator tree", "Multiplier macros"]} />
       </g>
-
-      {/* Core area label */}
-      <text x="42" y="123" fontFamily="var(--font-mono)" fontSize="9" letterSpacing="1" className="fill-cyan-400">
-        {"STD_CELL_CORE (UTIL: 68.4%)"}
-      </text>
 
       {/* ── Animated netlist routing — timing-critical nets (cyan) ── */}
       <g fill="none" stroke="#06b6d4" strokeWidth="1.25" strokeLinejoin="round" strokeLinecap="round">

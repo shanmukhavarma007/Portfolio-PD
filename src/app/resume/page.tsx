@@ -52,6 +52,7 @@ export default function ResumePage() {
 
         {/* Action buttons */}
         <div
+          className="flex flex-wrap items-center gap-3 sticky top-[64px] z-10 bg-[var(--bg)] py-3"
           style={{
             display: "flex",
             gap: "12px",
@@ -72,7 +73,10 @@ export default function ResumePage() {
               color: "var(--bg)",
               textDecoration: "none",
               transition: "all 0.2s ease",
-              display: "inline-block",
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              minHeight: "44px",
             }}
             onMouseEnter={(e) => {
               (e.currentTarget as HTMLElement).style.background = "var(--accent-secondary)";
@@ -96,7 +100,10 @@ export default function ResumePage() {
               color: "var(--text-secondary)",
               textDecoration: "none",
               transition: "all 0.2s ease",
-              display: "inline-block",
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              minHeight: "44px",
             }}
             onMouseEnter={(e) => {
               (e.currentTarget as HTMLElement).style.borderColor = "var(--accent)";
@@ -114,17 +121,17 @@ export default function ResumePage() {
 
       {/* PDF embed */}
       <div
+        className="w-full h-[65vh] sm:h-[80vh] border-0"
         style={{
           width: "100%",
-          height: "calc(100vh - 260px)",
-          minHeight: "600px",
-          border: "1px solid var(--border-subtle)",
           background: "var(--surface-1)",
+          overflow: "hidden",
         }}
       >
         <iframe
           src="/resume.pdf"
           title="Shanmukha Varma Resume"
+          className="w-full h-full border-0"
           style={{
             width: "100%",
             height: "100%",

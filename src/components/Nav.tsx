@@ -221,7 +221,7 @@ export function Nav() {
         {!isDesktop && (
           <button
             type="button"
-            className="site-nav-hamburger"
+            className="site-nav-hamburger min-h-[44px] min-w-[44px]"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label={mobileOpen ? "Close navigation menu" : "Open navigation menu"}
             style={{
@@ -230,9 +230,12 @@ export function Nav() {
               padding: "8px",
               cursor: "pointer",
               display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
               flexDirection: "column",
               gap: "4px",
-              width: "28px",
+              width: "44px",
+              height: "44px",
             }}
           >
             <span

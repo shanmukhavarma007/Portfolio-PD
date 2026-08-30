@@ -155,7 +155,7 @@ export function LearningJourney() {
 
   return (
     <section
-      id="journey"
+      id="pipeline"
       ref={ref}
       className="scroll-reveal section-container section-glow section-divider-top section-divider-bottom"
       style={{
@@ -165,7 +165,7 @@ export function LearningJourney() {
       }}
     >
       <div style={{ maxWidth: "1400px", margin: "0 auto", position: "relative" }}>
-        <SectionHeader id="06" title="ASIC Physical Design Pipeline" />
+        <SectionHeader badge="06 // PIPELINE" title="ASIC PD Pipeline" />
 
         {/* Section title */}
         <h2
@@ -196,26 +196,27 @@ export function LearningJourney() {
 
         {/* Silicon timeline */}
         <div className="relative max-w-3xl">
-          {/* Vertical gradient rail */}
-          <div
-            aria-hidden="true"
-            className="absolute bottom-6 left-[11px] top-3 w-[2px] rounded-full bg-gradient-to-b from-cyan-400 via-cyan-500/40 to-emerald-400 opacity-70"
-          />
+          {/* Unified left rail anchor: 2px border defines the rail, gradient overlay centers on it */}
+          <div className="relative pl-8 sm:pl-12 border-l-2 border-cyan-500/40">
+            <div
+              aria-hidden="true"
+              className="absolute bottom-1 left-0 top-1 w-[2px] -translate-x-1/2 rounded-full bg-gradient-to-b from-cyan-400 via-cyan-500/40 to-emerald-400 opacity-70"
+            />
 
-          <div className="flex flex-col gap-5">
-            {pipelineStages.map((stage) => {
-              const meta = statusMeta[stage.status];
-              const isExpanded = expandedStage === stage.id;
+            <div className="flex flex-col gap-5">
+              {pipelineStages.map((stage) => {
+                const meta = statusMeta[stage.status];
+                const isExpanded = expandedStage === stage.id;
 
-              return (
-                <div key={stage.id} className="relative pl-10">
-                  {/* Milestone node on the rail */}
-                  <span className="absolute left-[3px] top-6 z-10 flex items-center justify-center">
-                    <StatusNode status={stage.status} />
-                  </span>
+                return (
+                  <div key={stage.id} className="relative group">
+                    {/* Perfectly centered status dot on the rail */}
+                    <div className="absolute -left-[calc(2rem+1px)] sm:-left-[calc(3rem+1px)] top-6 z-10 flex h-4 w-4 -translate-x-1/2 -translate-y-1/2 items-center justify-center">
+                      <StatusNode status={stage.status} />
+                    </div>
 
                   <div
-                    className={`card cursor-pointer p-5 ${
+                    className={`card cursor-pointer p-5 min-h-[44px] ${
                       stage.status === "queued" ? "opacity-80" : ""
                     }`}
                     onClick={() =>
@@ -223,7 +224,7 @@ export function LearningJourney() {
                     }
                   >
                     {/* Header row */}
-                    <div className="mb-3 flex items-center justify-between gap-3">
+                    <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
                       <span
                         className={`font-mono text-[10px] tracking-[0.15em] ${
                           stage.status === "queued"
@@ -313,6 +314,7 @@ export function LearningJourney() {
             })}
           </div>
         </div>
+      </div>
       </div>
     </section>
   );

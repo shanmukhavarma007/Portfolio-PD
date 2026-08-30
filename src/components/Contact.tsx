@@ -31,7 +31,7 @@ export function Contact() {
       className="scroll-reveal section-container"
     >
       <div style={{ maxWidth: "1400px", margin: "0 auto", position: "relative" }}>
-        <SectionHeader id="09" title="Let's Connect" />
+        <SectionHeader badge="09 // CONNECT" title="Let's Connect" />
 
         {/* Centered conversion card */}
         <div

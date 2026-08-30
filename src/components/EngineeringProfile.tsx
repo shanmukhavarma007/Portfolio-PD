@@ -72,12 +72,12 @@ export function EngineeringProfile() {
 
   return (
     <section
-      id="engineering"
+      id="stack"
       ref={ref}
       className="scroll-reveal section-container section-glow"
     >
       <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
-        <SectionHeader id="01" title="Technical Capabilities &amp; Stack Architecture" />
+        <SectionHeader badge="01 // STACK" title="Technical Capabilities" />
 
         <p
           style={{

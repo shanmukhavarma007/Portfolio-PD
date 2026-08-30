@@ -68,11 +68,11 @@ export function About() {
 
   return (
     <section
-      id="about"
+      id="journey"
       ref={ref}
       className="scroll-reveal mx-auto max-w-6xl px-4 py-16 section-glow"
     >
-      <SectionHeader id="08" title="Engineering Journey & Approach" />
+      <SectionHeader badge="08 // JOURNEY" title="Engineering Journey" />
 
       {/* Narrative */}
       <div className="mt-8 mb-12 max-w-3xl">

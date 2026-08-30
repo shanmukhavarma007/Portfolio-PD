@@ -86,13 +86,14 @@ function SkillCard({ label, status, dots, context, link }: SkillItem) {
           borderRadius: "16px 16px 0 0",
         }}
       />
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "8px" }}>
+      <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: "8px" }}>
         <span
           style={{
             fontFamily: "var(--font-body)",
             fontSize: "clamp(14px, 3vw, 16px)",
             fontWeight: 500,
             color: "var(--text)",
+            minWidth: 0,
           }}
         >
           {label}
@@ -135,12 +136,13 @@ function SkillCard({ label, status, dots, context, link }: SkillItem) {
           href={link.href}
           target="_blank"
           rel="noopener noreferrer"
-          className="badge badge--accent-secondary"
+          className="badge badge--accent-secondary min-h-[44px]"
           style={{
             textDecoration: "none",
             cursor: "pointer",
             alignSelf: "flex-start",
             marginTop: "2px",
+            alignItems: "center",
           }}
         >
           {link.label}
@@ -158,12 +160,12 @@ export function TechnicalMatrix() {
 
   return (
     <section
-      id="stack"
+      id="matrix"
       ref={ref}
       className="scroll-reveal section-container section-glow"
     >
       <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
-        <SectionHeader id="03" title="Technical Matrix" />
+        <SectionHeader badge="03 // MATRIX" title="Technical Matrix" />
 
         {/* Section header */}
         <h2
@@ -203,7 +205,7 @@ export function TechnicalMatrix() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`badge ${activeTab === tab.id ? "badge--accent" : "badge--muted"}`}
+              className={`badge min-h-[44px] ${activeTab === tab.id ? "badge--accent" : "badge--muted"}`}
               style={{
                 cursor: "pointer",
                 transition: "all 0.2s ease",
@@ -216,14 +218,7 @@ export function TechnicalMatrix() {
         </div>
 
         {/* Bento grid */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(2, 1fr)",
-            gap: "12px",
-          }}
-          className="sm:!grid-cols-2 lg:!grid-cols-2"
-        >
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
           {currentSkills.map((skill) => (
             <SkillCard key={skill.label} {...skill} />
           ))}

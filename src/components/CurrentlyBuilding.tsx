@@ -50,20 +50,19 @@ export function CurrentlyBuilding() {
 
   return (
     <section
+      id="building"
       ref={ref}
       className="scroll-reveal section-container section-glow"
     >
       <div style={{ maxWidth: "1400px", margin: "0 auto", position: "relative" }}>
-        <SectionHeader id="05" title="Currently Building" />
+        <SectionHeader badge="05 // BUILDING" title="Currently Building" />
 
         {/* Cards grid */}
         <div
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6"
           style={{
-            display: "grid",
-            gridTemplateColumns: "1fr",
             gap: "12px",
           }}
-          className="sm:!grid-cols-2 lg:!grid-cols-3"
         >
           {ITEMS.map((item) => {
             const cardStyle: React.CSSProperties = {
@@ -173,8 +172,8 @@ export function CurrentlyBuilding() {
                         href={link.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="badge badge--accent-secondary"
-                        style={{ textDecoration: "none", cursor: "pointer" }}
+                        className="badge badge--accent-secondary min-h-[44px]"
+                        style={{ textDecoration: "none", cursor: "pointer", alignItems: "center" }}
                       >
                         {link.label}
                       </a>

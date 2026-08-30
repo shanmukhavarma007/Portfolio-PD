@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { SectionHeader } from "./SectionHeader";
 
@@ -82,25 +83,182 @@ const PROJECTS: Project[] = [
   },
 ];
 
-function TerminalWindow({
-  title,
-  children,
-}: {
+type LogLevel = "INFO" | "WARN" | "OK" | "CMD" | "DRC_CLEAN";
+
+type ConsoleLine = { level: LogLevel; text: string };
+
+type ConsoleTab = {
+  id: string;
+  label: string;
   title: string;
-  children: React.ReactNode;
+  repo: { label: string; href: string };
+  input: string;
+  lines: ConsoleLine[];
+};
+
+const LOG_STYLES: Record<LogLevel, string> = {
+  INFO: "text-cyan-300",
+  WARN: "text-amber-300",
+  OK: "text-emerald-300",
+  CMD: "text-slate-300",
+  DRC_CLEAN: "text-emerald-300",
+};
+
+const CONSOLE_TABS: ConsoleTab[] = [
+  {
+    id: "timing",
+    label: "[01] TCL Timing Flow",
+    title: "timing_flow.tcl // clock-tree + slack closure",
+    repo: {
+      label: "SRC: tcl-scripts/timing_flow.tcl",
+      href: `${TCL_SCRIPTS_URL}/blob/main/timing_flow.tcl`,
+    },
+    input: "report_timing -setup -max_paths 100",
+    lines: [
+      { level: "CMD", text: "source timing_flow.tcl" },
+      { level: "INFO", text: "Loading SDC constraints: timing.sdc ..." },
+      { level: "INFO", text: "Clock tree synthesized — skew: 22.4ps" },
+      { level: "INFO", text: "Propagate clock networks across 84K flops" },
+      { level: "CMD", text: "report_timing -setup -max_paths 100" },
+      { level: "INFO", text: "Path 1 — WNS 0.038ns (clock clk)" },
+      { level: "INFO", text: "Path 2 — setup met, hold clean" },
+      { level: "WARN", text: "Marginal hold on 12 leaf cells — adding buffers" },
+      { level: "DRC_CLEAN", text: "DRC: 0 violations — timing closure accepted" },
+      { level: "OK", text: "WNS >= 0ns / TNS 0 — signoff ready" },
+    ],
+  },
+  {
+    id: "macro",
+    label: "[02] Macro Placer",
+    title: "macro_placer.py // automated block placement",
+    repo: {
+      label: "SRC: tcl-scripts/macro_placer.tcl",
+      href: `${TCL_SCRIPTS_URL}/blob/main/macro_placer.tcl`,
+    },
+    input: "place_macros -util 0.68",
+    lines: [
+      { level: "CMD", text: "python3 macro_placer.py --util 0.68" },
+      { level: "INFO", text: "Parsing netlist — 6 macros, 8 power domains" },
+      { level: "INFO", text: "Optimizing floorplan for congestion" },
+      { level: "INFO", text: "SRAM_0 @ (44,44) — SRAM_1 @ (162,44)" },
+      { level: "INFO", text: "PLL_TOP isolated with guard ring" },
+      { level: "OK", text: "Core utilization: 68.4% (target <= 70%)" },
+      { level: "DRC_CLEAN", text: "Legalized 100% — 0 overlaps" },
+    ],
+  },
+  {
+    id: "signoff",
+    label: "[03] Signoff Automation",
+    title: "signoff.sh // calibre DRC/LVS + GDS stream",
+    repo: {
+      label: "SRC: tcl-scripts/signoff.sh",
+      href: `${TCL_SCRIPTS_URL}/blob/main/signoff.sh`,
+    },
+    input: "./signoff.sh --top top_chip --write-gds",
+    lines: [
+      { level: "CMD", text: "./signoff.sh --top top_chip --write-gds" },
+      { level: "INFO", text: "Running Calibre DRC on layout.gds ..." },
+      { level: "INFO", text: "Layer checks: metal1..metal8, via, sealring" },
+      { level: "DRC_CLEAN", text: "DRC clean — 0 rule violations" },
+      { level: "INFO", text: "Running Calibre LVS (top_chip.vs)" },
+      { level: "OK", text: "LVS clean — netlist matches layout" },
+      { level: "INFO", text: "IR drop: 2.1% VDD / 1.8% VSS (limits met)" },
+      { level: "INFO", text: "Streaming out GDSII: top_chip.gds" },
+      { level: "OK", text: "GDSII written — tapeout ready" },
+    ],
+  },
+];
+
+function TerminalTab({
+  tab,
+  active,
+  onClick,
+}: {
+  tab: ConsoleTab;
+  active: boolean;
+  onClick: () => void;
 }) {
   return (
-    <div className="overflow-hidden rounded-xl border border-slate-800 bg-slate-950/70 shadow-inner backdrop-blur-sm">
-      {/* Terminal top bar */}
-      <div className="flex items-center gap-2 border-b border-slate-800/80 bg-slate-900/80 px-4 py-2.5">
-        <span className="h-2.5 w-2.5 rounded-full bg-red-500/80" />
-        <span className="h-2.5 w-2.5 rounded-full bg-yellow-400/80" />
-        <span className="h-2.5 w-2.5 rounded-full bg-emerald-400/80" />
-        <span className="ml-3 truncate font-mono text-[10px] tracking-wider text-slate-400">
-          {title}
-        </span>
+    <button
+      type="button"
+      onClick={onClick}
+      className={`flex min-h-[40px] items-center gap-2 rounded-t-lg border-t border-x px-3 py-2 font-mono text-[10px] tracking-wide transition-colors ${
+        active
+          ? "border-slate-700 bg-slate-950/90 text-cyan-300"
+          : "border-slate-800/60 bg-slate-900/50 text-slate-500 hover:text-slate-300"
+      }`}
+      style={{ cursor: "pointer" }}
+    >
+      {tab.label}
+    </button>
+  );
+}
+
+function TabbedConsole() {
+  const [activeTabId, setActiveTabId] = useState(CONSOLE_TABS[0].id);
+  const tab = CONSOLE_TABS.find((t) => t.id === activeTabId) || CONSOLE_TABS[0];
+
+  return (
+    <div className="w-full max-w-full overflow-hidden rounded-lg border border-slate-800 bg-slate-950/70 shadow-inner backdrop-blur-sm">
+      {/* Tab bar */}
+      <div className="flex items-stretch gap-0.5 overflow-x-auto border-b border-slate-800/80 bg-slate-900/80 px-2 pt-2">
+        {CONSOLE_TABS.map((t) => (
+          <TerminalTab
+            key={t.id}
+            tab={t}
+            active={t.id === activeTabId}
+            onClick={() => setActiveTabId(t.id)}
+          />
+        ))}
       </div>
-      {children}
+
+      {/* Viewport */}
+      <div className="min-h-[300px] p-3 sm:p-5">
+        {/* Console title */}
+        <div className="mb-4 flex items-center gap-2">
+          <span className="h-2.5 w-2.5 rounded-full bg-red-500/80" />
+          <span className="h-2.5 w-2.5 rounded-full bg-yellow-400/80" />
+          <span className="h-2.5 w-2.5 rounded-full bg-emerald-400/80" />
+          <span className="ml-2 truncate font-mono text-[10px] tracking-wider text-slate-400">
+            {tab.title}
+          </span>
+        </div>
+
+        {/* Log stream */}
+        <div
+          key={activeTabId}
+          className="pd-readout-animate overflow-x-auto whitespace-pre"
+        >
+          {tab.lines.map((line, i) => (
+            <div key={i} className="flex items-start gap-2 py-0.5">
+              <span
+                className={`w-[92px] shrink-0 select-none font-mono text-[10px] font-bold tracking-wide ${LOG_STYLES[line.level]}`}
+              >
+                [{line.level}]
+              </span>
+              <span className="font-mono text-[11px] leading-relaxed text-slate-300">
+                {line.text}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* CLI input + repo link */}
+      <div className="flex flex-wrap items-center gap-3 border-t border-slate-800/80 bg-slate-900/60 px-4 py-3">
+        <span className="font-mono text-[10px] leading-relaxed text-emerald-400">
+          {"$"} {tab.input}
+          <span className="animate-pulse">▮</span>
+        </span>
+        <a
+          href={tab.repo.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="ml-auto inline-flex items-center gap-1.5 rounded-md border border-slate-700 bg-slate-800/60 px-3 py-1.5 font-mono text-[10px] font-semibold tracking-widest text-slate-300 transition-colors duration-200 hover:border-cyan-500/50 hover:text-cyan-300"
+        >
+          {tab.repo.label} ↗
+        </a>
+      </div>
     </div>
   );
 }
@@ -118,7 +276,7 @@ export function Projects() {
       }}
     >
       <div style={{ maxWidth: "1400px", margin: "0 auto", position: "relative" }}>
-        <SectionHeader id="04" title="Selected Work" />
+        <SectionHeader badge="04 // PROJECTS" title="Selected Work &amp; Tooling" />
 
         <div className="mt-8 flex flex-col gap-10">
           {PROJECTS.map((project) => (
@@ -191,76 +349,8 @@ export function Projects() {
                   </div>
                 </div>
 
-                {/* Right: terminal-style interactive preview */}
-                <TerminalWindow title={project.previewTitle}>
-                  <div className="min-h-[260px] p-4">
-                    {project.modules && (
-                      <div className="flex flex-col gap-2.5">
-                        {project.modules.map((module) => (
-                          <div
-                            key={module.num}
-                            className="flex items-start gap-3 rounded-lg border border-slate-800/80 bg-slate-900/70 px-3.5 py-3 transition-colors duration-200 hover:border-cyan-500/40 hover:bg-slate-900"
-                          >
-                            <span className="mt-0.5 shrink-0 font-mono text-[10px] font-bold text-cyan-400">
-                              {module.num}
-                            </span>
-                            <div className="min-w-0">
-                              <div className="font-mono text-xs font-semibold tracking-wide text-slate-100">
-                                {module.name}
-                              </div>
-                              <div className="mt-0.5 font-mono text-[11px] leading-snug text-slate-400">
-                                {module.detail}
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-
-                    {project.termLines && (
-                      <pre className="overflow-x-auto font-mono text-[11px] leading-loose">
-                        {project.termLines.map((line, i) =>
-                          line.kind === "sep" ? (
-                            <span
-                              key={i}
-                              className="my-1 block text-slate-600"
-                            >
-                              {"--------------------------------------------------"}
-                            </span>
-                          ) : (
-                            <span key={i} className="block whitespace-pre">
-                              <span className={`font-bold ${line.tagClass}`}>
-                                {line.tag}
-                              </span>{" "}
-                              <span className="text-slate-300">{line.text}</span>
-                            </span>
-                          )
-                        )}
-                      </pre>
-                    )}
-                  </div>
-
-                  {/* Terminal footer */}
-                  <div className="flex flex-wrap items-center justify-between gap-3 border-t border-slate-800/80 bg-slate-900/60 px-4 py-3">
-                    <span className="inline-flex items-center gap-2 font-mono text-[10px] tracking-widest text-emerald-400">
-                      <span
-                        className={`h-2 w-2 rounded-full bg-emerald-400 ${
-                          project.pulseStatus ? "status-dot-pulse" : ""
-                        }`}
-                        style={{ color: "var(--success)" }}
-                      />
-                      {project.statusLabel}
-                    </span>
-                    <a
-                      href={project.footerAction.href}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-1.5 rounded-md border border-cyan-500/40 bg-cyan-500/10 px-3.5 py-1.5 font-mono text-[10px] font-semibold tracking-widest text-cyan-300 transition-colors duration-200 hover:border-cyan-400/60 hover:bg-cyan-500/20"
-                    >
-                      {project.footerAction.label}
-                    </a>
-                  </div>
-                </TerminalWindow>
+                {/* Right: tabbed console preview */}
+                <TabbedConsole />
               </div>
             </article>
           ))}

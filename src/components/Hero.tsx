@@ -1,10 +1,12 @@
 "use client";
 
 import { FloorplanVisual } from "./FloorplanVisual";
+import { HeroWaveform } from "./HeroWaveform";
 
 export function Hero() {
   return (
     <section
+      className="relative overflow-hidden"
       style={{
         minHeight: "100vh",
         display: "flex",
@@ -13,8 +15,6 @@ export function Hero() {
         padding: "0 clamp(16px, 4vw, 48px)",
         paddingTop: "72px",
         paddingBottom: "clamp(24px, 4vw, 48px)",
-        position: "relative",
-        overflow: "hidden",
       }}
     >
       {/* Background grid */}
@@ -32,6 +32,9 @@ export function Hero() {
         }}
       />
 
+      {/* Background waveform / scanline oscilloscope sweep */}
+      <HeroWaveform />
+
       {/* Radial glow */}
       <div
         style={{
@@ -48,82 +51,70 @@ export function Hero() {
       />
 
       <div
-        style={{
-          maxWidth: "1400px",
-          margin: "0 auto",
-          width: "100%",
-          display: "grid",
-          gridTemplateColumns: "1fr",
-          gap: "clamp(24px, 4vw, 48px)",
-          alignItems: "center",
-          position: "relative",
-          zIndex: 1,
-        }}
-        className="lg:!grid-cols-[7fr_5fr]"
+        className="flex flex-col-reverse lg:grid lg:grid-cols-[7fr_5fr] items-center gap-8 lg:gap-12 max-w-[1400px] mx-auto w-full relative z-10"
       >
         {/* ASIC floorplan visualization */}
         <div
+          className="flex justify-center w-full"
           style={{
             position: "relative",
-            width: "100%",
             aspectRatio: "540 / 380",
             maxHeight: "min(420px, 55vh)",
-            order: -1,
           }}
-          className="lg:!order-none"
         >
           <FloorplanVisual />
         </div>
 
         {/* Hero text content */}
-        <div style={{ maxWidth: "680px", position: "relative", zIndex: 1 }}>
-          {/* Status pill */}
-          <div
-            className="badge badge--accent"
-            style={{ marginBottom: "16px" }}
-          >
-            <span
-              className="status-dot-pulse"
-              style={{
-                width: "6px",
-                height: "6px",
-                borderRadius: "50%",
-                background: "var(--accent)",
-                color: "var(--accent)",
-              }}
-            />
-            VLSI Physical Design Engineer
-          </div>
+        <div className="max-w-[680px] flex flex-col justify-center w-full">
+          {/* Top badge pills */}
+          <div className="flex flex-wrap items-center gap-3 mb-6">
+            {/* Role / Status Badge */}
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-cyan-500/30 bg-cyan-950/20 text-cyan-400 font-mono text-xs tracking-wider backdrop-blur-sm shadow-[0_0_12px_rgba(6,182,212,0.15)]">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
+              </span>
+              <span>ASIC PHYSICAL DESIGN & EDA AUTOMATION</span>
+            </div>
 
-          {/* Interactive platform badge */}
-          <div style={{ marginBottom: "16px" }}>
+            {/* Interactive Project Callout Pill */}
             <a
               href="https://vlsi-hub-iota.vercel.app/"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-hover-lift badge badge--accent-secondary"
-              style={{
-                textDecoration: "none",
-                cursor: "pointer",
-                fontSize: "10px",
-                padding: "5px 12px",
-                boxShadow: "0 0 12px color-mix(in srgb, var(--accent-secondary) 30%, transparent)",
-              }}
+              className="group relative inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-emerald-950/30 hover:bg-emerald-900/40 border border-emerald-500/30 hover:border-emerald-400/60 shadow-[0_0_15px_rgba(16,185,129,0.1)] hover:shadow-[0_0_20px_rgba(16,185,129,0.25)] transition-all duration-300 w-fit max-w-full"
             >
-              🚀 Built VLSI Hub: Practice CMOS, Digital, Linux &amp; Tcl Live ↗
+              {/* Hardware Status Pill Tag */}
+              <span className="shrink-0 flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-400/30 text-[10px] sm:text-[11px] font-mono font-semibold tracking-wider text-emerald-300 uppercase">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                LIVE PLATFORM
+              </span>
+
+              {/* Main Callout Text */}
+              <span className="font-mono text-xs sm:text-sm text-emerald-200 group-hover:text-white transition-colors truncate">
+                <span className="font-bold text-emerald-400">VLSI HUB</span>
+                <span className="text-emerald-500/70 mx-1.5">{"//"}</span>
+                Interactive CMOS, Digital & Tcl Labs
+              </span>
+
+              {/* Interactive Corner Arrow */}
+              <span className="shrink-0 text-emerald-400 group-hover:text-emerald-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200 text-xs font-mono ml-0.5">
+                ↗
+              </span>
             </a>
           </div>
 
           {/* Name */}
           <h1
+            className="text-2xl sm:text-4xl lg:text-5xl font-semibold leading-[1.05] tracking-tight"
             style={{
               fontFamily: "var(--font-display)",
-              fontSize: "clamp(40px, 10vw, 80px)",
-              fontWeight: 600,
-              lineHeight: 1.05,
-              letterSpacing: "-0.02em",
               color: "var(--text)",
               margin: "0 0 16px 0",
+              letterSpacing: "-0.02em",
+              fontWeight: 600,
+              lineHeight: 1.05,
             }}
           >
             Shanmukha
@@ -133,31 +124,22 @@ export function Hero() {
 
           {/* Bio */}
           <p
+            className="text-base sm:text-lg leading-relaxed max-w-[520px]"
             style={{
               fontFamily: "var(--font-body)",
-              fontSize: "clamp(16px, 3.5vw, 20px)",
-              lineHeight: 1.6,
               color: "var(--text-secondary)",
               margin: "0 0 clamp(24px, 4vw, 40px) 0",
-              maxWidth: "520px",
+              lineHeight: 1.6,
             }}
           >
-            Building hands-on expertise in VLSI Physical Design and Tcl
-            automation. Currently undergoing intensive training and building
-            toward a career in silicon engineering.
+            Aspiring ASIC Physical Design Engineer focused on RTL-to-GDSII flow implementation, Static Timing Analysis (STA), and Tcl-driven EDA workflow automation. Dedicated to achieving optimal PPA metrics across modern digital design constraints.
           </p>
 
           {/* CTAs */}
-          <div
-            style={{
-              display: "flex",
-              gap: "12px",
-              flexWrap: "wrap",
-            }}
-          >
+          <div className="flex flex-wrap gap-3">
             <a
               href="#contact"
-              className="btn-hover-lift glow-btn-primary"
+              className="btn-hover-lift glow-btn-primary min-h-[44px] flex items-center justify-center"
               style={{
                 fontFamily: "var(--font-mono)",
                 fontSize: "12px",
@@ -176,7 +158,7 @@ export function Hero() {
               href="https://github.com/shanmukhavarma007/tcl-scripts"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-hover-lift glow-btn-ghost"
+              className="btn-hover-lift glow-btn-ghost min-h-[44px] flex items-center justify-center"
               style={{
                 fontFamily: "var(--font-mono)",
                 fontSize: "12px",
