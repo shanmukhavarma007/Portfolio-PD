@@ -184,8 +184,8 @@ function TerminalTab({
       onClick={onClick}
       className={`flex min-h-[40px] items-center gap-2 rounded-t-lg border-t border-x px-3 py-2 font-mono text-[10px] tracking-wide transition-colors ${
         active
-          ? "border-slate-700 bg-slate-950/90 text-cyan-300"
-          : "border-slate-800/60 bg-slate-900/50 text-slate-500 hover:text-slate-300"
+          ? "border-white/10 bg-slate-950/90 text-cyan-300"
+          : "border-white/10 bg-slate-900/50 text-slate-400 hover:text-slate-300"
       }`}
       style={{ cursor: "pointer" }}
     >
@@ -199,9 +199,9 @@ function TabbedConsole() {
   const tab = CONSOLE_TABS.find((t) => t.id === activeTabId) || CONSOLE_TABS[0];
 
   return (
-    <div className="w-full max-w-full overflow-hidden rounded-lg border border-slate-800 bg-slate-950/70 shadow-inner backdrop-blur-sm">
+    <div className="glass-panel w-full max-w-full overflow-hidden rounded-2xl">
       {/* Tab bar */}
-      <div className="flex items-stretch gap-0.5 overflow-x-auto border-b border-slate-800/80 bg-slate-900/80 px-2 pt-2">
+      <div className="flex items-stretch gap-0.5 overflow-x-auto border-b border-white/10 bg-slate-900/80 px-2 pt-2">
         {CONSOLE_TABS.map((t) => (
           <TerminalTab
             key={t.id}
@@ -245,7 +245,7 @@ function TabbedConsole() {
       </div>
 
       {/* CLI input + repo link */}
-      <div className="flex flex-wrap items-center gap-3 border-t border-slate-800/80 bg-slate-900/60 px-4 py-3">
+      <div className="flex flex-wrap items-center gap-3 border-t border-white/10 bg-slate-900/60 px-4 py-3">
         <span className="font-mono text-[10px] leading-relaxed text-emerald-400">
           {"$"} {tab.input}
           <span className="animate-pulse">▮</span>
@@ -254,7 +254,7 @@ function TabbedConsole() {
           href={tab.repo.href}
           target="_blank"
           rel="noopener noreferrer"
-          className="ml-auto inline-flex items-center gap-1.5 rounded-md border border-slate-700 bg-slate-800/60 px-3 py-1.5 font-mono text-[10px] font-semibold tracking-widest text-slate-300 transition-colors duration-200 hover:border-cyan-500/50 hover:text-cyan-300"
+          className="glass-card ml-auto inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 font-mono text-[10px] font-semibold tracking-widest text-slate-300 transition-colors duration-200 hover:text-cyan-300"
         >
           {tab.repo.label} ↗
         </a>
@@ -271,9 +271,6 @@ export function Projects() {
       id="projects"
       ref={ref}
       className="scroll-reveal section-container section-glow section-divider-top section-divider-bottom"
-      style={{
-        background: "var(--surface-1)",
-      }}
     >
       <div style={{ maxWidth: "1400px", margin: "0 auto", position: "relative" }}>
         <SectionHeader badge="04 // PROJECTS" title="Selected Work &amp; Tooling" />
@@ -282,14 +279,14 @@ export function Projects() {
           {PROJECTS.map((project) => (
             <article
               key={project.num}
-              className="rounded-xl border border-slate-800/80 bg-slate-900/60 backdrop-blur-md transition-colors duration-300 hover:border-cyan-500/40"
+              className="glass-panel transition-all duration-300 hover:-translate-y-1 hover:border-cyan-400/50"
               style={{ padding: "clamp(20px, 3vw, 36px)" }}
             >
               <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-10">
                 {/* Left: details & actions */}
                 <div className="flex flex-col">
                   <div className="mb-3 flex flex-wrap items-center gap-3">
-                    <span className="font-mono text-xs font-bold tracking-widest text-slate-500">
+                    <span className="font-mono text-xs font-bold tracking-widest text-slate-400">
                       {project.num}
                     </span>
                     <span
@@ -311,14 +308,14 @@ export function Projects() {
                   </p>
 
                   <div className="mb-7">
-                    <div className="mb-2.5 font-mono text-[9px] uppercase tracking-[0.25em] text-slate-500">
+                    <div className="mb-2.5 font-mono text-[9px] uppercase tracking-[0.25em] text-slate-400">
                       Tech Stack
                     </div>
                     <div className="flex flex-wrap gap-2">
                       {project.tags.map((tag) => (
                         <span
                           key={tag}
-                          className="rounded-full border border-slate-700/80 bg-slate-800/60 px-2.5 py-1 font-mono text-[10px] tracking-wide text-slate-300"
+                          className="glass-badge font-mono text-[10px] tracking-wide"
                         >
                           {tag}
                         </span>
@@ -332,7 +329,7 @@ export function Projects() {
                       href={project.primaryCta.href}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex items-center gap-2 rounded-lg border border-cyan-400/50 bg-cyan-500/15 px-5 py-2.5 font-mono text-xs font-semibold tracking-widest text-cyan-300 transition-all duration-200 hover:-translate-y-0.5 hover:border-cyan-300/70 hover:bg-cyan-500/25"
+                      className="btn-primary btn-sm"
                     >
                       {project.primaryCta.label}
                     </a>
@@ -341,7 +338,7 @@ export function Projects() {
                         href={project.secondaryCta.href}
                         target="_blank"
                         rel="noreferrer"
-                        className="inline-flex items-center gap-2 rounded-lg border border-slate-700 bg-slate-800/60 px-5 py-2.5 font-mono text-xs tracking-widest text-slate-300 transition-all duration-200 hover:-translate-y-0.5 hover:border-slate-600 hover:text-white"
+                        className="btn-secondary btn-sm"
                       >
                         {project.secondaryCta.label}
                       </a>

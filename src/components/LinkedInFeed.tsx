@@ -71,12 +71,12 @@ export function LinkedInFeed() {
             <SectionHeader badge="07 // ACTIVITY" title="Professional Activity" />
 
             <h2
+              className="text-gradient"
               style={{
                 fontFamily: "var(--font-display)",
                 fontSize: "clamp(24px, 3.5vw, 40px)",
                 fontWeight: 500,
                 lineHeight: 1.15,
-                color: "var(--text)",
                 margin: "0 0 12px 0",
                 letterSpacing: "-0.01em",
               }}
@@ -105,28 +105,7 @@ export function LinkedInFeed() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="View Shanmukha Varma LinkedIn profile"
-              style={{
-                fontFamily: "var(--font-mono)",
-                fontSize: "11px",
-                letterSpacing: "0.1em",
-                padding: "10px 20px",
-                border: "1px solid var(--border)",
-                color: "var(--text-secondary)",
-                textDecoration: "none",
-                transition: "all 0.2s ease",
-                whiteSpace: "nowrap",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.borderColor =
-                  "var(--accent)";
-                (e.currentTarget as HTMLElement).style.color = "var(--text)";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.borderColor =
-                  "var(--border)";
-                (e.currentTarget as HTMLElement).style.color =
-                  "var(--text-secondary)";
-              }}
+              className="btn-secondary btn-sm whitespace-nowrap"
             >
               VIEW LINKEDIN
             </a>
@@ -134,7 +113,7 @@ export function LinkedInFeed() {
         </div>
 
         {/* Elfsight widget container — themed wrapper + dark-mode fallback */}
-        <div className="rounded-xl border border-[var(--border)] bg-[var(--surface-1)] w-full max-w-full overflow-hidden p-4 sm:p-5">
+        <div className="glass-panel w-full max-w-full overflow-hidden p-4 sm:p-5">
           {/* Loading state */}
           {!loaded && !failed && (
             <div
@@ -192,28 +171,7 @@ export function LinkedInFeed() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="View Shanmukha Varma LinkedIn profile"
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "11px",
-                  letterSpacing: "0.1em",
-                  padding: "10px 20px",
-                  border: "1px solid var(--border)",
-                  color: "var(--text-secondary)",
-                  textDecoration: "none",
-                  transition: "all 0.2s ease",
-                  display: "inline-block",
-                }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLElement).style.borderColor =
-                    "var(--accent)";
-                  (e.currentTarget as HTMLElement).style.color = "var(--text)";
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLElement).style.borderColor =
-                    "var(--border)";
-                  (e.currentTarget as HTMLElement).style.color =
-                    "var(--text-secondary)";
-                }}
+                className="btn-secondary btn-sm inline-block"
               >
                 VIEW LINKEDIN
               </a>

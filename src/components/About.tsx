@@ -126,9 +126,9 @@ export function About() {
             {PRINCIPLES.map((p) => (
               <div
                 key={p.title}
-                className="rounded-xl border border-slate-800 bg-slate-900/60 p-5 backdrop-blur-md transition-all duration-300 hover:border-cyan-500/50 hover:shadow-[0_0_24px_rgba(6,182,212,0.15)]"
+                className="glass-card cursor-glow-card p-5"
               >
-                <h4 className="text-sm font-bold text-white">{p.title}</h4>
+                <h4 className="text-sm font-bold text-[var(--text-primary)]">{p.title}</h4>
                 <p className="mt-2 text-xs leading-relaxed text-slate-400">
                   {p.description}
                 </p>
@@ -137,7 +137,7 @@ export function About() {
           </div>
 
           {/* Beyond the Code */}
-          <div className="mt-8 rounded-xl border border-slate-800 bg-slate-900/60 p-5 backdrop-blur-md">
+          <div className="glass-card mt-8 p-5">
             <h3 className="mb-3 font-mono text-xs font-semibold uppercase tracking-widest text-cyan-400">
               Beyond the Code
             </h3>
@@ -145,7 +145,7 @@ export function About() {
               {INTERESTS.map((interest) => (
                 <span
                   key={interest}
-                  className="rounded-md border border-slate-700 bg-slate-800 px-2.5 py-1 font-mono text-xs text-slate-200 transition-colors hover:border-cyan-500/50 hover:text-cyan-300"
+                  className="glass-badge font-mono text-xs transition-colors duration-300 hover:border-cyan-400/60 hover:text-cyan-200"
                 >
                   {interest}
                 </span>

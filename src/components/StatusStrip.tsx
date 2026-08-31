@@ -4,16 +4,16 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const STATUS_METRICS = [
   {
-    value: "< 7nm",
-    label: "TARGET TECH NODE",
-    subtext: "FinFET / Advanced Nodes",
+    value: "PPA Focus",
+    label: "CORE OBJECTIVE",
+    subtext: "Timing, Power & Area",
     color: "var(--accent-cyan, #00f0ff)",
   },
   {
     value: "ASIC PD",
     label: "PRIMARY DOMAIN",
-    subtext: "Floorplan to GDSII",
-    color: "var(--accent-green, #00ff66)",
+    subtext: "RTL to GDSII",
+    color: "var(--accent-green, #22c55e)",
   },
   {
     value: "Tcl / Shell",
@@ -53,7 +53,7 @@ export function StatusStrip() {
           {STATUS_METRICS.map((metric) => (
             <div
               key={metric.label}
-              className="flex min-h-[130px] flex-col items-center justify-center gap-1.5 rounded-xl border border-cyan-500/20 bg-slate-900/60 px-4 py-4 backdrop-blur-md transition-all duration-300 hover:border-cyan-500/50 hover:shadow-[0_0_24px_rgba(6,182,212,0.15)]"
+              className="glass-card flex min-h-[130px] flex-col items-center justify-center gap-1.5 px-4 py-4"
             >
               <span
                 className="font-mono text-xl font-bold tracking-wide sm:text-2xl"
@@ -64,7 +64,7 @@ export function StatusStrip() {
               <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-slate-400 whitespace-normal text-center">
                 {metric.label}
               </span>
-              <span className="font-mono text-[8px] uppercase tracking-[0.12em] text-slate-500 whitespace-normal text-center">
+              <span className="font-mono text-[8px] uppercase tracking-[0.12em] text-slate-400 whitespace-normal text-center">
                 {metric.subtext}
               </span>
             </div>

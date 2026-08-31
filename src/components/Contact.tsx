@@ -35,7 +35,7 @@ export function Contact() {
 
         {/* Centered conversion card */}
         <div
-          className="rounded-xl border border-slate-800 bg-slate-900/60 backdrop-blur-md transition-all duration-300 hover:border-cyan-500/50 hover:shadow-[0_0_24px_rgba(6,182,212,0.15)]"
+          className="glass-panel"
           style={{
             maxWidth: "640px",
             margin: "0 auto",
@@ -78,7 +78,7 @@ export function Contact() {
                 href={link.href}
                 target={link.external ? "_blank" : undefined}
                 rel={link.external ? "noopener noreferrer" : undefined}
-                className="flex w-full items-center justify-center gap-2 rounded-lg border border-cyan-500/40 bg-cyan-500/10 px-6 py-3.5 font-mono text-xs font-semibold tracking-widest text-cyan-300 transition-all duration-200 hover:-translate-y-0.5 hover:border-cyan-400/70 hover:bg-cyan-500/20 hover:shadow-[0_0_20px_rgba(6,182,212,0.3)]"
+                className="btn-secondary w-full min-h-[48px] px-6 py-3.5"
               >
                 {link.label}
                 {link.external && (
@@ -90,7 +90,7 @@ export function Contact() {
               href="/resume.pdf"
               download="Shanmukha_Varma_Resume.pdf"
               aria-label="Download Shanmukha Varma resume PDF"
-              className="flex w-full items-center justify-center gap-2 rounded-lg border border-emerald-500/40 bg-emerald-500/10 px-6 py-3.5 font-mono text-xs font-semibold tracking-widest text-emerald-300 transition-all duration-200 hover:-translate-y-0.5 hover:border-emerald-400/70 hover:bg-emerald-500/20 hover:shadow-[0_0_20px_rgba(16,185,129,0.3)]"
+              className="btn-primary w-full min-h-[48px] px-6 py-3.5"
             >
               DOWNLOAD RESUME ↓
             </a>

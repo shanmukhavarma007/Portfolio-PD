@@ -26,6 +26,198 @@
 
   --radius: 16px;
   --font-display: var(--font-body);
+
+  /* ═══════════════════════════════════════════════════════════
+     DESIGN SYSTEM TOKENS
+     Singleton source of truth for every section's glassmorphism,
+     accent, and text values. Never hardcode these inline anywhere.
+     ═══════════════════════════════════════════════════════════ */
+
+  /* Accent palette */
+  --accent: #06B6D4;            /* Primary accent — cyan/neon */
+  --accent-light: #38BDF8;      /* Accent text / hover / glow */
+  --accent-glow: rgba(6, 182, 212, 0.15); /* Ambient bg glow */
+
+  /* Text hierarchy */
+  --text-primary: #F8FAFC;
+  --text-muted: #94A3B8;
+  --text-accent: #38BDF8;
+
+  /* ── Glass surfaces (unified opacities, blur, border) ── */
+
+  /* Primary glass container (Hero panels, section frames) */
+  --glass-bg: rgba(15, 23, 42, 0.60);        /* slate-900/60 */
+  --glass-border: rgba(255, 255, 255, 0.10); /* white/10 */
+  --glass-border-accent: rgba(6, 182, 212, 0.20); /* cyan-500/20 */
+  --glass-blur: 12px;                        /* backdrop-blur-md */
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  --glass-radius: 16px;
+
+  /* Elevated interactive glass card (hover/lift targets) */
+  --glass-elevated-bg: rgba(30, 41, 59, 0.70);    /* slate-800/70 */
+  --glass-elevated-border: rgba(34, 211, 238, 0.30); /* cyan-400/30 */
+  --glass-elevated-border-hover: rgba(34, 211, 238, 0.50); /* cyan-400/50 */
+  --glass-elevated-blur: 16px;                /* backdrop-blur-lg */
+  --glass-elevated-lift: -4px;                /* hover:-translate-y-1 */
+
+  /* Pill / tag glass */
+  --pill-bg: rgba(8, 51, 68, 0.40);           /* cyan-950/40 */
+  --pill-border: rgba(6, 182, 212, 0.30);     /* cyan-500/30 */
+  --pill-text: #22D3EE;                        /* cyan-300 */
+  --pill-blur: 4px;                           /* backdrop-blur-sm */
+}
+
+/* ═══════════════════════════════════════════════════════════
+   REUSABLE GLASS UTILITIES
+   Every section consumes these — never invent a new surface.
+   ═══════════════════════════════════════════════════════════ */
+
+/* Primary glass container — panels, frames, section surfaces */
+.glass-panel {
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border-accent);
+  border-radius: var(--glass-radius);
+  box-shadow: var(--glass-shadow);
+}
+
+/* Elevated interactive glass card — right-click / hover targets */
+.glass-card {
+  background: var(--glass-elevated-bg);
+  -webkit-backdrop-filter: blur(var(--glass-elevated-blur));
+  backdrop-filter: blur(var(--glass-elevated-blur));
+  border: 1px solid var(--glass-elevated-border);
+  border-radius: var(--glass-radius);
+  transition: all 0.3s ease;
+}
+
+.glass-card:hover,
+.glass-card:focus-visible {
+  border-color: var(--glass-elevated-border-hover);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37),
+              0 0 20px var(--accent-glow);
+  transform: translateY(var(--glass-elevated-lift));
+}
+
+/* Pill / tag glass — chips, badges, tech tags */
+.glass-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  background: var(--pill-bg);
+  -webkit-backdrop-filter: blur(var(--pill-blur));
+  backdrop-filter: blur(var(--pill-blur));
+  border: 1px solid var(--pill-border);
+  border-radius: 9999px;
+  color: var(--pill-text);
+  white-space: nowrap;
+}
+
+/* Accent ambient glow — decorative, non-interactive */
+.glass-glow {
+  background: radial-gradient(
+    circle at 50% 0%,
+    var(--accent-glow),
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   BUTTONS & CTAs
+   Single source of truth for every interactive control.
+   ═══════════════════════════════════════════════════════════ */
+
+/* Primary CTA — solid cyan */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #06b6d4;
+  color: #020617;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  padding: 14px 28px;
+  border-radius: 12px; /* rounded-xl */
+  border: 1px solid transparent;
+  box-shadow: 0 10px 15px -3px rgba(6, 182, 212, 0.25);
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: #22d3ee;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 15px -3px rgba(6, 182, 212, 0.4);
+}
+
+.btn-primary:focus-visible {
+  outline: 2px solid var(--accent-light);
+  outline-offset: 2px;
+}
+
+/* Secondary / glass CTA */
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--glass-elevated-bg);
+  -webkit-backdrop-filter: blur(var(--glass-elevated-blur));
+  backdrop-filter: blur(var(--glass-elevated-blur));
+  color: #22d3ee; /* cyan-300 */
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  padding: 14px 28px;
+  border-radius: 12px;
+  border: 1px solid var(--pill-border); /* border-cyan-500/30 */
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background: rgba(30, 41, 59, 0.80);
+  border-color: var(--glass-elevated-border-hover);
+  color: #67e8f9;
+  transform: translateY(-1px);
+}
+
+.btn-secondary:focus-visible {
+  outline: 2px solid var(--accent-light);
+  outline-offset: 2px;
+}
+
+/* Compact button modifier */
+.btn-sm {
+  padding: 10px 20px;
+  font-size: 11px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   GRADIENT HEADING TEXT
+   Unified section-title treatment: white → slate → cyan.
+   ═══════════════════════════════════════════════════════════ */
+.text-gradient {
+  background-image: linear-gradient(
+    to right,
+    #f8fafc,
+    #94a3b8,
+    #22d3ee
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 html {
@@ -246,11 +438,10 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .badge--accent {
-  color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 10%, transparent);
-  border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
-  box-shadow: 0 0 10px rgba(6, 182, 212, 0.15);
-  border-color: rgba(6, 182, 212, 0.4);
+  color: var(--text-accent);
+  background: var(--pill-bg);
+  border: 1px solid var(--pill-border);
+  box-shadow: 0 0 10px var(--accent-glow);
 }
 
 .badge--accent-secondary {
@@ -275,47 +466,6 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--text-muted);
   background: var(--surface-2);
   border: 1px solid var(--border-subtle);
-}
-
-/* ─── Card System ─── */
-
-.card {
-  background: rgba(15, 23, 42, 0.6);
-  backdrop-filter: blur(12px);
-  border: 1px solid #1e293b;
-  border-radius: 12px;
-  transition: all 0.3s ease;
-}
-
-.card:hover {
-  border-color: rgba(6, 182, 212, 0.5);
-  box-shadow: 0 0 24px rgba(6, 182, 212, 0.15);
-}
-
-/* ─── Interactive Glow — Buttons & Controls Only ─── */
-
-/* Primary CTA button */
-.glow-btn-primary {
-  background: #0284c7;
-  color: #ffffff;
-  box-shadow: 0 0 16px rgba(2, 132, 199, 0.4);
-  transition: box-shadow 0.2s ease, transform 0.15s ease;
-}
-
-.glow-btn-primary:hover {
-  box-shadow: 0 0 24px rgba(6, 182, 212, 0.65);
-  transform: translateY(-1px);
-}
-
-/* Ghost / Secondary button */
-.glow-btn-ghost {
-  border: 1px solid rgba(6, 182, 212, 0.4);
-  box-shadow: inset 0 0 10px rgba(6, 182, 212, 0.1);
-}
-
-.glow-btn-ghost:hover {
-  border-color: #38bdf8;
-  box-shadow: 0 0 16px rgba(6, 182, 212, 0.35);
 }
 
 /* ─── Glass Navbar ─── */
@@ -454,19 +604,33 @@ h1, h2, h3, h4, h5, h6 {
 
 /* ─── Floorplan interactive tooltips ─── */
 
+/* All tooltips live in a top-most floating layer (rendered last in SVG),
+   so they always paint over shapes instead of colliding underneath them. */
+.fp-tips {
+  pointer-events: none;
+}
+
 .fp-tip {
   opacity: 0;
-  pointer-events: none;
   transition: opacity 0.18s ease, transform 0.18s ease;
   transform-origin: 0% 0%;
 }
 
-.fp-block {
-  cursor: pointer;
+/* Reveal matching tooltip when its block is hovered — uses :has() so the
+   tooltip can float in a separate, higher layer than its target. */
+.floorplan-die:has(.fp-block--io:hover)   .fp-tip-io,
+.floorplan-die:has(.fp-block--pg:hover)   .fp-tip-pg,
+.floorplan-die:has(.fp-block--core:hover) .fp-tip-core,
+.floorplan-die:has(.fp-block--sram0:hover) .fp-tip-sram0,
+.floorplan-die:has(.fp-block--sram1:hover) .fp-tip-sram1,
+.floorplan-die:has(.fp-block--pll:hover)  .fp-tip-pll,
+.floorplan-die:has(.fp-block--alu:hover)  .fp-tip-alu,
+.floorplan-die:has(.fp-block--dsp:hover)  .fp-tip-dsp {
+  opacity: 1;
 }
 
-.fp-block:hover .fp-tip {
-  opacity: 1;
+.fp-block {
+  cursor: pointer;
 }
 
 .fp-shape,
@@ -690,142 +854,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   Section 01 — Stack Grid HUD
+   Section 01 — Competency HUD Cards (hover accents)
    ═══════════════════════════════════════════════════════════ */
-
-/* Outer grid container — PCB pattern carrier */
-.pd-stack-grid {
-  position: relative;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1px;
-  background: rgba(6, 182, 212, 0.08);
-  border: 1px solid rgba(6, 182, 212, 0.12);
-  border-radius: 12px;
-  overflow: hidden;
-  margin-bottom: clamp(24px, 4vw, 40px);
-}
-
-@media (min-width: 640px) {
-  .pd-stack-grid { grid-template-columns: repeat(2, 1fr); }
-}
-
-@media (min-width: 1024px) {
-  .pd-stack-grid { grid-template-columns: repeat(3, 1fr); }
-}
-
-/* Individual panel cell — dark glass + subtle PCB trace */
-.pd-stack-panel {
-  position: relative;
-  padding: clamp(16px, 2.5vw, 24px);
-  background: rgba(2, 6, 15, 0.70);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  min-width: 0;
-  overflow: hidden;
-}
-
-/* Category label with pulsing LED */
-.pd-stack-label {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  display: flex;
-  align-items: center;
-}
-
-/* Pulsing status LED dot */
-.pd-led {
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  margin-right: 8px;
-  flex-shrink: 0;
-  animation: pdLedPulse 2s ease-in-out infinite;
-}
-
-@keyframes pdLedPulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.35; }
-}
-
-/* Chip row */
-.pd-stack-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-/* Individual chip — micro-terminal badge */
-.pd-stack-chip {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 3px 10px;
-  border: 1px dashed;
-  border-radius: 2px;
-  white-space: nowrap;
-  cursor: default;
-  transition:
-    color 0.2s ease,
-    border-color 0.2s ease,
-    background 0.2s ease,
-    box-shadow 0.2s ease,
-    transform 0.2s ease;
-}
-
-.pd-stack-chip:hover {
-  transform: scale(1.03);
-}
-
-/* ═══════════════════════════════════════════════════════════
-   Section 01 — Competency HUD Cards
-   ═══════════════════════════════════════════════════════════ */
-
-.pd-comp-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 12px;
-}
-
-@media (min-width: 640px) {
-  .pd-comp-grid { grid-template-columns: repeat(2, 1fr); }
-}
-
-@media (min-width: 1024px) {
-  .pd-comp-grid { grid-template-columns: repeat(3, 1fr); }
-}
-
-/* Competency card — dark glass + 4-corner brackets */
-.pd-comp-card {
-  position: relative;
-  padding: clamp(16px, 2.5vw, 20px);
-  background: rgba(2, 6, 15, 0.65);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(6, 182, 212, 0.12);
-  border-radius: var(--radius);
-  overflow: hidden;
-  min-width: 0;
-  transition:
-    border-color 0.3s ease,
-    box-shadow 0.3s ease;
-}
-
-.pd-comp-card:hover {
-  border-color: rgba(6, 182, 212, 0.45);
-  box-shadow:
-    0 0 24px rgba(6, 182, 212, 0.08),
-    0 4px 24px rgba(0, 0, 0, 0.4);
-}
 
 /* Top gradient trace — hidden by default, slides in on hover */
 .pd-comp-glow {
@@ -887,50 +917,6 @@ h1, h2, h3, h4, h5, h6 {
 
 .pd-comp-card:hover .pd-comp-corner {
   border-color: #22D3EE;
-}
-
-/* Card content layout */
-.pd-comp-content {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  margin-bottom: 8px;
-}
-
-.pd-comp-title {
-  font-family: var(--font-mono);
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text);
-}
-
-/* Telemetry readout badge */
-.pd-comp-badge {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #22D3EE;
-  padding: 3px 10px;
-  border: 1px solid rgba(6, 182, 212, 0.3);
-  border-radius: 2px;
-  background: rgba(6, 182, 212, 0.08);
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-.pd-comp-desc {
-  position: relative;
-  z-index: 1;
-  font-family: var(--font-body);
-  font-size: 12px;
-  line-height: 1.5;
-  color: var(--text-muted);
-  margin: 0;
 }
 
 /* ─── Foundation Map Node ─── */

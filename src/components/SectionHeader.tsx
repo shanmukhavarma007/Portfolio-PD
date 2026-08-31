@@ -16,15 +16,15 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
   return (
     <div className={`w-full mb-8 sm:mb-12 ${className}`}>
       <div className="flex items-center gap-3 sm:gap-4 w-full">
-        {/* Numbered Index Badge */}
+        {/* Numbered Index Badge — normalized terminal tag */}
         {badge && (
-          <span className="inline-flex items-center shrink-0 px-2.5 py-1 rounded border border-cyan-500/30 bg-cyan-950/20 text-cyan-400 font-mono text-xs tracking-widest uppercase select-none">
+          <span className="glass-badge px-2.5 py-1 font-mono text-xs tracking-widest uppercase select-none">
             {badge}
           </span>
         )}
 
-        {/* Section Heading Title */}
-        <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold font-mono tracking-tight text-cyan-300 whitespace-nowrap">
+        {/* Section Heading Title — unified gradient */}
+        <h2 className="text-gradient text-xl sm:text-2xl lg:text-3xl font-bold font-mono tracking-tight whitespace-nowrap">
           {title}
         </h2>
 
@@ -33,7 +33,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
       </div>
 
       {subtitle && (
-        <p className="mt-2 text-xs sm:text-sm text-[var(--text-muted,#8b949e)] font-mono max-w-2xl">
+        <p className="mt-2 text-xs sm:text-sm text-slate-400 font-mono max-w-2xl">
           {subtitle}
         </p>
       )}

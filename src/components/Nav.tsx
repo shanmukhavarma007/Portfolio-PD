@@ -200,16 +200,13 @@ export function Nav() {
             <span style={{ width: "1px", height: "12px", background: "var(--border-subtle)" }} />
             <a
               href="#contact"
-              className="glow-btn-primary"
+              className="btn-primary btn-sm"
               style={{
                 fontFamily: "var(--font-mono)",
-                fontSize: "11px",
-                letterSpacing: "0.1em",
-                color: "#FFF",
+                letterSpacing: "0.08em",
                 padding: "6px 16px",
+                fontSize: "11px",
                 textDecoration: "none",
-                borderRadius: "4px",
-                transition: "box-shadow 0.2s ease, transform 0.15s ease",
               }}
             >
               GET IN TOUCH
@@ -414,16 +411,11 @@ export function Nav() {
             <a
               href="#contact"
               onClick={() => setMobileOpen(false)}
-              className="glow-btn-primary"
+              className="btn-primary w-full"
               style={{
                 fontFamily: "var(--font-mono)",
-                fontSize: "13px",
-                letterSpacing: "0.1em",
-                padding: "12px 24px",
+                letterSpacing: "0.08em",
                 textDecoration: "none",
-                display: "inline-block",
-                textAlign: "center",
-                borderRadius: "4px",
               }}
             >
               GET IN TOUCH

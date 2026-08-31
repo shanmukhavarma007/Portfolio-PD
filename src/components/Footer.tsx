@@ -8,21 +8,24 @@ export function Footer() {
   return (
     <footer
       ref={ref}
-      className="scroll-reveal section-container--tight"
-      style={{
-        borderTop: "1px solid var(--border-subtle)",
-      }}
+      className="scroll-reveal"
     >
       <div
+        className="glass-panel border-b-0 border-l-0 border-r-0 rounded-none"
         style={{
           maxWidth: "1400px",
           margin: "0 auto",
-          display: "flex",
-          flexDirection: "column",
-          gap: "16px",
+          padding: "clamp(24px, 4vw, 48px) clamp(16px, 4vw, 48px)",
         }}
-        className="md:!flex-row md:!items-center md:!justify-between"
       >
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "16px",
+          }}
+          className="md:!flex-row md:!items-center md:!justify-between"
+        >
         <div>
           <div
             style={{
@@ -137,6 +140,7 @@ export function Footer() {
           >
             &copy; 2026
           </span>
+        </div>
         </div>
       </div>
     </footer>

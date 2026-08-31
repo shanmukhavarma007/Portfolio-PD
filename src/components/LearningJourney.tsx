@@ -141,15 +141,15 @@ export function LearningJourney() {
   > = {
     mastered: {
       label: "MASTERED",
-      chipClass: "border-emerald-500/50 bg-emerald-500/10 text-emerald-400",
+      chipClass: "border-emerald-400/40 bg-emerald-500/10 text-emerald-400",
     },
     active: {
       label: "ACTIVE FOCUS",
-      chipClass: "border-amber-500/50 bg-amber-500/10 text-amber-400",
+      chipClass: "border-amber-400/40 bg-amber-500/10 text-amber-400",
     },
     queued: {
       label: "QUEUED",
-      chipClass: "border-slate-700 bg-slate-800/60 text-slate-400",
+      chipClass: "border-white/10 bg-slate-800/60 text-slate-400",
     },
   };
 
@@ -159,7 +159,6 @@ export function LearningJourney() {
       ref={ref}
       className="scroll-reveal section-container section-glow section-divider-top section-divider-bottom"
       style={{
-        background: "var(--surface-1)",
         position: "relative",
         overflow: "hidden",
       }}
@@ -169,13 +168,13 @@ export function LearningJourney() {
 
         {/* Section title */}
         <h2
+          className="text-gradient"
           style={{
             fontFamily: "var(--font-display)",
             fontSize: "clamp(24px, 4vw, 40px)",
             fontWeight: 700,
             lineHeight: 1.15,
             letterSpacing: "-0.01em",
-            color: "var(--text)",
             margin: "0 0 8px 0",
           }}
         >
@@ -216,7 +215,7 @@ export function LearningJourney() {
                     </div>
 
                   <div
-                    className={`card cursor-pointer p-5 min-h-[44px] ${
+                    className={`glass-card cursor-pointer p-5 min-h-[44px] ${
                       stage.status === "queued" ? "opacity-80" : ""
                     }`}
                     onClick={() =>
@@ -228,14 +227,14 @@ export function LearningJourney() {
                       <span
                         className={`font-mono text-[10px] tracking-[0.15em] ${
                           stage.status === "queued"
-                            ? "text-slate-500"
+                            ? "text-slate-400"
                             : "text-cyan-400"
                         }`}
                       >
                         {`${stage.stageNumber} // ${stage.padId}`}
                       </span>
                       <span
-                        className={`shrink-0 rounded-md border px-2 py-0.5 font-mono text-[9px] tracking-widest ${meta.chipClass}`}
+                        className={`shrink-0 rounded-lg border px-2 py-0.5 font-mono text-[9px] tracking-widest ${meta.chipClass}`}
                       >
                         {meta.label}
                       </span>
@@ -249,13 +248,13 @@ export function LearningJourney() {
                     </p>
 
                     {stage.prerequisite && (
-                      <div className="mb-2 font-mono text-[9px] tracking-wider text-slate-500">
+                      <div className="mb-2 font-mono text-[9px] tracking-wider text-slate-400">
                         PREREQUISITE: {stage.prerequisite}
                       </div>
                     )}
 
                     {stage.artifacts && (
-                      <div className="mb-3 font-mono text-[9px] tracking-wider text-slate-500">
+                      <div className="mb-3 font-mono text-[9px] tracking-wider text-slate-400">
                         ARTIFACTS: {stage.artifacts.join(", ")}
                       </div>
                     )}
@@ -265,7 +264,7 @@ export function LearningJourney() {
                       {stage.tags.map((tag) => (
                         <span
                           key={tag}
-                          className="rounded-md border border-slate-700 bg-slate-800 px-2 py-0.5 font-mono text-xs text-slate-200"
+                          className="glass-badge font-mono text-xs"
                         >
                           {tag}
                         </span>
@@ -274,7 +273,7 @@ export function LearningJourney() {
 
                     {(isExpanded || stage.links) && stage.links && (
                       <div
-                        className="mt-4 flex flex-wrap gap-2 border-t border-slate-800 pt-3"
+                        className="mt-4 flex flex-wrap gap-2 border-t border-white/10 pt-3"
                         onClick={(e) => e.stopPropagation()}
                       >
                         {stage.links.map((link) => (
@@ -289,7 +288,7 @@ export function LearningJourney() {
                                 ? "noopener noreferrer"
                                 : undefined
                             }
-                            className="rounded-md border border-cyan-500/40 bg-cyan-500/10 px-2.5 py-1 font-mono text-[10px] tracking-wider text-cyan-300 transition-colors duration-200 hover:border-cyan-400/70 hover:bg-cyan-500/20"
+                            className="glass-card rounded-lg px-2.5 py-1 font-mono text-[10px] tracking-wider text-cyan-300 transition-colors duration-200 hover:text-cyan-200"
                           >
                             {link.label} ↗
                           </a>
@@ -299,7 +298,7 @@ export function LearningJourney() {
 
                     {/* Expand indicator */}
                     <span
-                      className="absolute bottom-4 right-4 font-mono text-[10px] text-slate-500 transition-transform duration-200"
+                      className="absolute bottom-4 right-4 font-mono text-[10px] text-slate-400 transition-transform duration-200"
                       style={{
                         transform: isExpanded
                           ? "rotate(180deg)"

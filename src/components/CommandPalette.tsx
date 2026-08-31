@@ -204,7 +204,7 @@ export function CommandPalette() {
             type="button"
             onClick={() => setOpen(false)}
             aria-label="Close command palette"
-            className="ml-auto font-mono text-xs text-slate-500 hover:text-slate-200"
+            className="ml-auto font-mono text-xs text-slate-400 hover:text-slate-200"
             style={{ cursor: "pointer" }}
           >
             [ESC]
@@ -273,7 +273,7 @@ export function CommandPalette() {
                   }
                 }
               }}
-              className="w-full bg-transparent font-mono text-[12px] text-slate-100 caret-cyan-400 outline-none placeholder:text-slate-600"
+              className="w-full bg-transparent font-mono text-[12px] text-slate-100 caret-cyan-400 outline-none placeholder:text-slate-400"
               placeholder='type "help" for commands…'
               autoComplete="off"
               autoCapitalize="off"

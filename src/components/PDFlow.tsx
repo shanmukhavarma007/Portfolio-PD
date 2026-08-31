@@ -190,7 +190,7 @@ export function PDFlow() {
                     >
                       {stage.label}
                     </span>
-                    <span className="block truncate font-mono text-[9px] tracking-wider text-slate-500">
+                    <span className="block truncate font-mono text-[9px] tracking-wider text-slate-400">
                       STAGE_{stage.stageNum}
                     </span>
                   </span>
@@ -275,7 +275,7 @@ export function PDFlow() {
 
               {/* Timing / verification metrics */}
               <div className="mb-5">
-                <div className="mb-2 font-mono text-[9px] tracking-[0.2em] text-slate-500">
+                <div className="mb-2 font-mono text-[9px] tracking-[0.2em] text-slate-400">
                   {"// METRICS"}
                 </div>
                 <div className="flex flex-wrap gap-2">
@@ -292,7 +292,7 @@ export function PDFlow() {
 
               {/* Concepts */}
               <div className="mb-5">
-                <div className="mb-2 font-mono text-[9px] tracking-[0.2em] text-slate-500">
+                <div className="mb-2 font-mono text-[9px] tracking-[0.2em] text-slate-400">
                   {"// CONCEPTS"}
                 </div>
                 <div className="flex flex-wrap gap-2">
@@ -306,7 +306,7 @@ export function PDFlow() {
 
               {/* Tool commands */}
               <div>
-                <div className="mb-2 font-mono text-[9px] tracking-[0.2em] text-slate-500">
+                <div className="mb-2 font-mono text-[9px] tracking-[0.2em] text-slate-400">
                   {"// TOOL COMMANDS"}
                 </div>
                 <div className="overflow-hidden rounded-lg border border-slate-800 bg-slate-950/80">
@@ -315,7 +315,7 @@ export function PDFlow() {
                       key={i}
                       className="flex items-start gap-3 border-b border-slate-800/70 px-3 py-2 last:border-b-0"
                     >
-                      <span className="select-none font-mono text-[10px] leading-relaxed text-slate-600">
+                      <span className="select-none font-mono text-[10px] leading-relaxed text-slate-400">
                         {i + 1}
                       </span>
                       <span className="font-mono text-[11px] leading-relaxed text-cyan-300">
@@ -367,7 +367,7 @@ export function PDFlow() {
                       >
                         {stage.label}
                       </span>
-                      <span className="block font-mono text-[9px] tracking-wider text-slate-500">
+                      <span className="block font-mono text-[9px] tracking-wider text-slate-400">
                         STAGE_{stage.stageNum}
                       </span>
                     </span>
@@ -392,7 +392,7 @@ export function PDFlow() {
                     </p>
 
                     <div className="mb-4">
-                      <div className="mb-2 font-mono text-[9px] tracking-[0.2em] text-slate-500">
+                      <div className="mb-2 font-mono text-[9px] tracking-[0.2em] text-slate-400">
                         {"// METRICS"}
                       </div>
                       <div className="flex flex-wrap gap-1.5">
@@ -408,7 +408,7 @@ export function PDFlow() {
                     </div>
 
                     <div className="mb-4">
-                      <div className="mb-2 font-mono text-[9px] tracking-[0.2em] text-slate-500">
+                      <div className="mb-2 font-mono text-[9px] tracking-[0.2em] text-slate-400">
                         {"// TOOL COMMANDS"}
                       </div>
                       <div className="space-y-1.5">

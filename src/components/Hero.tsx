@@ -70,7 +70,7 @@ export function Hero() {
           {/* Top badge pills */}
           <div className="flex flex-wrap items-center gap-3 mb-6">
             {/* Role / Status Badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-cyan-500/30 bg-cyan-950/20 text-cyan-400 font-mono text-xs tracking-wider backdrop-blur-sm shadow-[0_0_12px_rgba(6,182,212,0.15)]">
+            <div className="glass-badge font-mono text-xs tracking-wider shadow-[0_0_12px_rgba(6,182,212,0.15)]">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
@@ -132,25 +132,14 @@ export function Hero() {
               lineHeight: 1.6,
             }}
           >
-            Aspiring ASIC Physical Design Engineer focused on RTL-to-GDSII flow implementation, Static Timing Analysis (STA), and Tcl-driven EDA workflow automation. Dedicated to achieving optimal PPA metrics across modern digital design constraints.
+            Synthesizing clean architecture into optimal PPA—driving RTL-to-GDSII closure with deterministic precision.
           </p>
 
           {/* CTAs */}
           <div className="flex flex-wrap gap-3">
             <a
               href="#contact"
-              className="btn-hover-lift glow-btn-primary min-h-[44px] flex items-center justify-center"
-              style={{
-                fontFamily: "var(--font-mono)",
-                fontSize: "12px",
-                letterSpacing: "0.08em",
-                padding: "14px 28px",
-                color: "#FFF",
-                textDecoration: "none",
-                display: "inline-block",
-                textAlign: "center",
-                borderRadius: "8px",
-              }}
+              className="btn-primary btn-hover-lift min-h-[44px]"
             >
               GET IN TOUCH
             </a>
@@ -158,19 +147,7 @@ export function Hero() {
               href="https://github.com/shanmukhavarma007/tcl-scripts"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-hover-lift glow-btn-ghost min-h-[44px] flex items-center justify-center"
-              style={{
-                fontFamily: "var(--font-mono)",
-                fontSize: "12px",
-                letterSpacing: "0.08em",
-                padding: "14px 28px",
-                color: "var(--text-secondary)",
-                textDecoration: "none",
-                display: "inline-block",
-                textAlign: "center",
-                borderRadius: "8px",
-                background: "transparent",
-              }}
+              className="btn-secondary btn-hover-lift min-h-[44px]"
             >
               VIEW TCL SCRIPTS ↗
             </a>

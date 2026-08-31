@@ -65,7 +65,7 @@ function SkillCard({ label, status, dots, context, link }: SkillItem) {
 
   return (
     <div
-      className="card"
+      className="glass-card"
       style={{
         position: "relative",
         padding: "clamp(16px, 2.5vw, 24px)",
@@ -169,13 +169,13 @@ export function TechnicalMatrix() {
 
         {/* Section header */}
         <h2
+          className="text-gradient"
           style={{
             fontFamily: "var(--font-display)",
             fontSize: "clamp(24px, 4vw, 40px)",
             fontWeight: 600,
             lineHeight: 1.15,
             letterSpacing: "-0.01em",
-            color: "var(--text)",
             margin: "0 0 4px 0",
           }}
         >

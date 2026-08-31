@@ -186,7 +186,7 @@ export function CurrentlyBuilding() {
             return (
               <div
                 key={item.label}
-                className="card cursor-glow-card"
+                className="glass-card cursor-glow-card"
                 style={cardStyle}
                 onMouseMove={handleCardMouseMove}
               >
