@@ -59,6 +59,7 @@ const STATUS_STYLES: Record<string, { color: string; badgeVariant: string }> = {
   INTERMEDIATE: { color: "var(--accent-secondary)", badgeVariant: "accent-secondary" },
   FAMILIAR: { color: "var(--warning)", badgeVariant: "warning" },
   EXPLORING: { color: "var(--text-muted)", badgeVariant: "muted" },
+  "SYN HANDOFF": { color: "var(--accent)", badgeVariant: "accent" },
 };
 
 function SkillCard({ label, status, dots, context, link }: SkillItem) {
