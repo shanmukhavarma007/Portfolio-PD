@@ -20,6 +20,9 @@ const NAV_ITEMS = [
   { num: "09", label: "CONNECT", href: "#contact" },
 ];
 
+// Desktop nav items (excludes CONNECT which is handled by the GET IN TOUCH CTA)
+const DESKTOP_NAV_ITEMS = NAV_ITEMS.slice(0, 8);
+
 /** Stable identity so the section observer is built exactly once. */
 const SECTION_IDS = NAV_ITEMS.map((item) => item.href.slice(1));
 
@@ -154,10 +157,10 @@ export function Nav() {
   return (
     <>
       <header className={`glass-nav ${scrolled ? "scrolled" : ""}`}>
-        <div className="mx-auto flex h-full max-w-7xl items-center justify-between gap-2 px-4 sm:px-6 lg:px-8">
-          {/* Left: brand */}
+        <div className="mx-auto grid h-16 w-full max-w-[1600px] grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-10 px-4 sm:px-6 lg:px-8">
+          {/* Column 1: logo */}
           <div
-            className="shrink-0"
+            className="shrink-0 whitespace-nowrap"
             style={{
               fontFamily: "var(--font-display)",
               fontSize: "14px",
@@ -171,117 +174,40 @@ export function Nav() {
             </span>
           </div>
 
-          {/* Center: numbered nav (desktop only) */}
+          {/* Column 2: nav links (desktop only) — centered in its column, never overlaps */}
           <nav
             aria-label="Primary"
-            className="hidden items-center gap-2.5 xl:flex 2xl:gap-5"
+            className="hidden xl:block min-w-0"
           >
-            {NAV_ITEMS.map((item) => {
-              const isActive = activeId === item.href.slice(1);
-              return (
-                <a
-                  key={item.num}
-                  href={item.href}
-                  onClick={() => onNavClick(item.href)}
-                  aria-current={isActive ? "location" : undefined}
-                  className={`nav-link ${
-                    isActive ? "is-active" : ""
-                  } flex items-center gap-1.5 whitespace-nowrap py-2 transition-colors`}
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: "11px",
-                    letterSpacing: "0.08em",
-                    textDecoration: "none",
-                  }}
-                >
-                  <span
-                    style={{ color: "var(--accent)", fontSize: "9px" }}
-                    aria-hidden="true"
-                  >
-                    {item.num}
-                  </span>
-                  {item.label}
-                </a>
-              );
-            })}
+            <ul className="mx-auto flex w-max max-w-full items-center justify-center gap-x-1 2xl:gap-x-2">
+              {DESKTOP_NAV_ITEMS.map((item) => {
+                const isActive = activeId === item.href.slice(1);
+                return (
+                  <li key={item.num}>
+                    <a
+                      href={item.href}
+                      onClick={() => onNavClick(item.href)}
+                      aria-current={isActive ? "location" : undefined}
+                      className={`nav-pill ${isActive ? "is-active" : ""} inline-flex h-9 items-center rounded-full border border-transparent px-3 font-mono text-[13px] uppercase tracking-wider whitespace-nowrap transition-all duration-200`}
+                    >
+                      {item.label}
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
           </nav>
 
-          {/* Right: VLSI Hub + social + CTA (desktop only) */}
-          <div className="hidden shrink-0 items-center gap-4 xl:flex">
-            <a
-              href="https://vlsi-hub-iota.vercel.app/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 whitespace-nowrap rounded py-1.5 px-3 transition-shadow"
-              style={{
-                fontFamily: "var(--font-mono)",
-                fontSize: "11px",
-                letterSpacing: "0.08em",
-                color: "var(--accent)",
-                textDecoration: "none",
-                border: "1px solid color-mix(in srgb, var(--accent) 40%, transparent)",
-                background: "color-mix(in srgb, var(--accent) 8%, transparent)",
-                boxShadow: "0 0 10px color-mix(in srgb, var(--accent) 25%, transparent)",
-              }}
-            >
-              <span
-                className="status-dot-pulse shrink-0 rounded-full"
-                aria-hidden="true"
-                style={{
-                  width: "6px",
-                  height: "6px",
-                  background: "var(--success)",
-                  color: "var(--success)",
-                }}
-              />
-              VLSI HUB ↗<span className="sr-only"> (opens in a new tab)</span>
-            </a>
-
-            {/* GitHub / LinkedIn shortcuts — only where there is room */}
-            <a
-              href="https://github.com/shanmukhavarma007"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="GitHub profile (opens in a new tab)"
-              className="hidden py-2 text-slate-500 transition-colors hover:text-slate-100 2xl:inline-flex"
-              style={{
-                fontFamily: "var(--font-mono)",
-                fontSize: "11px",
-                letterSpacing: "0.08em",
-                textDecoration: "none",
-              }}
-            >
-              GH
-            </a>
-            <a
-              href="https://www.linkedin.com/in/shanmukhavarma-penmetsa/"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="LinkedIn profile (opens in a new tab)"
-              className="hidden py-2 text-slate-500 transition-colors hover:text-slate-100 2xl:inline-flex"
-              style={{
-                fontFamily: "var(--font-mono)",
-                fontSize: "11px",
-                letterSpacing: "0.08em",
-                textDecoration: "none",
-              }}
-            >
-              LI
-            </a>
-            <span
-              aria-hidden="true"
-              className="hidden 2xl:block"
-              style={{ width: "1px", height: "12px", background: "var(--border-subtle)" }}
-            />
+          {/* Column 3: GET IN TOUCH (only filled button) */}
+          <div className="flex shrink-0 items-center">
             <a
               href="#contact"
               onClick={() => onNavClick("#contact")}
-              className="btn-primary whitespace-nowrap"
+              className="btn-primary whitespace-nowrap h-9 px-5"
               style={{
                 fontFamily: "var(--font-mono)",
+                fontSize: "13px",
                 letterSpacing: "0.08em",
-                padding: "6px 16px",
-                fontSize: "11px",
                 textDecoration: "none",
               }}
             >
@@ -370,38 +296,6 @@ export function Nav() {
             className="mt-6 flex flex-col gap-4 pt-6"
             style={{ borderTop: "1px solid var(--border-subtle)" }}
           >
-            <a
-              href="https://vlsi-hub-iota.vercel.app/"
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => setMobileOpen(false)}
-              className="site-nav-link inline-flex min-h-[48px] items-center gap-2 self-start rounded px-4 py-2.5"
-              style={
-                {
-                  "--nav-i": 6,
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "13px",
-                  letterSpacing: "0.08em",
-                  color: "var(--accent)",
-                  textDecoration: "none",
-                  border: "1px solid color-mix(in srgb, var(--accent) 40%, transparent)",
-                  background: "color-mix(in srgb, var(--accent) 8%, transparent)",
-                  boxShadow: "0 0 12px color-mix(in srgb, var(--accent) 30%, transparent)",
-                } as React.CSSProperties
-              }
-            >
-              <span
-                className="status-dot-pulse shrink-0 rounded-full"
-                aria-hidden="true"
-                style={{
-                  width: "6px",
-                  height: "6px",
-                  background: "var(--success)",
-                  color: "var(--success)",
-                }}
-              />
-              VLSI HUB ↗<span className="sr-only"> (opens in a new tab)</span>
-            </a>
             <div className="flex flex-wrap gap-x-6 gap-y-2">
               <a
                 href="https://github.com/shanmukhavarma007"
@@ -411,7 +305,7 @@ export function Nav() {
                 className="site-nav-link inline-flex min-h-[44px] items-center text-slate-300"
                 style={
                   {
-                    "--nav-i": 7,
+                    "--nav-i": 6,
                     fontFamily: "var(--font-mono)",
                     fontSize: "13px",
                     letterSpacing: "0.08em",
@@ -429,7 +323,7 @@ export function Nav() {
                 className="site-nav-link inline-flex min-h-[44px] items-center text-slate-300"
                 style={
                   {
-                    "--nav-i": 8,
+                    "--nav-i": 7,
                     fontFamily: "var(--font-mono)",
                     fontSize: "13px",
                     letterSpacing: "0.08em",
@@ -446,7 +340,7 @@ export function Nav() {
               className="site-nav-link btn-primary min-h-[48px] w-full"
               style={
                 {
-                  "--nav-i": 9,
+                  "--nav-i": 8,
                   fontFamily: "var(--font-mono)",
                   letterSpacing: "0.08em",
                   textDecoration: "none",

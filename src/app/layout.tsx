@@ -109,13 +109,13 @@ export default function RootLayout({
       className={`${inter.variable} ${jetbrainsMono.variable}`}
       suppressHydrationWarning
     >
-      <head>
+      <head />
+      <body>
+        {/* JSON-LD moved to body to avoid browser-extension DOM injection in <head> */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-      </head>
-      <body>
         <a href="#main" className="skip-link">
           Skip to main content
         </a>

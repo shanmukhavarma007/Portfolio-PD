@@ -67,6 +67,7 @@ type Project = {
   footerAction?: { label: string; href: string };
   metrics?: Metric[];
   snapshots?: Snapshot[];
+  status?: string; // e.g., "SYN HANDOFF" — renders a status badge in the header
 };
 
 const PROJECTS: Project[] = [
@@ -172,6 +173,45 @@ const PROJECTS: Project[] = [
         alt: "Genus module view of the synthesized AES cipher top netlist: green schematic with a diagonal band of highlighted cells, and the design browser listing terms, nets, standard cells and modules",
         caption: "Genus module view of the synthesized AES core netlist",
         fileName: "aes_core_netlist_view",
+        tabLabel: "NETLIST VIEW",
+      },
+    ],
+  },
+  {
+    num: "04",
+    title: "RTL Half Cycles — Logic Synthesis & QoR Analysis",
+    category: "ASIC PD // LOGIC SYNTHESIS",
+    categoryClass: "text-cyan-400",
+    description:
+      "Logic synthesis of a multi-clock RTL design (rtl_halfcycle_crosspaths) with Genus, constrained across four clocks. The post-synthesis QoR report and netlist view document the state of the design at synthesis handoff.",
+    tags: ["GENUS", "SDC", "MULTI-CLOCK", "QOR ANALYSIS"],
+    liveUrl: null,
+    status: "SYN HANDOFF",
+    metrics: [
+      { label: "CLOCK PERIOD (CLK)", value: "1.000" },
+      { label: "WNS", value: "-0.100", tone: "warning" },
+      { label: "TNS", value: "-8.164", tone: "warning" },
+      { label: "VIOLATING PATHS", value: "92", tone: "warning" },
+      { label: "LEAF INSTANCES", value: "804" },
+      { label: "CELL AREA", value: "1,360.170" },
+    ],
+    snapshots: [
+      {
+        src: "/projects/rtl-half-cycles/01-synthesis-qor.png",
+        width: 958,
+        height: 894,
+        alt: "Genus post-synthesis QoR report for rtl_halfcycle_crosspaths listing four clocks, timing by cost group with negative slack on the i2r and r2o groups, instance counts and cell area",
+        caption: "Post-synthesis QoR summary: clocks, timing by cost group, instance count, area",
+        fileName: "rtl_half_cycles_qor_summary",
+        tabLabel: "QoR REPORT",
+      },
+      {
+        src: "/projects/rtl-half-cycles/02-netlist.jpeg",
+        width: 960,
+        height: 793,
+        alt: "Genus schematic view of the synthesized rtl_halfcycle_crosspaths netlist: green nets and cell connections on a black background",
+        caption: "Genus schematic view of the synthesized rtl_halfcycle_crosspaths netlist",
+        fileName: "rtl_half_cycles_netlist_view",
         tabLabel: "NETLIST VIEW",
       },
     ],
@@ -612,6 +652,21 @@ function ProjectCard({ project }: { project: Project }) {
             >
               {project.category}
             </span>
+            {project.status && (
+              <span
+                className="inline-flex shrink-0 items-center gap-1.5 rounded-md border border-slate-700 bg-slate-800 px-2 py-0.5 font-mono text-xs text-slate-200"
+                aria-label={`Status: ${project.status}`}
+              >
+                <span
+                  className="h-1.5 w-1.5 rounded-full"
+                  style={{
+                    background: "var(--accent)",
+                    boxShadow: "0 0 6px var(--accent)",
+                  }}
+                />
+                {project.status}
+              </span>
+            )}
           </div>
 
           <h3
