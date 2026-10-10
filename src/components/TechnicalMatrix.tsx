@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState, type KeyboardEvent } from "react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { SectionHeader } from "./SectionHeader";
 
@@ -35,7 +35,7 @@ const SKILLS: Record<string, SkillItem[]> = {
   ],
   eda: [
     { label: "Cadence Innovus", status: "TRAINING", dots: 4, context: "Place & Route implementation" },
-    { label: "Cadence Genus", status: "TRAINING", dots: 4, context: "Logic Synthesis" },
+    { label: "Cadence Genus", status: "COMPLETED", dots: 4, context: "Logic Synthesis" },
     { label: "OpenLane", status: "EXPLORING", dots: 2, context: "Open-source RTL-to-GDSII" },
   ],
   automation: [
@@ -44,7 +44,7 @@ const SKILLS: Record<string, SkillItem[]> = {
   ],
   pd: [
     { label: "Physical Design Flow", status: "ACTIVE TRAINING", dots: 4, context: "Floorplan \u2192 Signoff" },
-    { label: "Static Timing Analysis", status: "ACTIVE TRAINING", dots: 4, context: "Setup, Hold, Slack analysis" },
+    { label: "Static Timing Analysis", status: "COMPLETED", dots: 4, context: "Setup, Hold, Slack analysis" },
     { label: "Power Analysis", status: "USUALLY USE", dots: 3, context: "Power grid, IR drop basics" },
     { label: "Low-Power Design", status: "FAMILIAR", dots: 2, context: "Power domains, Isolation" },
   ],
@@ -52,6 +52,7 @@ const SKILLS: Record<string, SkillItem[]> = {
 
 const STATUS_STYLES: Record<string, { color: string; badgeVariant: string }> = {
   STRONG: { color: "var(--success)", badgeVariant: "success" },
+  COMPLETED: { color: "var(--success)", badgeVariant: "success" },
   "ACTIVE TRAINING": { color: "var(--accent)", badgeVariant: "accent" },
   TRAINING: { color: "var(--accent)", badgeVariant: "accent" },
   "USUALLY USE": { color: "var(--accent-secondary)", badgeVariant: "accent-secondary" },
@@ -158,54 +159,64 @@ export function TechnicalMatrix() {
 
   const currentSkills = SKILLS[activeTab] || [];
 
+  // Keep the active tab visible in the mobile scroll strip.
+  useEffect(() => {
+    const el = document.getElementById(`mat-tab-${activeTab}`);
+    if (!el) return;
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    el.scrollIntoView({
+      behavior: reduceMotion ? "auto" : "smooth",
+      inline: "center",
+      block: "nearest",
+    });
+  }, [activeTab]);
+
+  const onTabKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    const keys = ["ArrowRight", "ArrowLeft", "Home", "End"];
+    if (!keys.includes(e.key)) return;
+    e.preventDefault();
+    const idx = TABS.findIndex((t) => t.id === activeTab);
+    let next = idx;
+    if (e.key === "ArrowRight") next = (idx + 1) % TABS.length;
+    if (e.key === "ArrowLeft") next = (idx - 1 + TABS.length) % TABS.length;
+    if (e.key === "Home") next = 0;
+    if (e.key === "End") next = TABS.length - 1;
+    const id = TABS[next].id;
+    setActiveTab(id);
+    document.getElementById(`mat-tab-${id}`)?.focus();
+  };
+
   return (
     <section
       id="matrix"
       ref={ref}
       className="scroll-reveal section-container section-glow"
     >
-      <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
+      <div className="section-inner">
         <SectionHeader badge="03 // MATRIX" title="Technical Matrix" />
 
-        {/* Section header */}
-        <h2
-          className="text-gradient"
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "clamp(24px, 4vw, 40px)",
-            fontWeight: 600,
-            lineHeight: 1.15,
-            letterSpacing: "-0.01em",
-            margin: "0 0 4px 0",
-          }}
-        >
-          Tech & Skills
-        </h2>
-        <p
-          style={{
-            fontFamily: "var(--font-body)",
-            fontSize: "clamp(13px, 2.5vw, 15px)",
-            color: "var(--text-secondary)",
-            margin: "0 0 clamp(16px, 3vw, 24px) 0",
-          }}
-        >
+        <p className="text-pretty max-w-prose text-[var(--text-secondary)] leading-relaxed mb-8 text-base sm:text-lg">
           Programming, core EDA domain knowledge, and physical design expertise
         </p>
 
-        {/* Tab navigation */}
+        {/* Tab navigation — horizontally scrollable one-line tab strip on mobile */}
         <div
-          style={{
-            display: "flex",
-            gap: "8px",
-            marginBottom: "clamp(16px, 3vw, 24px)",
-            flexWrap: "wrap",
-          }}
+          className="scroll-reveal-child tab-strip gap-2 -mx-4 px-4 pb-2"
+          role="tablist"
+          aria-label="Skill categories"
+          onKeyDown={onTabKeyDown}
         >
           {TABS.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`badge min-h-[44px] ${activeTab === tab.id ? "badge--accent" : "badge--muted"}`}
+              role="tab"
+              aria-selected={activeTab === tab.id}
+              aria-controls={`panel-${tab.id}`}
+              id={`mat-tab-${tab.id}`}
+              className={`badge min-h-[44px] shrink-0 whitespace-nowrap ${activeTab === tab.id ? "badge--accent" : "badge--muted"}`}
               style={{
                 cursor: "pointer",
                 transition: "all 0.2s ease",
@@ -217,8 +228,8 @@ export function TechnicalMatrix() {
           ))}
         </div>
 
-        {/* Bento grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+        {/* Bento grid — 1 col mobile, 2 at md, 3 at lg */}
+        <div className="scroll-reveal-child grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5 items-stretch" role="tabpanel" id={`panel-${activeTab}`} aria-labelledby={`tab-${activeTab}`}>
           {currentSkills.map((skill) => (
             <SkillCard key={skill.label} {...skill} />
           ))}

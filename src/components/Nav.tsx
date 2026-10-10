@@ -1,177 +1,254 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
+import { useActiveSection } from "@/hooks/useActiveSection";
+import {
+  focusSectionHeading,
+  pulseSectionHeading,
+  revealSection,
+} from "@/lib/sectionMotion";
 
 const NAV_ITEMS = [
-  { num: "01", label: "PROJECTS", href: "#projects" },
-  { num: "02", label: "STACK", href: "#stack" },
-  { num: "03", label: "PIPELINE", href: "#pipeline" },
-  { num: "04", label: "ACTIVITY", href: "#activity" },
-  { num: "05", label: "JOURNEY", href: "#journey" },
+  { num: "01", label: "STACK", href: "#stack" },
+  { num: "02", label: "FLOW", href: "#flow" },
+  { num: "03", label: "MATRIX", href: "#matrix" },
+  { num: "04", label: "PROJECTS", href: "#projects" },
+  { num: "05", label: "BUILDING", href: "#building" },
+  { num: "06", label: "PIPELINE", href: "#pipeline" },
+  { num: "07", label: "ACTIVITY", href: "#activity" },
+  { num: "08", label: "JOURNEY", href: "#journey" },
+  { num: "09", label: "CONNECT", href: "#contact" },
 ];
 
-const MD_BREAKPOINT = 768;
+/** Stable identity so the section observer is built exactly once. */
+const SECTION_IDS = NAV_ITEMS.map((item) => item.href.slice(1));
+
+/** How long observer updates are locked after a nav click (ms). */
+const SCROLL_LOCK_MS = 600;
 
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [isDesktop, setIsDesktop] = useState(true);
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const pendingFocusRef = useRef<string | null>(null);
 
-  useEffect(() => {
-    const check = () => setIsDesktop(window.innerWidth >= MD_BREAKPOINT);
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
-  }, []);
+  const { activeId, setActive, lock } = useActiveSection(SECTION_IDS);
 
+  /* ── Header surface: transparent over the hero, glass once scrolled ── */
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
+    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  /* ── Initial hash load: re-align after fonts/images settle so the target
+        isn't pushed away by late layout (item 1). ── */
   useEffect(() => {
-    if (mobileOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
+    const id = window.location.hash.replace(/^#/, "");
+    if (!id || !document.getElementById(id)) return;
+    let cancelled = false;
+
+    const align = () => {
+      if (cancelled) return;
+      revealSection(id);
+      document.getElementById(id)?.scrollIntoView({ block: "start" });
+      setActive(id);
+    };
+
+    align();
+    document.fonts?.ready.then(align).catch(() => undefined);
+    window.addEventListener("load", align, { once: true });
+
+    return () => {
+      cancelled = true;
+      window.removeEventListener("load", align);
+    };
+  }, [setActive]);
+
+  /* ── Nav link click: update highlight immediately, reveal target, pulse,
+        move focus. We do NOT preventDefault — the browser owns hash +
+        native smooth scroll (and back/forward keeps working). ── */
+  const onNavClick = useCallback(
+    (href: string) => {
+      const id = href.replace(/^#/, "");
+      if (!document.getElementById(id)) return;
+
+      setMobileOpen(false);
+      setActive(id);          // highlight now, don't wait for the observer
+      lock(SCROLL_LOCK_MS);   // ...and hold the observer while we travel
+      revealSection(id);      // never land on an empty-looking section
+      // Keyboard/screen-reader focus follows the jump, but without scrolling.
+      pendingFocusRef.current = id;
+      focusSectionHeading(id);
+      // The glow lands once the (smooth) scroll has settled; clearing the
+      // pending ref here also guarantees the menu close-effect sees it.
+      window.setTimeout(() => {
+        pulseSectionHeading(id);
+        pendingFocusRef.current = null;
+      }, 700);
+    },
+    [setActive, lock]
+  );
+
+  /* ── Close the menu when the route/hash changes (link was followed). ── */
+  useEffect(() => {
+    const close = () => setMobileOpen(false);
+    window.addEventListener("hashchange", close);
+    window.addEventListener("popstate", close);
+    return () => {
+      window.removeEventListener("hashchange", close);
+      window.removeEventListener("popstate", close);
+    };
+  }, []);
+
+  /* ── Body scroll lock + focus management while the menu is open. ── */
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const previouslyFocused = document.activeElement as HTMLElement | null;
+    const trigger = triggerRef.current;
+    document.body.style.overflow = "hidden";
+    const focusTimer = window.setTimeout(() => {
+      overlayRef.current
+        ?.querySelector<HTMLElement>('a[href], button')
+        ?.focus();
+    }, 0);
+
+    return () => {
       document.body.style.overflow = "";
-    }
-    return () => { document.body.style.overflow = ""; };
+      window.clearTimeout(focusTimer);
+      // When a section link was clicked we hand focus to the heading instead.
+      if (pendingFocusRef.current) return;
+      (previouslyFocused ?? trigger)?.focus?.();
+    };
+  }, [mobileOpen]);
+
+  /* ── Esc to close + trap Tab focus inside the menu. ── */
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setMobileOpen(false);
+        return;
+      }
+      if (e.key !== "Tab") return;
+      const focusable = overlayRef.current?.querySelectorAll<HTMLElement>(
+        'a[href], button, [tabindex]:not([tabindex="-1"])'
+      );
+      if (!focusable || focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
   }, [mobileOpen]);
 
   return (
     <>
-      <nav
-        className={`glass-nav ${scrolled ? "scrolled" : ""}`}
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          padding: "0 clamp(16px, 4vw, 48px)",
-        }}
-      >
-        {/* Left: brand */}
-        <div
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "14px",
-            letterSpacing: "0.08em",
-            textTransform: "uppercase",
-            color: "var(--text)",
-            display: "flex",
-            alignItems: "center",
-            gap: "8px",
-            flexShrink: 0,
-          }}
-        >
-          <span style={{ color: "var(--accent)", fontWeight: 600 }}>SHANMUKHA VARMA</span>
-        </div>
-
-        {/* Center: numbered nav (desktop only) */}
-        {isDesktop && (
+      <header className={`glass-nav ${scrolled ? "scrolled" : ""}`}>
+        <div className="mx-auto flex h-full max-w-7xl items-center justify-between gap-2 px-4 sm:px-6 lg:px-8">
+          {/* Left: brand */}
           <div
+            className="shrink-0"
             style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "28px",
+              fontFamily: "var(--font-display)",
+              fontSize: "14px",
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
+              color: "var(--text)",
             }}
           >
-            {NAV_ITEMS.map((item) => (
-              <a
-                key={item.num}
-                href={item.href}
-                className="nav-link"
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "11px",
-                  letterSpacing: "0.08em",
-                  color: "var(--text-secondary)",
-                  textDecoration: "none",
-                  transition: "color 0.2s ease",
-                  display: "flex",
-                  alignItems: "baseline",
-                  gap: "6px",
-                }}
-                onMouseEnter={(e) => {
-                  (e.target as HTMLElement).style.color = "var(--text)";
-                }}
-                onMouseLeave={(e) => {
-                  (e.target as HTMLElement).style.color = "var(--text-secondary)";
-                }}
-              >
-                <span style={{ color: "var(--accent)", fontSize: "9px" }}>
-                  {item.num}
-                </span>
-                {item.label}
-              </a>
-            ))}
+            <span style={{ color: "var(--accent)", fontWeight: 600 }}>
+              SHANMUKHA VARMA
+            </span>
           </div>
-        )}
 
-        {/* Right: VLSI Hub + theme + social + CTA */}
-        {isDesktop && (
-          <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+          {/* Center: numbered nav (desktop only) */}
+          <nav
+            aria-label="Primary"
+            className="hidden items-center gap-2.5 xl:flex 2xl:gap-5"
+          >
+            {NAV_ITEMS.map((item) => {
+              const isActive = activeId === item.href.slice(1);
+              return (
+                <a
+                  key={item.num}
+                  href={item.href}
+                  onClick={() => onNavClick(item.href)}
+                  aria-current={isActive ? "location" : undefined}
+                  className={`nav-link ${
+                    isActive ? "is-active" : ""
+                  } flex items-center gap-1.5 whitespace-nowrap py-2 transition-colors`}
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "11px",
+                    letterSpacing: "0.08em",
+                    textDecoration: "none",
+                  }}
+                >
+                  <span
+                    style={{ color: "var(--accent)", fontSize: "9px" }}
+                    aria-hidden="true"
+                  >
+                    {item.num}
+                  </span>
+                  {item.label}
+                </a>
+              );
+            })}
+          </nav>
+
+          {/* Right: VLSI Hub + social + CTA (desktop only) */}
+          <div className="hidden shrink-0 items-center gap-4 xl:flex">
             <a
               href="https://vlsi-hub-iota.vercel.app/"
               target="_blank"
               rel="noopener noreferrer"
-              className="nav-link"
+              className="inline-flex items-center gap-1.5 whitespace-nowrap rounded py-1.5 px-3 transition-shadow"
               style={{
                 fontFamily: "var(--font-mono)",
                 fontSize: "11px",
                 letterSpacing: "0.08em",
                 color: "var(--accent)",
                 textDecoration: "none",
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "6px",
-                padding: "5px 12px",
-                borderRadius: "4px",
                 border: "1px solid color-mix(in srgb, var(--accent) 40%, transparent)",
                 background: "color-mix(in srgb, var(--accent) 8%, transparent)",
                 boxShadow: "0 0 10px color-mix(in srgb, var(--accent) 25%, transparent)",
-                transition: "box-shadow 0.2s ease, color 0.2s ease",
-                whiteSpace: "nowrap",
-              }}
-              onMouseEnter={(e) => {
-                const el = e.currentTarget as HTMLElement;
-                el.style.boxShadow = "0 0 16px color-mix(in srgb, var(--accent) 45%, transparent)";
-              }}
-              onMouseLeave={(e) => {
-                const el = e.currentTarget as HTMLElement;
-                el.style.boxShadow = "0 0 10px color-mix(in srgb, var(--accent) 25%, transparent)";
               }}
             >
               <span
-                className="status-dot-pulse"
+                className="status-dot-pulse shrink-0 rounded-full"
+                aria-hidden="true"
                 style={{
                   width: "6px",
                   height: "6px",
-                  borderRadius: "50%",
                   background: "var(--success)",
                   color: "var(--success)",
-                  flexShrink: 0,
                 }}
               />
-              VLSI HUB ↗
+              VLSI HUB ↗<span className="sr-only"> (opens in a new tab)</span>
             </a>
+
+            {/* GitHub / LinkedIn shortcuts — only where there is room */}
             <a
               href="https://github.com/shanmukhavarma007"
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="GitHub profile (opens in a new tab)"
+              className="hidden py-2 text-slate-500 transition-colors hover:text-slate-100 2xl:inline-flex"
               style={{
                 fontFamily: "var(--font-mono)",
                 fontSize: "11px",
                 letterSpacing: "0.08em",
-                color: "var(--text-muted)",
                 textDecoration: "none",
-                transition: "color 0.2s ease",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.color = "var(--text)";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.color = "var(--text-muted)";
               }}
             >
               GH
@@ -180,27 +257,26 @@ export function Nav() {
               href="https://www.linkedin.com/in/shanmukhavarma-penmetsa/"
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="LinkedIn profile (opens in a new tab)"
+              className="hidden py-2 text-slate-500 transition-colors hover:text-slate-100 2xl:inline-flex"
               style={{
                 fontFamily: "var(--font-mono)",
                 fontSize: "11px",
                 letterSpacing: "0.08em",
-                color: "var(--text-muted)",
                 textDecoration: "none",
-                transition: "color 0.2s ease",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.color = "var(--text)";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.color = "var(--text-muted)";
               }}
             >
               LI
             </a>
-            <span style={{ width: "1px", height: "12px", background: "var(--border-subtle)" }} />
+            <span
+              aria-hidden="true"
+              className="hidden 2xl:block"
+              style={{ width: "1px", height: "12px", background: "var(--border-subtle)" }}
+            />
             <a
               href="#contact"
-              className="btn-primary btn-sm"
+              onClick={() => onNavClick("#contact")}
+              className="btn-primary whitespace-nowrap"
               style={{
                 fontFamily: "var(--font-mono)",
                 letterSpacing: "0.08em",
@@ -212,217 +288,176 @@ export function Nav() {
               GET IN TOUCH
             </a>
           </div>
-        )}
 
-        {/* Mobile menu button */}
-        {!isDesktop && (
+          {/* Hamburger (below xl) — morphs to an X */}
           <button
+            ref={triggerRef}
             type="button"
-            className="site-nav-hamburger min-h-[44px] min-w-[44px]"
-            onClick={() => setMobileOpen(!mobileOpen)}
+            className={`site-nav-hamburger -mr-2 flex h-11 w-11 flex-col items-center justify-center gap-1 xl:hidden ${
+              mobileOpen ? "is-open" : ""
+            }`}
+            onClick={() => setMobileOpen((open) => !open)}
             aria-label={mobileOpen ? "Close navigation menu" : "Open navigation menu"}
-            style={{
-              background: "none",
-              border: "none",
-              padding: "8px",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              flexDirection: "column",
-              gap: "4px",
-              width: "44px",
-              height: "44px",
-            }}
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-nav-menu"
           >
-            <span
-              style={{
-                display: "block",
-                width: "100%",
-                height: "1px",
-                background: "var(--text)",
-                transition: "all 0.3s ease",
-                transform: mobileOpen
-                  ? "rotate(45deg) translateY(5px)"
-                  : "none",
-              }}
-            />
-            <span
-              style={{
-                display: "block",
-                width: mobileOpen ? "0%" : "60%",
-                height: "1px",
-                background: "var(--text)",
-                transition: "all 0.3s ease",
-                marginLeft: "auto",
-              }}
-            />
-            <span
-              style={{
-                display: "block",
-                width: "100%",
-                height: "1px",
-                background: "var(--text)",
-                transition: "all 0.3s ease",
-                transform: mobileOpen
-                  ? "rotate(-45deg) translateY(-5px)"
-                  : "none",
-              }}
-            />
+            <span className="site-nav-hamburger-bar bar-1" />
+            <span className="site-nav-hamburger-bar bar-2" />
+            <span className="site-nav-hamburger-bar bar-3" />
           </button>
-        )}
-      </nav>
+        </div>
 
-      {/* Mobile overlay */}
-      {mobileOpen && (
-        <div
-          className="site-nav-overlay"
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            padding: "80px 32px",
-            gap: "32px",
-          }}
+        {/* Slim scroll-progress bar under the header (CSS scroll-driven) */}
+        <div className="scroll-progress" aria-hidden="true" />
+      </header>
+
+      {/* Mobile overlay menu — stays mounted so it can animate in AND out.
+          `inert` + aria-hidden keep it unreachable while closed. */}
+      <div
+        id="mobile-nav-menu"
+        ref={overlayRef}
+        className={`site-nav-overlay ${mobileOpen ? "is-open" : ""}`}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Navigation menu"
+        aria-hidden={!mobileOpen}
+        inert={!mobileOpen}
+        onClick={(e) => {
+          if (e.target === e.currentTarget) setMobileOpen(false);
+        }}
+      >
+        <div className="site-nav-panel safe-area-top flex min-h-full flex-col justify-center gap-1 px-8 py-24"
+          style={{ paddingBottom: "calc(3rem + env(safe-area-inset-bottom, 0px))" }}
         >
-          <button
-            type="button"
-            className="site-nav-close"
-            onClick={() => setMobileOpen(false)}
-            aria-label="Close navigation menu"
-            style={{
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              padding: "8px",
-              color: "var(--text)",
-              fontSize: "24px",
-              lineHeight: 1,
-            }}
-          >
-            &times;
-          </button>
+          <nav aria-label="Mobile" className="flex flex-col">
+            {NAV_ITEMS.map((item, index) => {
+              const isActive = activeId === item.href.slice(1);
+              return (
+                <a
+                  key={item.num}
+                  href={item.href}
+                  onClick={() => onNavClick(item.href)}
+                  aria-current={isActive ? "location" : undefined}
+                  className="site-nav-link flex min-h-[52px] items-center gap-4 py-1 transition-colors"
+                  style={
+                    {
+                      "--nav-i": String(Math.min(index, 6)),
+                      fontFamily: "var(--font-display)",
+                      fontSize: "26px",
+                      fontWeight: 500,
+                      color: isActive ? "var(--accent)" : "var(--text-secondary)",
+                      textDecoration: "none",
+                    } as React.CSSProperties
+                  }
+                >
+                  <span
+                    aria-hidden="true"
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "12px",
+                      color: isActive ? "var(--accent)" : "var(--text-muted)",
+                    }}
+                  >
+                    {item.num}
+                  </span>
+                  {item.label}
+                </a>
+              );
+            })}
+          </nav>
 
-          {NAV_ITEMS.map((item) => (
-            <a
-              key={item.num}
-              href={item.href}
-              onClick={() => setMobileOpen(false)}
-              style={{
-                fontFamily: "var(--font-display)",
-                fontSize: "28px",
-                fontWeight: 500,
-                color: "var(--text-secondary)",
-                textDecoration: "none",
-                display: "flex",
-                alignItems: "baseline",
-                gap: "16px",
-                transition: "color 0.2s ease",
-              }}
-            >
-              <span
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "12px",
-                  color: "var(--text-muted)",
-                }}
-              >
-                {item.num}
-              </span>
-              {item.label}
-            </a>
-          ))}
           <div
-            style={{
-              borderTop: "1px solid var(--border-subtle)",
-              paddingTop: "24px",
-              marginTop: "16px",
-              display: "flex",
-              flexDirection: "column",
-              gap: "16px",
-            }}
+            className="mt-6 flex flex-col gap-4 pt-6"
+            style={{ borderTop: "1px solid var(--border-subtle)" }}
           >
             <a
               href="https://vlsi-hub-iota.vercel.app/"
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setMobileOpen(false)}
-              style={{
-                fontFamily: "var(--font-mono)",
-                fontSize: "13px",
-                letterSpacing: "0.08em",
-                color: "var(--accent)",
-                textDecoration: "none",
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "8px",
-                padding: "10px 18px",
-                borderRadius: "4px",
-                border: "1px solid color-mix(in srgb, var(--accent) 40%, transparent)",
-                background: "color-mix(in srgb, var(--accent) 8%, transparent)",
-                boxShadow: "0 0 12px color-mix(in srgb, var(--accent) 30%, transparent)",
-              }}
+              className="site-nav-link inline-flex min-h-[48px] items-center gap-2 self-start rounded px-4 py-2.5"
+              style={
+                {
+                  "--nav-i": 6,
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "13px",
+                  letterSpacing: "0.08em",
+                  color: "var(--accent)",
+                  textDecoration: "none",
+                  border: "1px solid color-mix(in srgb, var(--accent) 40%, transparent)",
+                  background: "color-mix(in srgb, var(--accent) 8%, transparent)",
+                  boxShadow: "0 0 12px color-mix(in srgb, var(--accent) 30%, transparent)",
+                } as React.CSSProperties
+              }
             >
               <span
-                className="status-dot-pulse"
+                className="status-dot-pulse shrink-0 rounded-full"
+                aria-hidden="true"
                 style={{
                   width: "6px",
                   height: "6px",
-                  borderRadius: "50%",
                   background: "var(--success)",
                   color: "var(--success)",
-                  flexShrink: 0,
                 }}
               />
-              VLSI HUB ↗
+              VLSI HUB ↗<span className="sr-only"> (opens in a new tab)</span>
             </a>
-            <div style={{ display: "flex", gap: "24px" }}>
+            <div className="flex flex-wrap gap-x-6 gap-y-2">
               <a
                 href="https://github.com/shanmukhavarma007"
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setMobileOpen(false)}
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "12px",
-                  letterSpacing: "0.08em",
-                  color: "var(--text-secondary)",
-                  textDecoration: "none",
-                }}
+                className="site-nav-link inline-flex min-h-[44px] items-center text-slate-300"
+                style={
+                  {
+                    "--nav-i": 7,
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "13px",
+                    letterSpacing: "0.08em",
+                    textDecoration: "none",
+                  } as React.CSSProperties
+                }
               >
-                GitHub
+                GitHub ↗
               </a>
               <a
                 href="https://www.linkedin.com/in/shanmukhavarma-penmetsa/"
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setMobileOpen(false)}
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "12px",
-                  letterSpacing: "0.08em",
-                  color: "var(--text-secondary)",
-                  textDecoration: "none",
-                }}
+                className="site-nav-link inline-flex min-h-[44px] items-center text-slate-300"
+                style={
+                  {
+                    "--nav-i": 8,
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "13px",
+                    letterSpacing: "0.08em",
+                    textDecoration: "none",
+                  } as React.CSSProperties
+                }
               >
-                LinkedIn
+                LinkedIn ↗
               </a>
             </div>
             <a
               href="#contact"
-              onClick={() => setMobileOpen(false)}
-              className="btn-primary w-full"
-              style={{
-                fontFamily: "var(--font-mono)",
-                letterSpacing: "0.08em",
-                textDecoration: "none",
-              }}
+              onClick={() => onNavClick("#contact")}
+              className="site-nav-link btn-primary min-h-[48px] w-full"
+              style={
+                {
+                  "--nav-i": 9,
+                  fontFamily: "var(--font-mono)",
+                  letterSpacing: "0.08em",
+                  textDecoration: "none",
+                } as React.CSSProperties
+              }
             >
               GET IN TOUCH
             </a>
           </div>
         </div>
-      )}
+      </div>
     </>
   );
 }

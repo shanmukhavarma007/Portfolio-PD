@@ -6,16 +6,8 @@ import { HeroWaveform } from "./HeroWaveform";
 export function Hero() {
   return (
     <section
-      className="relative overflow-hidden"
-      style={{
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        padding: "0 clamp(16px, 4vw, 48px)",
-        paddingTop: "72px",
-        paddingBottom: "clamp(24px, 4vw, 48px)",
-      }}
+      id="hero"
+      className="scroll-reveal section-glow relative flex min-h-dvh flex-col justify-start overflow-hidden pt-[calc(72px+env(safe-area-inset-top,0px))] pb-8 lg:justify-center lg:pb-12"
     >
       {/* Background grid */}
       <div
@@ -50,28 +42,28 @@ export function Hero() {
         }}
       />
 
-      <div
-        className="flex flex-col-reverse lg:grid lg:grid-cols-[7fr_5fr] items-center gap-8 lg:gap-12 max-w-[1400px] mx-auto w-full relative z-10"
-      >
+      <div className="section-inner flex flex-col-reverse lg:grid lg:grid-cols-[7fr_5fr] items-center gap-8 lg:gap-12 w-full relative z-10">
         {/* ASIC floorplan visualization */}
-        <div
-          className="flex justify-center w-full"
-          style={{
-            position: "relative",
-            aspectRatio: "540 / 380",
-            maxHeight: "min(420px, 55vh)",
-          }}
-        >
-          <FloorplanVisual />
+        <div className="flex justify-center w-full lg:order-2" aria-hidden="true">
+          <div
+            style={{
+              position: "relative",
+              aspectRatio: "540 / 380",
+              maxHeight: "min(420px, 55vh)",
+              width: "100%",
+            }}
+          >
+            <FloorplanVisual />
+          </div>
         </div>
 
         {/* Hero text content */}
-        <div className="max-w-[680px] flex flex-col justify-center w-full">
+        <div className="max-w-[680px] flex flex-col justify-center w-full lg:order-1">
           {/* Top badge pills */}
           <div className="flex flex-wrap items-center gap-3 mb-6">
             {/* Role / Status Badge */}
-            <div className="glass-badge font-mono text-xs tracking-wider shadow-[0_0_12px_rgba(6,182,212,0.15)]">
-              <span className="relative flex h-2 w-2">
+            <div className="glass-badge glass-badge--wrap font-mono text-xs tracking-wider shadow-[0_0_12px_rgba(6,182,212,0.15)]">
+              <span className="relative flex h-2 w-2 shrink-0">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
               </span>
@@ -83,7 +75,7 @@ export function Hero() {
               href="https://vlsi-hub-iota.vercel.app/"
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-emerald-950/30 hover:bg-emerald-900/40 border border-emerald-500/30 hover:border-emerald-400/60 shadow-[0_0_15px_rgba(16,185,129,0.1)] hover:shadow-[0_0_20px_rgba(16,185,129,0.25)] transition-all duration-300 w-fit max-w-full"
+              className="group relative inline-flex flex-wrap items-center gap-2.5 px-3 py-1.5 rounded-full bg-emerald-950/30 hover:bg-emerald-900/40 border border-emerald-500/30 hover:border-emerald-400/60 shadow-[0_0_15px_rgba(16,185,129,0.1)] hover:shadow-[0_0_20px_rgba(16,185,129,0.25)] transition-all duration-300 w-fit max-w-full"
             >
               {/* Hardware Status Pill Tag */}
               <span className="shrink-0 flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-400/30 text-[10px] sm:text-[11px] font-mono font-semibold tracking-wider text-emerald-300 uppercase">
@@ -92,7 +84,7 @@ export function Hero() {
               </span>
 
               {/* Main Callout Text */}
-              <span className="font-mono text-xs sm:text-sm text-emerald-200 group-hover:text-white transition-colors truncate">
+              <span className="font-mono text-xs sm:text-sm leading-snug text-emerald-200 group-hover:text-white transition-colors min-w-0">
                 <span className="font-bold text-emerald-400">VLSI HUB</span>
                 <span className="text-emerald-500/70 mx-1.5">{"//"}</span>
                 Interactive CMOS, Digital & Tcl Labs
@@ -107,7 +99,7 @@ export function Hero() {
 
           {/* Name */}
           <h1
-            className="text-2xl sm:text-4xl lg:text-5xl font-semibold leading-[1.05] tracking-tight"
+            className="text-2xl sm:text-4xl lg:text-5xl font-semibold leading-[1.05] tracking-tight text-balance"
             style={{
               fontFamily: "var(--font-display)",
               color: "var(--text)",
@@ -123,23 +115,15 @@ export function Hero() {
           </h1>
 
           {/* Bio */}
-          <p
-            className="text-base sm:text-lg leading-relaxed max-w-[520px]"
-            style={{
-              fontFamily: "var(--font-body)",
-              color: "var(--text-secondary)",
-              margin: "0 0 clamp(24px, 4vw, 40px) 0",
-              lineHeight: 1.6,
-            }}
-          >
+          <p className="text-base sm:text-lg leading-relaxed max-w-[520px] text-pretty text-[var(--text-secondary)] mb-8">
             Synthesizing clean architecture into optimal PPA—driving RTL-to-GDSII closure with deterministic precision.
           </p>
 
           {/* CTAs */}
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
             <a
               href="#contact"
-              className="btn-primary btn-hover-lift min-h-[44px]"
+              className="btn-primary btn-hover-lift min-h-[48px] w-full sm:w-auto text-center"
             >
               GET IN TOUCH
             </a>
@@ -147,7 +131,7 @@ export function Hero() {
               href="https://github.com/shanmukhavarma007/tcl-scripts"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-secondary btn-hover-lift min-h-[44px]"
+              className="btn-secondary btn-hover-lift min-h-[48px] w-full sm:w-auto text-center"
             >
               VIEW TCL SCRIPTS ↗
             </a>

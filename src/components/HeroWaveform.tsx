@@ -18,6 +18,13 @@ export function HeroWaveform() {
     if (!ctx) return;
 
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    // Pause on low-power / data-saver devices: draw one static frame only.
+    const conn = (
+      navigator as Navigator & {
+        connection?: { saveData?: boolean };
+      }
+    ).connection;
+    const staticMode = reduce || Boolean(conn?.saveData);
 
     let raf = 0;
     let width = 0;
@@ -45,10 +52,10 @@ export function HeroWaveform() {
 
     let t = 0;
     const draw = () => {
-      if (reduce) {
+      if (staticMode) {
         t = 120;
       }
-      t += reduce ? 0 : 1;
+      t += staticMode ? 0 : 1;
       ctx.clearRect(0, 0, width, height);
 
       for (const s of streams) {
@@ -66,14 +73,26 @@ export function HeroWaveform() {
         ctx.stroke();
       }
 
-      if (reduce) return;
+      // Stop when reduced-motion/data-saver, or while the tab is hidden.
+      if (staticMode || document.hidden) return;
       raf = requestAnimationFrame(draw);
     };
     draw();
 
+    const onVisibility = () => {
+      if (document.hidden) {
+        cancelAnimationFrame(raf);
+      } else if (!staticMode) {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(draw);
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+
     return () => {
       cancelAnimationFrame(raf);
       ro.disconnect();
+      document.removeEventListener("visibilitychange", onVisibility);
     };
   }, []);
 

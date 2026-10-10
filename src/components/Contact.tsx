@@ -30,12 +30,12 @@ export function Contact() {
       ref={ref}
       className="scroll-reveal section-container"
     >
-      <div style={{ maxWidth: "1400px", margin: "0 auto", position: "relative" }}>
+      <div className="section-inner relative">
         <SectionHeader badge="09 // CONNECT" title="Let's Connect" />
 
         {/* Centered conversion card */}
         <div
-          className="glass-panel"
+          className="scroll-reveal-child glass-panel"
           style={{
             maxWidth: "640px",
             margin: "0 auto",
@@ -43,7 +43,7 @@ export function Contact() {
             textAlign: "center",
           }}
         >
-          <h2
+          <p
             className="font-bold leading-tight tracking-tight text-white"
             style={{
               fontFamily: "var(--font-display)",
@@ -52,7 +52,7 @@ export function Contact() {
             }}
           >
             Let&apos;s build together
-          </h2>
+          </p>
           <p
             className="text-slate-300"
             style={{
@@ -89,7 +89,9 @@ export function Contact() {
             <a
               href="/resume.pdf"
               download="Shanmukha_Varma_Resume.pdf"
-              aria-label="Download Shanmukha Varma resume PDF"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Download Shanmukha Varma resume PDF (opens in a new tab)"
               className="btn-primary w-full min-h-[48px] px-6 py-3.5"
             >
               DOWNLOAD RESUME ↓

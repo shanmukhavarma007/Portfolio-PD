@@ -55,7 +55,7 @@ function FpTip({
   return (
     <g className={`fp-tip ${className}`} transform={`translate(${x} ${y})`} pointerEvents="none">
       <rect x="-78" y="0" width="156" height={18 + lines.length * 13} rx="4" fill="#071527" stroke="#06b6d4" strokeOpacity="0.55" strokeWidth="0.75" />
-      <text x="-68" y="13" fontFamily="var(--font-mono)" fontSize="8.5" fontWeight="700" letterSpacing="1" className="fill-cyan-400">
+      <text x="-68" y="13" fontFamily="var(--font-mono)" fontSize="8.5" fontWeight="700" letterSpacing="1" className="fp-micro-text fill-cyan-400">
         {title}
       </text>
       {lines.map((line, i) => (
@@ -65,7 +65,7 @@ function FpTip({
           y={27 + i * 13}
           fontFamily="var(--font-mono)"
           fontSize="8.5"
-          className="fill-slate-300"
+          className="fp-micro-text fill-slate-300"
         >
           {line}
         </text>
@@ -166,7 +166,7 @@ export function FloorplanVisual() {
       {/* Standard-cell core area */}
       <g className="fp-block fp-block--core">
         <rect x="40" y="112" width="460" height="90" rx="2" fill="transparent" className="fp-region" />
-        <text x="42" y="139" fontFamily="var(--font-mono)" fontSize="9" letterSpacing="1" className="fill-cyan-400" pointerEvents="none">
+        <text x="42" y="139" fontFamily="var(--font-mono)" fontSize="9" letterSpacing="1" className="fp-micro-text fill-cyan-400" pointerEvents="none">
           {"STD_CELL_CORE (UTIL: 68.4%)"}
         </text>
       </g>
@@ -180,7 +180,7 @@ export function FloorplanVisual() {
             <line key={`s0-${x}`} x1={x} y1="80" x2={x} y2="114" />
           ))}
         </g>
-        <text x="99" y="73" textAnchor="middle" fontFamily="var(--font-mono)" fontSize="9" fontWeight="700" letterSpacing="1" className="fill-cyan-400" pointerEvents="none">
+        <text x="99" y="73" textAnchor="middle" fontFamily="var(--font-mono)" fontSize="9" fontWeight="700" letterSpacing="1" className="fp-micro-text fill-cyan-400" pointerEvents="none">
           {"SRAM_0"}
         </text>
       </g>
@@ -193,7 +193,7 @@ export function FloorplanVisual() {
             <line key={`s1-${x}`} x1={x} y1="80" x2={x} y2="114" />
           ))}
         </g>
-        <text x="205" y="73" textAnchor="middle" fontFamily="var(--font-mono)" fontSize="9" fontWeight="700" letterSpacing="1" className="fill-cyan-400" pointerEvents="none">
+        <text x="205" y="73" textAnchor="middle" fontFamily="var(--font-mono)" fontSize="9" fontWeight="700" letterSpacing="1" className="fp-micro-text fill-cyan-400" pointerEvents="none">
           {"SRAM_1"}
         </text>
       </g>
@@ -213,7 +213,7 @@ export function FloorplanVisual() {
           className="fp-shape"
         />
         <rect x="407" y="47" width="82" height="58" rx="3" fill="#0b1329" className="stroke-cyan-500/40" />
-        <text x="448" y="79" textAnchor="middle" fontFamily="var(--font-mono)" fontSize="9" letterSpacing="1" className="fill-slate-300" pointerEvents="none">
+        <text x="448" y="79" textAnchor="middle" fontFamily="var(--font-mono)" fontSize="9" letterSpacing="1" className="fp-micro-text fill-slate-300" pointerEvents="none">
           {"PLL_TOP"}
         </text>
       </g>
@@ -225,7 +225,7 @@ export function FloorplanVisual() {
           <line x1="122" y1="245" x2="248" y2="245" />
           <line x1="122" y1="275" x2="248" y2="275" />
         </g>
-        <text x="185" y="269" textAnchor="middle" fontFamily="var(--font-mono)" fontSize="11" fontWeight="700" letterSpacing="1" className="fill-cyan-400" pointerEvents="none">
+        <text x="185" y="269" textAnchor="middle" fontFamily="var(--font-mono)" fontSize="11" fontWeight="700" letterSpacing="1" className="fp-micro-text fill-cyan-400" pointerEvents="none">
           {"ALU_CORE"}
         </text>
       </g>
@@ -235,7 +235,7 @@ export function FloorplanVisual() {
           <line x1="284" y1="245" x2="412" y2="245" />
           <line x1="284" y1="275" x2="412" y2="275" />
         </g>
-        <text x="348" y="269" textAnchor="middle" fontFamily="var(--font-mono)" fontSize="11" fontWeight="700" letterSpacing="1" className="fill-cyan-400" pointerEvents="none">
+        <text x="348" y="269" textAnchor="middle" fontFamily="var(--font-mono)" fontSize="11" fontWeight="700" letterSpacing="1" className="fp-micro-text fill-cyan-400" pointerEvents="none">
           {"DSP_ENGINE"}
         </text>
       </g>
@@ -277,7 +277,7 @@ export function FloorplanVisual() {
         fontFamily="var(--font-mono)"
         fontSize="10"
         letterSpacing="1"
-        className="fill-slate-400"
+        className="fp-micro-text fill-slate-400"
         pointerEvents="none"
       >
         {"DIE: 1.2mm x 0.9mm | TECH: 7nm FINFET | DRC: CLEAN"}
@@ -298,7 +298,7 @@ export function FloorplanVisual() {
         fontFamily="var(--font-mono)"
         fontSize="10"
         letterSpacing="0.5"
-        className="fill-cyan-400"
+        className="fp-micro-text fill-cyan-400"
         pointerEvents="none"
       >
         {"[FLOORPLAN // METRICS_OK]"}

@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Script from "next/script";
 import { SectionHeader } from "./SectionHeader";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const ELFSIGHT_APP_ID = "6319c12b-b5ad-4cb5-a073-1dfecd804068";
 const LINKEDIN_URL = "https://www.linkedin.com/in/shanmukhavarma-penmetsa/";
@@ -11,6 +12,7 @@ export function LinkedInFeed() {
   const [loaded, setLoaded] = useState(false);
   const [failed, setFailed] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const ref = useScrollReveal<HTMLElement>();
 
   useEffect(() => {
     timerRef.current = setTimeout(() => {
@@ -49,14 +51,15 @@ export function LinkedInFeed() {
   return (
     <section
       id="activity"
-      className="section-container section-glow section-divider-top section-divider-bottom"
+      ref={ref}
+      className="scroll-reveal section-container section-glow section-divider-top section-divider-bottom"
     >
       <Script
         src="https://elfsightcdn.com/platform.js"
         strategy="afterInteractive"
       />
 
-      <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
+      <div className="section-inner">
         {/* Header */}
         <div
           style={{
@@ -65,12 +68,12 @@ export function LinkedInFeed() {
             gap: "32px",
             marginBottom: "40px",
           }}
-          className="lg:!grid-cols-[1fr_auto]"
+          className="scroll-reveal-child lg:!grid-cols-[1fr_auto]"
         >
           <div>
             <SectionHeader badge="07 // ACTIVITY" title="Professional Activity" />
 
-            <h2
+            <p
               className="text-gradient"
               style={{
                 fontFamily: "var(--font-display)",
@@ -82,7 +85,7 @@ export function LinkedInFeed() {
               }}
             >
               LinkedIn / Latest
-            </h2>
+            </p>
 
             <p
               style={{
@@ -112,8 +115,10 @@ export function LinkedInFeed() {
           </div>
         </div>
 
-        {/* Elfsight widget container — themed wrapper + dark-mode fallback */}
-        <div className="glass-panel w-full max-w-full overflow-hidden p-4 sm:p-5">
+        {/* Elfsight widget container — themed wrapper + dark-mode fallback.
+          Min-height reserves space while the third-party widget hydrates
+          (kills layout shift). */}
+        <div className="scroll-reveal-child glass-panel w-full max-w-full min-h-[240px] overflow-hidden p-4 sm:p-5">
           {/* Loading state */}
           {!loaded && !failed && (
             <div
@@ -122,12 +127,24 @@ export function LinkedInFeed() {
                 textAlign: "center",
               }}
             >
+              {/* Skeleton bars */}
+              <div
+                aria-hidden="true"
+                className="mx-auto flex w-full max-w-md flex-col gap-3"
+                style={{ textAlign: "left" }}
+              >
+                <div className="h-3 w-3/4 animate-pulse rounded bg-slate-800" />
+                <div className="h-3 w-1/2 animate-pulse rounded bg-slate-800" />
+                <div className="h-3 w-full animate-pulse rounded bg-slate-800" />
+                <div className="h-3 w-2/3 animate-pulse rounded bg-slate-800" />
+              </div>
               <div
                 style={{
                   fontFamily: "var(--font-mono)",
                   fontSize: "11px",
                   letterSpacing: "0.08em",
                   color: "var(--text-muted)",
+                  marginTop: "16px",
                 }}
               >
                 Loading professional updates...
@@ -147,7 +164,7 @@ export function LinkedInFeed() {
               <div
                 style={{
                   fontFamily: "var(--font-mono)",
-                  fontSize: "10px",
+                  fontSize: "11px",
                   letterSpacing: "0.12em",
                   color: "var(--text-muted)",
                   marginBottom: "12px",
@@ -191,6 +208,30 @@ export function LinkedInFeed() {
             }}
           />
         </div>
+
+        {/* No-JS fallback: the third-party embed needs JavaScript, so offer a
+            direct link instead of a permanent loading state. */}
+        <noscript>
+          <div className="glass-panel" style={{ padding: "40px 24px", textAlign: "center" }}>
+            <p
+              style={{
+                fontFamily: "var(--font-body)",
+                fontSize: "14px",
+                color: "var(--text-secondary)",
+                margin: "0 0 20px 0",
+              }}
+            >
+              Enable JavaScript to see the live feed, or view the profile directly.
+            </p>
+            <a
+              href={LINKEDIN_URL}
+              className="btn-secondary btn-sm inline-block"
+              style={{ textDecoration: "none" }}
+            >
+              VIEW LINKEDIN ↗
+            </a>
+          </div>
+        </noscript>
       </div>
 
       {/* Dark-mode fallback CSS for the Elfsight embed */}

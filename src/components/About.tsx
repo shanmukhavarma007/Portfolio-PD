@@ -70,12 +70,13 @@ export function About() {
     <section
       id="journey"
       ref={ref}
-      className="scroll-reveal mx-auto max-w-6xl px-4 py-16 section-glow"
+      className="scroll-reveal section-container section-glow"
     >
+      <div className="section-inner">
       <SectionHeader badge="08 // JOURNEY" title="Engineering Journey" />
 
       {/* Narrative */}
-      <div className="mt-8 mb-12 max-w-3xl">
+      <div className="scroll-reveal-child mt-8 mb-12 max-w-3xl">
         <p className="text-base leading-relaxed text-slate-300 sm:text-lg">
           I&apos;m a VLSI Physical Design engineer driven by the challenge of translating abstract RTL into
           silicon-realizable layouts. My path started with digital electronics coursework and evolved
@@ -91,7 +92,7 @@ export function About() {
 
       <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
         {/* Left: Timeline */}
-        <div className="lg:col-span-5">
+        <div className="scroll-reveal-child lg:col-span-5">
           <h3 className="mb-6 font-mono text-xs font-semibold uppercase tracking-widest text-cyan-400">
             Journey So Far
           </h3>
@@ -118,7 +119,7 @@ export function About() {
         </div>
 
         {/* Right: Working Principles */}
-        <div className="lg:col-span-7">
+        <div className="scroll-reveal-child lg:col-span-7">
           <h3 className="mb-6 font-mono text-xs font-semibold uppercase tracking-widest text-cyan-400">
             Working Principles
           </h3>
@@ -153,6 +154,7 @@ export function About() {
             </div>
           </div>
         </div>
+      </div>
       </div>
     </section>
   );

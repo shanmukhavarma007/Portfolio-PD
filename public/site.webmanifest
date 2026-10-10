@@ -1,0 +1,11 @@
+{
+  "name": "Shanmukha Varma Penmetsa — VLSI Physical Design",
+  "short_name": "VLSI Portfolio",
+  "description": "VLSI Physical Design Engineer portfolio showcasing RTL-to-GDSII expertise, timing closure, and EDA automation.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#050811",
+  "theme_color": "#050811",
+  "orientation": "portrait-primary",
+  "icons": []
+}

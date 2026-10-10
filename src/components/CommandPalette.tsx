@@ -2,18 +2,26 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import {
+  focusSectionHeading,
+  pulseSectionHeading,
+  revealSection,
+} from "@/lib/sectionMotion";
 
 type LogLine = { kind: "in" | "out" | "ok" | "err"; text: string };
 
+// Anchor ids must match the on-page section ids exactly
+// (#hero #stack #flow #matrix #projects #building #pipeline #activity #journey #contact)
 const SECTIONS: { cmd: string; label: string; id: string | null }[] = [
   { cmd: "home", label: "Hero / Top", id: null },
+  { cmd: "stack", label: "Engineering Profile", id: "stack" },
+  { cmd: "flow", label: "Physical Design Flow", id: "flow" },
+  { cmd: "matrix", label: "Technical Matrix", id: "matrix" },
   { cmd: "projects", label: "Selected Work", id: "projects" },
-  { cmd: "stack", label: "Technical Matrix", id: "stack" },
-  { cmd: "pipeline", label: "Physical Design Flow", id: "pipeline" },
-  { cmd: "engineering", label: "Engineering Profile", id: "engineering" },
-  { cmd: "journey", label: "Learning Journey", id: "journey" },
+  { cmd: "building", label: "Currently Building", id: "building" },
+  { cmd: "pipeline", label: "ASIC PD Pipeline", id: "pipeline" },
   { cmd: "activity", label: "Professional Activity", id: "activity" },
-  { cmd: "about", label: "Engineering Journey & Approach", id: "about" },
+  { cmd: "journey", label: "Engineering Journey", id: "journey" },
   { cmd: "contact", label: "Get In Touch", id: "contact" },
 ];
 
@@ -52,7 +60,14 @@ function navToSection(id: string | null, label: string) {
   }
   const el = document.getElementById(id);
   if (el) {
+    // Land on a section that is already revealed, then pulse + focus it so
+    // the palette jump behaves exactly like a nav click.
+    revealSection(id);
     el.scrollIntoView({ behavior: smooth(), block: "start" });
+    window.setTimeout(() => {
+      pulseSectionHeading(id);
+      focusSectionHeading(id);
+    }, 40);
     return `navigated to: ${label}`;
   }
   return `target not found: #${id}`;
@@ -197,7 +212,7 @@ export function CommandPalette() {
           <span className="h-2.5 w-2.5 rounded-full bg-red-500/80" />
           <span className="h-2.5 w-2.5 rounded-full bg-yellow-400/80" />
           <span className="h-2.5 w-2.5 rounded-full bg-emerald-400/80" />
-          <span className="ml-3 font-mono text-[10px] uppercase tracking-[0.2em] text-slate-400">
+          <span className="ml-3 font-mono text-[11px] uppercase tracking-[0.2em] text-slate-400">
             {"pd_shell // command palette"}
           </span>
           <button
@@ -232,7 +247,7 @@ export function CommandPalette() {
               key={s}
               type="button"
               onClick={() => run(s)}
-              className="rounded border border-cyan-500/30 bg-cyan-500/10 px-2 py-0.5 font-mono text-[10px] text-cyan-300 hover:bg-cyan-500/20"
+              className="rounded border border-cyan-500/30 bg-cyan-500/10 px-2 py-0.5 font-mono text-[11px] text-cyan-300 hover:bg-cyan-500/20"
             >
               {s}
             </button>

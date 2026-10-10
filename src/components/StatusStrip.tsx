@@ -41,30 +41,28 @@ export function StatusStrip() {
       }}
     >
       <div
+        className="section-inner"
         style={{
-          maxWidth: "1400px",
-          margin: "0 auto",
           paddingTop: "clamp(14px, 2vw, 20px)",
           paddingBottom: "clamp(14px, 2vw, 20px)",
         }}
-        className="px-4 sm:px-6 lg:px-8"
       >
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {STATUS_METRICS.map((metric) => (
             <div
               key={metric.label}
-              className="glass-card flex min-h-[130px] flex-col items-center justify-center gap-1.5 px-4 py-4"
+              className="scroll-reveal-child glass-card flex min-h-[130px] flex-col items-center justify-center gap-1.5 px-4 py-4"
             >
               <span
-                className="font-mono text-xl font-bold tracking-wide sm:text-2xl"
+                className="font-mono text-xl font-bold tracking-wide sm:text-2xl text-center"
                 style={{ color: metric.color }}
               >
                 {metric.value}
               </span>
-              <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-slate-400 whitespace-normal text-center">
+              <span className="font-mono text-xs uppercase tracking-[0.18em] text-slate-400 whitespace-normal text-center">
                 {metric.label}
               </span>
-              <span className="font-mono text-[8px] uppercase tracking-[0.12em] text-slate-400 whitespace-normal text-center">
+              <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-slate-400 whitespace-normal text-center">
                 {metric.subtext}
               </span>
             </div>

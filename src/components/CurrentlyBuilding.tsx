@@ -54,16 +54,11 @@ export function CurrentlyBuilding() {
       ref={ref}
       className="scroll-reveal section-container section-glow"
     >
-      <div style={{ maxWidth: "1400px", margin: "0 auto", position: "relative" }}>
+      <div className="section-inner">
         <SectionHeader badge="05 // BUILDING" title="Currently Building" />
 
-        {/* Cards grid */}
-        <div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6"
-          style={{
-            gap: "12px",
-          }}
-        >
+        {/* Cards grid — 1 col mobile, 2 at md, 3 at lg, 4 at xl */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-5 items-stretch">
           {ITEMS.map((item) => {
             const cardStyle: React.CSSProperties = {
               padding: "clamp(16px, 2.5vw, 24px)",
@@ -147,7 +142,7 @@ export function CurrentlyBuilding() {
                 <div
                   style={{
                     fontFamily: "var(--font-body)",
-                    fontSize: "clamp(12px, 2.5vw, 14px)",
+                    fontSize: "clamp(13px, 2.5vw, 15px)",
                     color: "var(--text-muted)",
                     lineHeight: 1.5,
                   }}
@@ -186,7 +181,7 @@ export function CurrentlyBuilding() {
             return (
               <div
                 key={item.label}
-                className="glass-card cursor-glow-card"
+                className={`scroll-reveal-child glass-card cursor-glow-card h-full`}
                 style={cardStyle}
                 onMouseMove={handleCardMouseMove}
               >

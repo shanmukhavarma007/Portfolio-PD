@@ -14,7 +14,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
   className = "",
 }) => {
   return (
-    <div className={`w-full mb-8 sm:mb-12 ${className}`}>
+    <div className={`scroll-reveal-heading w-full mb-8 sm:mb-12 ${className}`}>
       <div className="flex items-center gap-3 sm:gap-4 w-full">
         {/* Numbered Index Badge — normalized terminal tag */}
         {badge && (
@@ -24,12 +24,15 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
         )}
 
         {/* Section Heading Title — unified gradient */}
-        <h2 className="text-gradient text-xl sm:text-2xl lg:text-3xl font-bold font-mono tracking-tight whitespace-nowrap">
+        <h2 className="min-w-0 text-balance text-gradient text-xl sm:text-2xl lg:text-3xl font-bold font-mono tracking-tight">
           {title}
         </h2>
 
         {/* Trailing EDA Line */}
-        <div className="flex-1 h-[1px] bg-gradient-to-r from-cyan-500/40 via-cyan-500/10 to-transparent self-center ml-2" />
+        <div
+          className="scroll-reveal-hairline flex-1 h-[1px] bg-gradient-to-r from-cyan-500/40 via-cyan-500/10 to-transparent self-center ml-2"
+          aria-hidden="true"
+        />
       </div>
 
       {subtitle && (

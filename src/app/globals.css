@@ -65,6 +65,21 @@
   --pill-border: rgba(6, 182, 212, 0.30);     /* cyan-500/30 */
   --pill-text: #22D3EE;                        /* cyan-300 */
   --pill-blur: 4px;                           /* backdrop-blur-sm */
+
+  /* ── Motion tokens ──
+     Single source of truth for section-navigation transitions.
+     All durations stay within 150–600ms; no springs, no bounces. */
+  --dur-fast: 150ms;
+  --dur-base: 250ms;
+  --dur-slow: 500ms;
+  --stagger: 60ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);     /* entrances */
+  --ease-entrance: cubic-bezier(0.22, 1, 0.36, 1);/* reveal / rise */
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);  /* hovers / state */
+
+  /* Sticky header height — shared by scroll padding, progress bar and
+     mobile-menu spacing so they can never drift apart. */
+  --header-h: calc(56px + env(safe-area-inset-top, 0px));
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -89,15 +104,23 @@
   backdrop-filter: blur(var(--glass-elevated-blur));
   border: 1px solid var(--glass-elevated-border);
   border-radius: var(--glass-radius);
-  transition: all 0.3s ease;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
 }
 
-.glass-card:hover,
+/* Hover lift only on real hover devices — never sticks on touch */
+@media (hover: hover) {
+  .glass-card:hover {
+    border-color: var(--glass-elevated-border-hover);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37),
+                0 0 20px var(--accent-glow);
+    transform: translateY(var(--glass-elevated-lift));
+  }
+}
+
 .glass-card:focus-visible {
   border-color: var(--glass-elevated-border-hover);
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37),
               0 0 20px var(--accent-glow);
-  transform: translateY(var(--glass-elevated-lift));
 }
 
 /* Pill / tag glass — chips, badges, tech tags */
@@ -152,10 +175,16 @@
   transition: all 0.3s ease;
 }
 
-.btn-primary:hover {
-  background: #22d3ee;
-  transform: translateY(-1px);
-  box-shadow: 0 10px 15px -3px rgba(6, 182, 212, 0.4);
+@media (hover: hover) {
+  .btn-primary:hover {
+    background: #22d3ee;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 15px -3px rgba(6, 182, 212, 0.4);
+  }
+}
+
+.btn-primary:active {
+  transform: translateY(0);
 }
 
 .btn-primary:focus-visible {
@@ -186,11 +215,17 @@
   transition: all 0.3s ease;
 }
 
-.btn-secondary:hover {
-  background: rgba(30, 41, 59, 0.80);
-  border-color: var(--glass-elevated-border-hover);
-  color: #67e8f9;
-  transform: translateY(-1px);
+@media (hover: hover) {
+  .btn-secondary:hover {
+    background: rgba(30, 41, 59, 0.80);
+    border-color: var(--glass-elevated-border-hover);
+    color: #67e8f9;
+    transform: translateY(-1px);
+  }
+}
+
+.btn-secondary:active {
+  transform: translateY(0);
 }
 
 .btn-secondary:focus-visible {
@@ -226,21 +261,31 @@ html {
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  scroll-behavior: smooth;
+  /* Land is handled by native smooth scroll, but only when motion is welcome. */
+  scroll-padding-top: var(--header-h);
+}
+
+/* Native smooth anchor scrolling — no JS, no hijacking. */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 body {
-  min-height: 100vh;
+  min-height: 100dvh;
   background-color: var(--bg);
   background-image: radial-gradient(#1e293b 1px, transparent 1px);
   background-size: 24px 24px;
   overflow-x: hidden;
 }
 
-/* Anchor targets clear the fixed glass nav */
+/* Anchor targets clear the fixed glass nav: scroll-padding covers the header,
+   scroll-margin adds the small breathing gap (the two stack, so each is small). */
 section[id],
+main[id],
 div[id] {
-  scroll-margin-top: 76px;
+  scroll-margin-top: 16px;
 }
 
 /* Headings: never break mid-word */
@@ -272,13 +317,22 @@ h1, h2, h3, h4, h5, h6 {
     animation-duration: 0.01ms !important;
     animation-delay: 0ms !important;
     transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
   }
-  .scroll-reveal, .scroll-reveal-child {
+  .scroll-reveal, .scroll-reveal-child,
+  .scroll-reveal-init, .scroll-reveal-init .scroll-reveal-child,
+  .scroll-reveal-heading, .scroll-reveal-hairline,
+  .scroll-reveal-init .scroll-reveal-heading,
+  .scroll-reveal-init .scroll-reveal-hairline {
     opacity: 1 !important;
     transform: none !important;
   }
-  .status-dot-pulse {
+  .status-dot-pulse,
+  .section-heading-pulse {
     animation: none !important;
+  }
+  .scroll-progress {
+    display: none !important;
   }
   .net-pulse {
     animation: none !important;
@@ -290,12 +344,221 @@ h1, h2, h3, h4, h5, h6 {
 
 /* ─── Section Spacing ─── */
 
+/* Consistent vertical rhythm: py-16 (64px) / md:py-20 (80px) / lg:py-24 (96px) */
 .section-container {
-  padding: clamp(32px, 5vw, 80px) clamp(16px, 4vw, 48px);
+  padding: 64px clamp(16px, 4vw, 48px);
+}
+@media (min-width: 768px) {
+  .section-container {
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
+}
+@media (min-width: 1024px) {
+  .section-container {
+    padding-top: 96px;
+    padding-bottom: 96px;
+  }
 }
 
 .section-container--tight {
   padding: clamp(24px, 4vw, 64px) clamp(16px, 4vw, 48px);
+}
+
+/* Consistent container for all sections */
+.section-inner {
+  max-width: 80rem; /* 1280px / max-w-7xl */
+  margin: 0 auto;
+  padding-left: clamp(16px, 4vw, 48px);
+  padding-right: clamp(16px, 4vw, 48px);
+}
+
+/* Consistent vertical rhythm between sections */
+section[id] {
+  scroll-margin-top: 16px; /* breathing gap; header height is scroll-padding */
+}
+
+/* ─── Responsive Grid Utilities ─── */
+.grid-section {
+  display: grid;
+  gap: clamp(16px, 2.5vw, 24px);
+}
+
+@media (min-width: 768px) {
+  .grid-section {
+    gap: clamp(20px, 3vw, 32px);
+  }
+}
+
+/* Card grid: 1 col mobile, 2 tablet, 3 desktop, 4 xl */
+.grid-cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 640px) {
+  .grid-cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid-cards {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .grid-cards {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+}
+
+/* Equal height cards */
+.cards-equal > * {
+  height: 100%;
+}
+
+/* Prevent horizontal overflow on all containers */
+.no-scroll-x {
+  overflow-x: hidden;
+}
+
+/* Touch targets */
+@media (pointer: coarse) {
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Hover-only effects */
+@media (hover: hover) {
+  .hover-only:hover {
+    /* hover styles here */
+  }
+}
+
+/* Hide scrollbar but keep scroll functionality */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* ─── Touch target utilities ─── */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Focus visible styles */
+*:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Button/Link focus visible - more specific */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Skip to content link */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--accent);
+  color: var(--bg);
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  z-index: 1000;
+  text-decoration: none;
+  transition: top 0.2s ease;
+}
+.skip-link:focus {
+  top: 16px;
+}
+
+/* Safe area insets */
+.safe-area-top {
+  padding-top: env(safe-area-inset-top);
+}
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.safe-area-left {
+  padding-left: env(safe-area-inset-left);
+}
+.safe-area-right {
+  padding-right: env(safe-area-inset-right);
+}
+
+/* Reduce motion - ensure content is visible by default */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-reveal,
+  .scroll-reveal-heading,
+  .scroll-reveal-hairline,
+  .scroll-reveal-child {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .scroll-progress {
+    display: none !important;
+  }
+}
+
+/* Print styles - minimal */
+@media print {
+  .glass-nav,
+  .btn-primary,
+  .btn-secondary,
+  .glass-badge,
+  [role="dialog"],
+  .site-nav-overlay,
+  .scroll-progress {
+    display: none !important;
+  }
+  section[id] {
+    scroll-margin-top: 0 !important;
+  }
+  html {
+    scroll-padding-top: 0 !important;
+  }
+  /* Nothing may ever print hidden. */
+  .scroll-reveal,
+  .scroll-reveal-init,
+  .scroll-reveal-heading,
+  .scroll-reveal-hairline,
+  .scroll-reveal-child {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+  * {
+    background: transparent !important;
+    color: #000 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+  }
 }
 
 /* ─── Section Dividers ─── */
@@ -324,8 +587,9 @@ h1, h2, h3, h4, h5, h6 {
   border-image: linear-gradient(
     90deg,
     transparent,
-    var(--border-subtle) 20%,
-    var(--border-subtle) 80%,
+    color-mix(in srgb, var(--accent) 12%, transparent) 22%,
+    color-mix(in srgb, var(--accent) 50%, transparent) 50%,
+    color-mix(in srgb, var(--accent) 12%, transparent) 78%,
     transparent
   ) 1;
 }
@@ -335,8 +599,9 @@ h1, h2, h3, h4, h5, h6 {
   border-image: linear-gradient(
     90deg,
     transparent,
-    var(--border-subtle) 20%,
-    var(--border-subtle) 80%,
+    color-mix(in srgb, var(--accent) 12%, transparent) 22%,
+    color-mix(in srgb, var(--accent) 50%, transparent) 50%,
+    color-mix(in srgb, var(--accent) 12%, transparent) 78%,
     transparent
   ) 1;
 }
@@ -381,9 +646,24 @@ h1, h2, h3, h4, h5, h6 {
   to { transform: scaleX(1); }
 }
 
-@keyframes chipPulse {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 0.7; }
+/* Section highlight pulse after a nav jump (item 6). */
+.section-heading-pulse {
+  animation: sectionHeadingPulse 700ms var(--ease-out) both;
+}
+
+@keyframes sectionHeadingPulse {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 0%, transparent);
+    opacity: 1;
+  }
+  25% {
+    box-shadow: 0 0 24px 4px color-mix(in srgb, var(--accent) 28%, transparent);
+    opacity: 1;
+  }
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 0%, transparent);
+    opacity: 1;
+  }
 }
 
 @keyframes traceGlow {
@@ -395,39 +675,106 @@ h1, h2, h3, h4, h5, h6 {
   animation: fadeInUp 0.6s ease-out both;
 }
 
-/* ─── Scroll Reveal ─── */
+/* ─── Scroll Reveal ───
+   Content is FULLY VISIBLE by default (no-JS, print, full-page screenshots).
+   The hidden start state is only applied by JS once mounted and only to
+   elements that are actually below the fold (see useScrollReveal), so
+   content can never be left invisible. */
 
 .scroll-reveal {
-  opacity: 0;
-  transform: translateY(14px);
-  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 1;
+  transform: none;
 }
 
-.scroll-reveal.scroll-revealed {
+/* Root reveal is opacity-only; the rise is owned by the heading and the
+   staggered children so they never compound transforms (CLS/LCP safe). */
+.scroll-reveal-init {
+  opacity: 0;
+  transform: none;
+  transition: opacity var(--dur-slow) var(--ease-entrance);
+}
+
+.scroll-reveal-init.scroll-revealed {
+  opacity: 1;
+}
+
+/* Heading block ("0X // NAME" pill + title + hairline) rises 14px. */
+.scroll-reveal-heading {
+  opacity: 1;
+  transform: none;
+}
+
+.scroll-reveal-init:not(.scroll-revealed) .scroll-reveal-heading {
+  opacity: 0;
+  transform: translateY(14px);
+}
+
+.scroll-reveal-init .scroll-reveal-heading {
+  transition: opacity var(--dur-slow) var(--ease-entrance),
+              transform var(--dur-slow) var(--ease-entrance);
+}
+
+.scroll-reveal-init.scroll-revealed .scroll-reveal-heading {
   opacity: 1;
   transform: translateY(0);
 }
 
+/* Heading hairline draws in from the left, just behind the text. */
+.scroll-reveal-hairline {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
+.scroll-reveal-init .scroll-reveal-hairline {
+  transition: transform 600ms var(--ease-entrance) calc(var(--stagger) * 2);
+}
+
+.scroll-reveal-init:not(.scroll-revealed) .scroll-reveal-hairline {
+  transform: scaleX(0);
+}
+
+.scroll-reveal-init.scroll-revealed .scroll-reveal-hairline {
+  transform: scaleX(1);
+}
+
+/* Staggered content blocks — the delay comes from a one-time child index
+   written by the reveal hook (no per-child timers while scrolling).
+
+   Implemented as a CSS *animation* rather than a transition so it never
+   overrides the `transition-all` many cards use for hover lift. */
 .scroll-reveal-child {
-  opacity: 0;
-  transform: translateY(14px);
-  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 1;
+  transform: none;
 }
 
-.scroll-reveal-child.scroll-revealed {
-  opacity: 1;
-  transform: translateY(0);
+.scroll-reveal-init:not(.scroll-revealed) .scroll-reveal-child {
+  opacity: 0;
+  transform: translateY(14px);
+}
+
+.scroll-reveal-init.scroll-revealed .scroll-reveal-child {
+  animation: revealChild var(--dur-slow) var(--ease-entrance) backwards;
+  animation-delay: calc(var(--reveal-i, 0) * var(--stagger));
+}
+
+@keyframes revealChild {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ─── Badge / Pill ─── */
 
 .badge {
   font-family: var(--font-mono);
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 500;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   padding: 3px 10px;
   border-radius: 9999px;
@@ -475,18 +822,30 @@ h1, h2, h3, h4, h5, h6 {
   top: 0;
   left: 0;
   right: 0;
-  height: 56px;
-  z-index: 100;
-  background: color-mix(in srgb, var(--bg) 80%, transparent);
-  backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border-subtle);
-  transition: background 0.3s ease;
+  height: var(--header-h);
+  padding-top: env(safe-area-inset-top, 0px);
+  z-index: 200;
+  /* Transparent over the hero; becomes a dark translucent surface on scroll. */
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: background var(--dur-base) var(--ease-standard),
+              border-color var(--dur-base) var(--ease-standard),
+              box-shadow var(--dur-base) var(--ease-standard);
+}
+
+/* Light backdrop blur only where there is room; mobile stays blur-free to
+   avoid scroll jank on low-power devices. */
+@media (min-width: 768px) {
+  .glass-nav {
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+  }
 }
 
 .glass-nav.scrolled {
-  background: color-mix(in srgb, var(--bg) 95%, transparent);
-  border-bottom-color: rgba(6, 182, 212, 0.12);
-  box-shadow: 0 1px 20px rgba(14, 165, 233, 0.06);
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  border-bottom-color: color-mix(in srgb, var(--accent) 32%, transparent);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
 }
 
 /* ─── Cursor Glow Card ─── */
@@ -514,8 +873,10 @@ h1, h2, h3, h4, h5, h6 {
   z-index: 1;
 }
 
-.cursor-glow-card:hover::before {
-  opacity: 1;
+@media (hover: hover) {
+  .cursor-glow-card:hover::before {
+    opacity: 1;
+  }
 }
 
 /* ─── Animated Underline Link ─── */
@@ -539,8 +900,72 @@ h1, h2, h3, h4, h5, h6 {
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.animated-underline:hover::after {
+@media (hover: hover) {
+  .animated-underline:hover::after {
+    transform: scaleX(1);
+  }
+}
+
+.animated-underline:focus-visible::after,
+.animated-underline[aria-current="page"]::after {
   transform: scaleX(1);
+}
+
+/* ─── Site Footer ───
+   `.animated-underline` is used ONLY by the footer links, so it is safe to
+   tune it here.
+
+   Two cascade facts drive this block:
+   • globals.css rules are UNLAYERED, so they beat Tailwind utilities of equal
+     origin. `.animated-underline { display: inline-block }` would therefore
+     defeat the link's `inline-flex` + `items-center`, leaving the 44px text
+     hugging the top of its hit area (and its underline ~28px below the text)
+     while `© 2026` — which has no such class — centred. That mismatch is what
+     put the two on different baselines.
+   • `.glass-panel` (unlayered) sets a 1px border on all four sides plus a 16px
+     radius; the `border-*-0` / `rounded-none` utilities on the old markup lost
+     to it. The footer wants a single top hairline instead. */
+
+.site-footer {
+  /* Inline axis deliberately mirrors .section-container (clamp 16→48px), so
+     the footer's content edge lines up with every section at every width.
+     `.section-inner` alone only matches above ~1376px. */
+  padding-left: clamp(16px, 4vw, 48px);
+  padding-right: clamp(16px, 4vw, 48px);
+  /* py-8 / md:py-10, notched for the home indicator. */
+  padding-top: 2rem;
+  padding-bottom: max(2rem, env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
+  border-right: 0;
+  border-bottom: 0;
+  border-left: 0;
+  border-radius: 0;
+}
+
+@media (min-width: 768px) {
+  .site-footer {
+    padding-top: 2.5rem;
+    padding-bottom: max(2.5rem, env(safe-area-inset-bottom, 0px));
+  }
+}
+
+/* Flex box so `min-h-11` + `items-center` actually centre the label. */
+.site-footer .animated-underline {
+  display: inline-flex;
+}
+
+/* Keep the draw-in underline hugging the 14px text instead of the bottom of
+   the 44px hit area. `top` is static — only `scaleX` still animates. */
+.site-footer .animated-underline::after {
+  top: calc(50% + 7px);
+  bottom: auto;
+}
+
+/* Hover only where a real pointer exists; touch keeps the focus/active state. */
+@media (hover: hover) {
+  .site-footer a:hover {
+    color: var(--accent-secondary); /* #22D3EE — the existing hover cyan */
+  }
 }
 
 /* ─── Button Hover Lift ─── */
@@ -549,9 +974,11 @@ h1, h2, h3, h4, h5, h6 {
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.btn-hover-lift:hover {
-  transform: scale(1.02);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+@media (hover: hover) {
+  .btn-hover-lift:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  }
 }
 
 /* ─── Status Dot Pulse ─── */
@@ -638,15 +1065,17 @@ h1, h2, h3, h4, h5, h6 {
   transition: stroke-opacity 0.2s ease;
 }
 
-.fp-block:hover .fp-shape {
-  stroke-opacity: 1;
-  stroke: #06b6d4;
-  filter: drop-shadow(0 0 6px rgba(6, 182, 212, 0.45));
-}
+@media (hover: hover) {
+  .fp-block:hover .fp-shape {
+    stroke-opacity: 1;
+    stroke: #06b6d4;
+    filter: drop-shadow(0 0 6px rgba(6, 182, 212, 0.45));
+  }
 
-.fp-block:hover .fp-region {
-  filter: drop-shadow(0 0 8px rgba(6, 182, 212, 0.25));
-  stroke: rgba(6, 182, 212, 0.6);
+  .fp-block:hover .fp-region {
+    filter: drop-shadow(0 0 8px rgba(6, 182, 212, 0.25));
+    stroke: rgba(6, 182, 212, 0.6);
+  }
 }
 
 /* ─── Timing diagram (WaveformHr variant: "timing") ─── */
@@ -696,22 +1125,24 @@ h1, h2, h3, h4, h5, h6 {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.pd-node:hover {
-  transform: translateY(-2px);
-}
+@media (hover: hover) {
+  .pd-node:hover {
+    transform: translateY(-2px);
+  }
 
-.pd-node:hover .pd-node-label {
-  color: var(--text);
-}
+  .pd-node:hover .pd-node-label {
+    color: var(--text);
+  }
 
-.pd-node:hover .pd-node-dot {
-  background: #06B6D4;
-  box-shadow: 0 0 12px #06B6D4;
-}
+  .pd-node:hover .pd-node-dot {
+    background: #06B6D4;
+    box-shadow: 0 0 12px #06B6D4;
+  }
 
-.pd-node:hover .pd-connector {
-  stroke: #06B6D4;
-  stroke-opacity: 0.6;
+  .pd-node:hover .pd-connector {
+    stroke: #06B6D4;
+    stroke-opacity: 0.6;
+  }
 }
 
 .pd-connector {
@@ -846,11 +1277,13 @@ h1, h2, h3, h4, h5, h6 {
     color 0.2s ease;
 }
 
-.pd-hud-chip:hover {
-  background: rgba(6, 182, 212, 0.14);
-  box-shadow: 0 0 8px rgba(0, 255, 255, 0.35), inset 0 0 8px rgba(0, 255, 255, 0.08);
-  color: #06B6D4;
-  border-color: #06B6D4;
+@media (hover: hover) {
+  .pd-hud-chip:hover {
+    background: rgba(6, 182, 212, 0.14);
+    box-shadow: 0 0 8px rgba(0, 255, 255, 0.35), inset 0 0 8px rgba(0, 255, 255, 0.08);
+    color: #06B6D4;
+    border-color: #06B6D4;
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -872,9 +1305,11 @@ h1, h2, h3, h4, h5, h6 {
   z-index: 3;
 }
 
-.pd-comp-card:hover .pd-comp-glow {
-  opacity: 1;
-  transform: scaleX(1);
+@media (hover: hover) {
+  .pd-comp-card:hover .pd-comp-glow {
+    opacity: 1;
+    transform: scaleX(1);
+  }
 }
 
 /* 4-corner L-bracket accents */
@@ -915,8 +1350,10 @@ h1, h2, h3, h4, h5, h6 {
   border-right: 2px solid rgba(34, 211, 238, 0.6);
 }
 
-.pd-comp-card:hover .pd-comp-corner {
-  border-color: #22D3EE;
+@media (hover: hover) {
+  .pd-comp-card:hover .pd-comp-corner {
+    border-color: #22D3EE;
+  }
 }
 
 /* ─── Foundation Map Node ─── */
@@ -929,21 +1366,77 @@ h1, h2, h3, h4, h5, h6 {
 
 .nav-link {
   position: relative;
+  color: var(--text-muted);
+  transition: color var(--dur-base) var(--ease-out);
 }
 
 .nav-link::after {
   content: '';
   position: absolute;
-  bottom: -2px;
+  bottom: -4px;
   left: 0;
-  width: 0;
+  width: 100%;
   height: 1px;
   background: var(--accent);
-  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform var(--dur-base) var(--ease-out);
 }
 
-.nav-link:hover::after {
+.nav-link.is-active {
+  color: var(--text);
+}
+
+.nav-link.is-active::after {
+  transform: scaleX(1);
+}
+
+@media (hover: hover) {
+  .nav-link:hover {
+    color: var(--text);
+  }
+
+  .nav-link:hover::after {
+    transform: scaleX(1);
+  }
+}
+
+/* Optional scroll-progress bar — included via CSS scroll-driven animation,
+   which needs no scroll listener at all. Safe fallback: where the feature is
+   unsupported (or motion is reduced) the bar simply never draws, so nothing
+   is broken and no JS runs. */
+.scroll-progress {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  height: 2px;
   width: 100%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.scroll-progress::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg,
+    color-mix(in srgb, var(--accent) 45%, transparent),
+    color-mix(in srgb, var(--accent) 85%, transparent));
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+@keyframes scroll-progress {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+@supports (animation-timeline: scroll()) {
+  .scroll-progress::before {
+    animation: scroll-progress linear both;
+    animation-timeline: scroll(root block);
+    will-change: transform;
+  }
 }
 
 /* ─── Nav Stacking Context ─── */
@@ -954,23 +1447,153 @@ h1, h2, h3, h4, h5, h6 {
   isolation: isolate;
 }
 
+/* ─── Mobile menu transitions ───
+   The CLOSED state carries the fast exit timing and the OPEN state carries
+   the slower entrance timing, because CSS uses the destination state's
+   transition — so opening takes ~250ms and closing takes ~150ms. */
 .site-nav-overlay {
   position: fixed;
   inset: 0;
   z-index: 150;
   background: var(--bg);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: opacity var(--dur-fast) var(--ease-out),
+              transform var(--dur-fast) var(--ease-out),
+              visibility 0s linear var(--dur-fast);
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.site-nav-overlay.is-open {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+  visibility: visible;
+  transition: opacity var(--dur-base) var(--ease-out),
+              transform var(--dur-base) var(--ease-out),
+              visibility 0s linear 0s;
+}
+
+.site-nav-overlay .site-nav-panel {
+  transform: translateY(-8px);
+  opacity: 0;
+  transition: opacity var(--dur-fast) var(--ease-out),
+              transform var(--dur-fast) var(--ease-out);
+}
+
+.site-nav-overlay.is-open .site-nav-panel {
+  transform: translateY(0);
+  opacity: 1;
+  transition: opacity var(--dur-base) var(--ease-out) var(--stagger),
+              transform var(--dur-base) var(--ease-out) var(--stagger);
+}
+
+.site-nav-overlay .site-nav-link {
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity var(--dur-fast) var(--ease-out),
+              transform var(--dur-fast) var(--ease-out);
+}
+
+.site-nav-overlay.is-open .site-nav-link {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity var(--dur-base) var(--ease-out),
+              transform var(--dur-base) var(--ease-out);
+  /* Light stagger, capped at the 6th item. */
+  transition-delay: calc(min(var(--nav-i, 0), 5) * 40ms + var(--stagger));
 }
 
 .site-nav-hamburger {
   position: relative;
-  z-index: 10;
-  pointer-events: auto;
-}
-
-.site-nav-close {
-  position: absolute;
-  top: 12px;
-  right: 16px;
   z-index: 160;
   pointer-events: auto;
+  min-height: 44px;
+  min-width: 44px;
+}
+
+.site-nav-hamburger-bar {
+  display: block;
+  height: 1px;
+  width: 24px;
+  background: var(--text);
+  transition: transform var(--dur-base) var(--ease-out),
+              width var(--dur-base) var(--ease-out);
+  transform-origin: center;
+}
+
+.site-nav-hamburger-bar.bar-2 {
+  width: 14px;
+  margin-left: auto;
+}
+
+.site-nav-hamburger.is-open .bar-1 {
+  transform: translateY(5px) rotate(45deg);
+}
+
+.site-nav-hamburger.is-open .bar-2 {
+  width: 0;
+}
+
+.site-nav-hamburger.is-open .bar-3 {
+  transform: translateY(-5px) rotate(-45deg);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RESPONSIVE / ACCESSIBILITY UTILITIES
+   ═══════════════════════════════════════════════════════════ */
+
+/* Badge that is allowed to wrap on very small screens (avoids overflow
+   from long single-line labels without truncating or changing copy). */
+.glass-badge--wrap {
+  white-space: normal;
+  max-width: 100%;
+  text-align: left;
+}
+
+/* Wide content scrolls inside its own container, never the page. */
+.overflow-x-contain {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Horizontal tab strips: scroll-snap + hidden scrollbar. */
+.tab-strip {
+  display: flex;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.tab-strip::-webkit-scrollbar {
+  display: none;
+}
+.tab-strip > * {
+  scroll-snap-align: start;
+  flex: 0 0 auto;
+}
+
+/* Prevent flex/grid text children from forcing overflow. */
+.min-w-0 {
+  min-width: 0;
+}
+
+/* Hide unreadable floorplan micro-labels on small screens. */
+@media (max-width: 639px) {
+  .fp-micro-text {
+    display: none;
+  }
+}
+
+/* Interactive targets: guarantee 44px minimum touch area. */
+.tab-strip button,
+.site-nav a,
+.site-nav button {
+  min-height: 44px;
 }
