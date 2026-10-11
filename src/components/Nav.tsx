@@ -203,7 +203,7 @@ export function Nav() {
             <a
               href="#contact"
               onClick={() => onNavClick("#contact")}
-              className="btn-primary whitespace-nowrap h-9 px-5"
+              className="btn-primary whitespace-nowrap px-5"
               style={{
                 fontFamily: "var(--font-mono)",
                 fontSize: "13px",

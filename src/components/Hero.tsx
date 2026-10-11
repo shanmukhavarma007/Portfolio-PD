@@ -3,11 +3,57 @@
 import { FloorplanVisual } from "./FloorplanVisual";
 import { HeroWaveform } from "./HeroWaveform";
 
+const STATUS_METRICS = [
+  {
+    value: "PPA Focus",
+    label: "CORE OBJECTIVE",
+    subtext: "Timing, Power & Area",
+    color: "var(--accent-cyan, #00f0ff)",
+  },
+  {
+    value: "ASIC PD",
+    label: "PRIMARY DOMAIN",
+    subtext: "RTL to GDSII",
+    color: "var(--accent-green, #22c55e)",
+  },
+  {
+    value: "Tcl / Shell",
+    label: "EDA SCRIPTING",
+    subtext: "Automation & Custom Checks",
+    color: "var(--accent-amber, #ffb700)",
+  },
+  {
+    value: "STA & PnR",
+    label: "CORE FOCUS",
+    subtext: "Timing Closure & DRC/LVS",
+    color: "var(--accent-purple, #b026ff)",
+  },
+];
+
+function StatTile({ metric }: { metric: typeof STATUS_METRICS[0] }) {
+  return (
+    <div className="glass-card flex min-h-[130px] flex-col items-center justify-center gap-1.5 px-4 py-4 text-center min-w-0">
+      <span
+        className="font-mono text-xl font-bold tracking-wide sm:text-2xl"
+        style={{ color: metric.color }}
+      >
+        {metric.value}
+      </span>
+      <span className="font-mono text-xs uppercase tracking-[0.18em] text-slate-400 whitespace-normal">
+        {metric.label}
+      </span>
+      <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-slate-400 whitespace-normal">
+        {metric.subtext}
+      </span>
+    </div>
+  );
+}
+
 export function Hero() {
   return (
     <section
       id="hero"
-      className="scroll-reveal section-glow relative flex min-h-dvh flex-col overflow-hidden pt-[calc(72px+env(safe-area-inset-top,0px))] pb-8 lg:pb-12"
+      className="scroll-reveal section-glow relative flex min-h-dvh flex-col overflow-hidden pt-[calc(64px+env(safe-area-inset-top,0px))] pb-8 lg:pb-12"
     >
       {/* Background grid */}
       <div
@@ -54,22 +100,25 @@ export function Hero() {
         }}
       />
 
-      <div className="section-inner flex flex-col-reverse lg:grid lg:grid-cols-[7fr_5fr] items-start gap-8 lg:gap-12 w-full relative z-10">
-        {/* ASIC floorplan visualization */}
-        <div className="flex justify-center w-full lg:order-2" aria-hidden="true">
-          <div
-            style={{
-              position: "relative",
-              aspectRatio: "540 / 380",
-              maxHeight: "min(420px, 55vh)",
-              width: "100%",
-            }}
-          >
-            <FloorplanVisual />
+      <div className="section-inner flex flex-col-reverse lg:grid lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] items-stretch gap-8 lg:gap-12 w-full relative z-10">
+        {/* Right column: floorplan + stat tiles (lg+) / stacked (mobile) */}
+        <div className="flex w-full lg:order-2 flex-col items-center justify-center gap-6 lg:gap-8 min-w-0">
+          {/* ASIC floorplan visualization */}
+          <div className="w-full max-w-[540px] lg:max-w-full" aria-hidden="true">
+            <div style={{ position: "relative", aspectRatio: "540 / 380", width: "100%" }}>
+              <FloorplanVisual />
+            </div>
+          </div>
+
+          {/* Stat tiles — 2x2 grid on lg+, single column on mobile */}
+          <div className="grid w-full grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-4">
+            {STATUS_METRICS.map((metric) => (
+              <StatTile key={metric.label} metric={metric} />
+            ))}
           </div>
         </div>
 
-        {/* Hero text content */}
+        {/* Hero text content (left column on lg+) */}
         <div className="max-w-[680px] flex flex-col w-full lg:order-1">
           {/* Text stack with explicit mt-* for precise spacing */}
           <div className="flex flex-col max-w-[60ch]">
@@ -112,7 +161,7 @@ export function Hero() {
             </div>
 
             {/* Name — 24px from badges */}
-            <h1 className="mt-6 text-[clamp(2.5rem,5vw,4.5rem)] font-semibold leading-[1.05] tracking-tight text-balance"
+            <h1 className="mt-6 text-[clamp(2.75rem,5.2vw,5rem)] font-semibold leading-[1.05] tracking-tight text-balance"
               style={{
                 fontFamily: "var(--font-display)",
                 color: "var(--text)",
@@ -137,8 +186,8 @@ export function Hero() {
             </p>
           </div>
 
-          {/* CTAs — 32px mobile / 40px desktop from paragraph */}
-          <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
+          {/* CTAs — 40px from paragraph */}
+          <div className="mt-10 flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
             <a
               href="#contact"
               className="btn-primary btn-hover-lift h-12 sm:h-14 flex items-center justify-center w-full sm:w-auto text-center"

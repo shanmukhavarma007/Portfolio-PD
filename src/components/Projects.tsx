@@ -604,7 +604,11 @@ function SnapshotViewer({ snapshots }: { snapshots: Snapshot[] }) {
   );
 }
 
-function MetricsStrip({ metrics }: { metrics: Metric[] }) {
+function MetricsStrip({
+  metrics,
+  xlCols,
+  className,
+}: { metrics: Metric[]; xlCols?: 3 | 4; className?: string }) {
   const TONE_STYLES: Record<MetricTone, string> = {
     neutral: "border-slate-700 bg-slate-800/50 text-slate-300",
     warning: "border-amber-500/30 bg-amber-500/10 text-amber-300",
@@ -612,7 +616,9 @@ function MetricsStrip({ metrics }: { metrics: Metric[] }) {
   };
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 mt-4">
+    <div
+      className={`grid grid-cols-2 md:grid-cols-3 gap-2 ${xlCols === 4 ? "xl:grid-cols-4" : ""} ${className || ""}`}
+    >
       {metrics.map((metric) => (
         <div
           key={metric.label}
@@ -621,7 +627,7 @@ function MetricsStrip({ metrics }: { metrics: Metric[] }) {
           <div className="font-mono text-[10px] uppercase tracking-[0.15em] text-slate-400 mb-1">
             {metric.label}
           </div>
-          <div className="font-mono text-sm font-medium tracking-wide leading-tight">
+          <div className="font-mono text-sm font-medium tracking-wide leading-tight tabular-nums whitespace-nowrap">
             {metric.value}
           </div>
         </div>
@@ -634,6 +640,8 @@ function ProjectCard({ project }: { project: Project }) {
   const hasSnapshots = project.snapshots && project.snapshots.length > 0;
   const hasConsole = project.previewTitle && !hasSnapshots;
   const hasMetrics = project.metrics && project.metrics.length > 0;
+  // AES has 7 metrics -> use 4 columns on xl for 4+3 layout
+  const useXl4Cols = project.num === "03";
 
   return (
     <article
@@ -642,85 +650,94 @@ function ProjectCard({ project }: { project: Project }) {
     >
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-10">
         {/* Left: details & actions */}
-        <div className="flex flex-col min-w-0">
-          <div className="mb-3 flex flex-wrap items-center gap-3">
-            <span className="font-mono text-xs font-bold tracking-widest text-slate-400">
-              {project.num}
-            </span>
-            <span
-              className={`font-mono text-[10px] font-semibold tracking-[0.15em] ${project.categoryClass}`}
-            >
-              {project.category}
-            </span>
-            {project.status && (
-              <span
-                className="inline-flex shrink-0 items-center gap-1.5 rounded-md border border-slate-700 bg-slate-800 px-2 py-0.5 font-mono text-xs text-slate-200"
-                aria-label={`Status: ${project.status}`}
-              >
-                <span
-                  className="h-1.5 w-1.5 rounded-full"
-                  style={{
-                    background: "var(--accent)",
-                    boxShadow: "0 0 6px var(--accent)",
-                  }}
-                />
-                {project.status}
+        <div className="flex flex-col min-w-0 h-full justify-between">
+          {/* Top content: label row -> title -> description -> metrics */}
+          <div className="flex flex-col">
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="font-mono text-xs font-bold tracking-widest text-slate-400">
+                {project.num}
               </span>
+              <span
+                className={`font-mono text-[10px] font-semibold tracking-[0.15em] ${project.categoryClass}`}
+              >
+                {project.category}
+              </span>
+              {project.status && (
+                <span
+                  className="inline-flex shrink-0 items-center gap-1.5 rounded-md border border-slate-700 bg-slate-800 px-2 py-0.5 font-mono text-xs text-slate-200"
+                  aria-label={`Status: ${project.status}`}
+                >
+                  <span
+                    className="h-1.5 w-1.5 rounded-full"
+                    style={{
+                      background: "var(--accent)",
+                      boxShadow: "0 0 6px var(--accent)",
+                    }}
+                  />
+                  {project.status}
+                </span>
+              )}
+            </div>
+
+            <h3
+              className="mt-3 text-xl font-bold leading-tight tracking-tight text-white sm:text-2xl"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              {project.title}
+            </h3>
+
+            <p className="mt-3 max-w-xl text-sm leading-relaxed text-slate-300">
+              {project.description}
+            </p>
+
+            {hasMetrics && (
+              <MetricsStrip
+                className="mt-6"
+                metrics={project.metrics!}
+                xlCols={useXl4Cols ? 4 : 3}
+              />
             )}
           </div>
 
-          <h3
-            className="mb-4 text-xl font-bold leading-tight tracking-tight text-white sm:text-2xl"
-            style={{ fontFamily: "var(--font-display)" }}
-          >
-            {project.title}
-          </h3>
-
-          <p className="mb-6 max-w-xl text-sm leading-relaxed text-slate-300">
-            {project.description}
-          </p>
-
-          {hasMetrics && <MetricsStrip metrics={project.metrics!} />}
-
-          <div className="mb-7">
-            <div className="mb-2.5 font-mono text-[10px] uppercase tracking-[0.25em] text-slate-400">
-              Tech Stack
+          {/* Footer group: TECH STACK label -> chips -> links (pushed to bottom, min 28px from metrics) */}
+          <div className="mt-7 flex flex-col gap-3">
+            <div className="font-mono text-xs font-semibold uppercase tracking-widest text-cyan-400">
+              TECH STACK
             </div>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap items-start gap-2">
               {project.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="glass-badge font-mono text-[10px] tracking-wide"
+                  className="inline-flex items-center h-7 px-3 text-xs font-mono font-medium tracking-wider uppercase rounded-md border border-cyan-500/30 bg-cyan-950/40 text-cyan-300 transition-colors duration-200 hover:border-cyan-400/50 hover:bg-cyan-950/60"
                 >
                   {tag}
                 </span>
               ))}
             </div>
-          </div>
-
-          {/* Actions - only for VLSI Hub (has liveUrl) */}
-          {project.liveUrl && project.primaryCta && (
-            <div className="mt-auto flex flex-wrap gap-3">
-              <a
-                href={project.primaryCta.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-primary btn-sm"
-              >
-                {project.primaryCta.label}
-              </a>
-              {project.secondaryCta && (
+            {/* Actions - only for VLSI Hub (has liveUrl) */}
+            {project.liveUrl && project.primaryCta && (
+              <div className="mt-6 flex flex-wrap gap-3">
                 <a
-                  href={project.secondaryCta.href}
+                  href={project.primaryCta.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn-secondary btn-sm"
+                  className="btn-primary btn-sm"
                 >
-                  {project.secondaryCta.label}
+                  {project.primaryCta.label}
                 </a>
-              )}
-            </div>
-          )}
+                {project.secondaryCta && (
+                  <a
+                    href={project.secondaryCta.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-secondary btn-sm"
+                  >
+                    {project.secondaryCta.label}
+                  </a>
+                )}
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Right: snapshot viewer or tabbed console */}
